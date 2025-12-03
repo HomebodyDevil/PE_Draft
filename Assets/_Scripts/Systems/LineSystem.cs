@@ -31,19 +31,21 @@ public class LineSystem : Singleton<LineSystem>
     {
         if (lineView == null) transform.AssignChildVar<LineRenderer>("LineView", ref lineView);
         if (lineCamera == null) transform.AssignChildVar<Camera>("LineCamera", ref lineCamera);
+
+        lineView.startWidth = lineView.endWidth = ConstValue.LINE_WIDTH;
     }
 
-    // private void OnEnable()
-    // {
-    //     InputManager.Instance.PlayerActions.Default.MouseLeftButton.started += OnMouseLeftClickDown;
-    //     InputManager.Instance.PlayerActions.Default.MouseLeftButton.canceled += OnMouseLeftClickUp;
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     InputManager.Instance.PlayerActions.Default.MouseLeftButton.started -= OnMouseLeftClickDown;
-    //     InputManager.Instance.PlayerActions.Default.MouseLeftButton.canceled -= OnMouseLeftClickUp;
-    // }
+    private void OnEnable()
+    {
+        InputManager.Instance.PlayerActions.Default.MouseLeftButton.started += OnMouseLeftClickDown;
+        InputManager.Instance.PlayerActions.Default.MouseLeftButton.canceled += OnMouseLeftClickUp;
+    }
+    
+    private void OnDisable()
+    {
+        InputManager.Instance.PlayerActions.Default.MouseLeftButton.started -= OnMouseLeftClickDown;
+        InputManager.Instance.PlayerActions.Default.MouseLeftButton.canceled -= OnMouseLeftClickUp;
+    }
 
     private void OnMouseLeftClickDown(InputAction.CallbackContext context)
     {
