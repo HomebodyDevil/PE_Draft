@@ -11,8 +11,8 @@ public static class ConstValue
     public const int CARDVIEW_ORDER = 1;
 
     public const float MAX_HAND_CARDS = 10;
-    public const float CARD_LINEUP_SECONDS = 0.3f;
-    public const float CARD_DRAW_SECONDS = 0.1f;
+    public const float CARD_LINEUP_SECONDS = 0.15f;
+    public const float CARD_DRAW_SECONDS = 0.17f;
     public const float CARDVIEW_SPLINE_MIN = 0.001f;
     public const float CARDVIEW_ROTATE_MAX = 10f;
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Splines;
 
 public class CardViewSystem : Singleton<CardViewSystem>
@@ -13,13 +14,14 @@ public class CardViewSystem : Singleton<CardViewSystem>
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Camera cardViewCam;
     [SerializeField] private Transform cardViews;
+    [SerializeField] private Transform extraCardViews;
     [SerializeField] private GameObject cardViewPrefab;
     [SerializeField] private RectTransform deckButtonRT;
     [SerializeField] private RectTransform graveyardButtonRT;
     [SerializeField] private Canvas cardViewCanvas;
 
     [SerializeField] private List<CardView> _usingCardViewList = new();
-    [SerializeField] private List<CardView> _storedCardViewList = new();
+    [SerializeField] private List<CardView> _extraCardViewList = new();
 
     private Coroutine _lineupCoroutine;
     
@@ -32,24 +34,27 @@ public class CardViewSystem : Singleton<CardViewSystem>
 
     private void OnEnable()
     {
-        PlayerCardSystem.Instance.OnDrawCard += OnDrawCard;
+        PlayerCardSystem.Instance.OnDrawCard += DrawCardView;
+        PlayerCardSystem.Instance.OnCardMoveToGraveyard += MoveCardViewToGraveyard;
     }
 
     private void OnDisable()
     {
-        PlayerCardSystem.Instance.OnDrawCard -= OnDrawCard;
+        PlayerCardSystem.Instance.OnDrawCard -= DrawCardView;
+        PlayerCardSystem.Instance.OnCardMoveToGraveyard -= MoveCardViewToGraveyard;
     }
 
-    // private void Start()
-    // {
-    //     
-    // }
+    private void Start()
+    {
+        
+    }
 
     private void VarSetup()
     {
         if (splineContainer == null) transform.AssignChildVar<SplineContainer>("CardViewCurve", ref splineContainer);
         if (cardViewCam == null) transform.AssignChildVar<Camera>("CardViewCamera", ref cardViewCam);
         if (cardViews == null) transform.AssignChildVar<Transform>("CardViews", ref cardViews);
+        if (extraCardViews == null) transform.AssignChildVar<Transform>("ExtraCardViews", ref extraCardViews);
         if (deckButtonRT == null) transform.AssignChildVar<RectTransform>("DeckButtonRT", ref deckButtonRT);
         if (graveyardButtonRT == null)
             transform.AssignChildVar<RectTransform>("GraveyardButtonRT", ref graveyardButtonRT);
@@ -80,27 +85,67 @@ public class CardViewSystem : Singleton<CardViewSystem>
         }
         else
         {
-            Debug.Log("Fail ed to create card view");
+            Debug.Log("Failed to create card view");
             return null;
         }
     }
 
-    private void OnDrawCard(InBattleCard cardView)
+    // PlayerCardSystem.Instance.OnDrawCard를 구독한다.
+    private void DrawCardView(InBattleCard inBattleCard)
     {
-        // 1. cardView를 얻어온다 : 남은 게 있다면 사용. 없다면 생성.
-        //      -> CreateCardView
+        CardView cardView = GetAvaiablableCardView(true);
+        cardView?.SetCardView(inBattleCard);
+        cardView?.transform.SetParent(cardViews);
+
+        LineUpHandCardViews();
     }
 
-    private CardView GetUseableCardView()
+    // CARD_LINEUP_SECONDS가 CARD_DRAW_SECONDS보다 길면
+    // 문제가 발생한다. cardViewRT 각각의 Tween을 캐싱하여 따로 관리하면 될 것 같긴 한데.
+    // 그냥 CARD_LINEUP_SECONDS를 CARD_DRAW_SECONDS보다 짧게 했다.
+    private void MoveCardViewToGraveyard(InBattleCard inBattleCard)
+    {
+        foreach (CardView cardView in _usingCardViewList)
+        {
+            if (cardView._card == null)
+            {
+                Debug.Log("cardView is null");
+                break;
+            }
+            
+            if (cardView._card.Equals(inBattleCard))
+            {
+                RectTransform cardViewRT = null;
+                if (cardView.TryGetComponent<RectTransform>(out cardViewRT))
+                {
+                    _usingCardViewList.Remove(cardView);
+                    _extraCardViewList.Add(cardView);
+                    
+                    cardViewRT.DOScale(Vector3.zero, ConstValue.CARD_DRAW_SECONDS);
+                    cardViewRT.DOMove(graveyardButtonRT.position, ConstValue.CARD_DRAW_SECONDS);
+                    
+                    StartCoroutine(SetCardViewActiveCoroutine(cardViewRT.gameObject, false, ConstValue.CARD_DRAW_SECONDS));
+                    
+                    LineUpHandCardViews();
+                }
+
+                break;
+            }
+        }
+    }
+    
+    // 일종의 pool 패턴.
+    private CardView GetAvaiablableCardView(bool setActive = true)
     {
         CardView ret = null;
         
-        if (_storedCardViewList.Count > 0)
+        if (_extraCardViewList.Count > 0)
         {
-            ret = _storedCardViewList[0];
+            ret = _extraCardViewList[0];
             
-            _usingCardViewList.Add(_storedCardViewList[0]);
-            _storedCardViewList.RemoveAt(0);
+            _usingCardViewList.Add(_extraCardViewList[0]);
+            _extraCardViewList.RemoveAt(0);
+            ret.gameObject.SetActive(setActive);
         }
         else
         {
@@ -110,12 +155,27 @@ public class CardViewSystem : Singleton<CardViewSystem>
         return ret;
     }
 
-    private void MoveCardToHand(RectTransform cardViewRT)
+    public void LineUpHandCardViews()
     {
-        cardViewRT.DOLocalMove(graveyardButtonRT.localPosition, 0.5f);
+        if (_lineupCoroutine != null) StopCoroutine(_lineupCoroutine);
+        _lineupCoroutine = StartCoroutine(LineUpHandCardViewsCoroutine());
     }
 
-    private IEnumerator LineUpHandCardViews()
+    private IEnumerator SetCardViewActiveCoroutine(GameObject cardViewGO, bool active, float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (cardViewGO.TryGetComponent<RectTransform>(out var cardViewRT))
+        {
+            cardViewRT.SetParent(extraCardViews);
+            cardViewRT.position = deckButtonRT.position;
+        }
+        
+        Debug.Log("AAAA");
+        cardViewGO.SetActive(active);
+    }
+
+    private IEnumerator LineUpHandCardViewsCoroutine()
     {
         int cardNum = _usingCardViewList.Count;
 
@@ -147,10 +207,16 @@ public class CardViewSystem : Singleton<CardViewSystem>
         yield break;
     }
 
-    public void CreateCardViewAddToHand()
-    {
-        CreateCardView(deckButtonRT.localPosition);
-        if (_lineupCoroutine != null) StopCoroutine(_lineupCoroutine);
-        _lineupCoroutine = StartCoroutine(LineUpHandCardViews());
-    }
+    // 쓸 일 없을듯?
+    // public void CreateCardViewAddToHand()
+    // {
+    //     CreateCardView(deckButtonRT.localPosition);
+    //     LineUpHandCardViews();
+    // }
+    
+    // LineUpHandCardViews 쓰면 돼서 쓸모 없을듯.
+    // private void MoveCardToHand(RectTransform cardViewRT)
+    // {
+    //     cardViewRT.DOLocalMove(graveyardButtonRT.localPosition, 0.5f);
+    // }
 }

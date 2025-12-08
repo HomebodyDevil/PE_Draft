@@ -11,12 +11,19 @@ public class PlayerStatusService : PersistantSingleton<PlayerStatusService>
         base.Awake();
 
         // PlayerStatus를 세팅.
-        if (defaultPayerStatusData == null) SetupDefaultPlayerStatusData();
-        else PlayerStatus = new(defaultPayerStatusData);
+        if (defaultPayerStatusData == null)
+        {
+            SetupDefaultPlayerStatusData();
+        }
+        else
+        {
+            PlayerStatus = new(defaultPayerStatusData);
+        }
     }
 
     private void SetupDefaultPlayerStatusData()
     {
+        PlayerStatus = new PlayerStatus();
         PlayerStatus.MaxHealth = ConstValue.DEFAULT_PLAYER_HEALTH;
         PlayerStatus.CurrentHealth = ConstValue.DEFAULT_PLAYER_HEALTH;
         PlayerStatus.MaxCost = ConstValue.DEFAULT_PLAYER_COST;

@@ -1,13 +1,53 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    public Card _card { get; private set; }
+    public InBattleCard _card { get; private set; }
+
+    [SerializeField] public TextMeshProUGUI cardNameTMP;
+    [SerializeField] public TextMeshProUGUI cardDescriptionTMP;
+    //[SerializeField] private TextMeshProUGUI costTMP;
     
+    private void Awake()
+    {
+        transform.AssignChildVar<TextMeshProUGUI>("CardNameText", ref cardNameTMP);
+        transform.AssignChildVar<TextMeshProUGUI>("CardDescriptionText", ref cardDescriptionTMP);
+    }
+    
+    public void SetCardView(InBattleCard card)
+    {
+        _card = card;
+        
+        SetCardViewNameText(card.BattleCard.Name);
+        SetCardViewDescriptionText(card.BattleCard.Description);
+        SetCardViewCostText(card.BattleCard.Cost);
+    }
+
+    public void SetCardViewNameText(String newName)
+    {
+        if (cardNameTMP == null) return;
+        
+        cardNameTMP.text = newName;
+    }
+
+    public void SetCardViewDescriptionText(string newDescription)
+    {
+        if (cardDescriptionTMP == null) return;
+        
+        cardDescriptionTMP.text = newDescription;
+    }
+
+    public void SetCardViewCostText(int newCost)
+    {
+        Debug.Log($"SetCardViewCostText: {newCost}");
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        switch (_card.CardPlayType)
+        switch (_card.BattleCard.CardPlayType)
         {
             case ECardPlayType.Playable:
                 OnPlayablePointerDown(eventData);
@@ -20,7 +60,7 @@ public class CardView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        switch (_card.CardPlayType)
+        switch (_card.BattleCard.CardPlayType)
         {
             case ECardPlayType.Playable:
                 OnPlayablePointerUp(eventData);
@@ -33,7 +73,7 @@ public class CardView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     public void OnDrag(PointerEventData eventData)
     {
-        switch (_card.CardPlayType)
+        switch (_card.BattleCard.CardPlayType)
         {
             case ECardPlayType.Playable:
                 OnPlayablePointerDrag(eventData);
@@ -43,7 +83,7 @@ public class CardView : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
                 break;
         }
     }
-
+    
     private void OnPlayablePointerDown(PointerEventData eventData)
     {
         Debug.Log("OnPlayablePointerDown");

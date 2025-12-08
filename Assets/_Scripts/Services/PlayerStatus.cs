@@ -27,6 +27,12 @@ public class PlayerStatus
         CurrentHealth = data.MaxHealth;
         MaxHealth = data.MaxHealth;
         MaxCost = data.MaxCost;
+
+        foreach (var cardData in data.Deck)
+        {
+            Card card = new(cardData);
+            PlayerDeck.Add(card);
+        }
     }
 
     public void AddCardToPlayerDeck(Card newCard)
