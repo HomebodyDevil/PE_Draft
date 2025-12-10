@@ -88,6 +88,8 @@ public class PersistantUIManager : PersistantSingleton<PersistantUIManager>
             }
             
             exhibitCardViewGO.SetActive(true);
+            exhibitCardViewGO.GetComponent<ExhibitCardView>()?.SetCardVisual(cards[i]);
+            
             _usingExhibitCards.Add(exhibitCardViewGO);
         }
     }
