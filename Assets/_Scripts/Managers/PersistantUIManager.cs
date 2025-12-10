@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum ShowCards
@@ -77,9 +78,14 @@ public class PersistantUIManager : PersistantSingleton<PersistantUIManager>
         {
             GameObject exhibitCardViewGO;
             if (_storedExhibitCards.Count > 0)
-                exhibitCardViewGO = _storedExhibitCards[i];
+            {
+                exhibitCardViewGO = _storedExhibitCards.First();
+                _storedExhibitCards.Remove(exhibitCardViewGO);
+            }
             else
+            {
                 exhibitCardViewGO = Instantiate(_exhibitCardViewPrefab, _showCardsContainer);
+            }
             
             exhibitCardViewGO.SetActive(true);
             _usingExhibitCards.Add(exhibitCardViewGO);
@@ -95,8 +101,8 @@ public class PersistantUIManager : PersistantSingleton<PersistantUIManager>
         _usingExhibitCards.Clear();
     }
 
-    public void ForTestButton(int type)
+    public void ShowCardsButtonClick(int type)
     {
-        ShowCardsExhibition(true,  (ShowCards)type);
+        OnShowCardsExhibition?.Invoke(true, (ShowCards)type);
     }
 }
