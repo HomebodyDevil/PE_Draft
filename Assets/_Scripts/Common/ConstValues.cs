@@ -19,4 +19,6 @@ public static class ConstValue
 
     public const float DEFAULT_PLAYER_HEALTH = 10f;
     public const float DEFAULT_PLAYER_COST = 5f;
+
+    public const int REACTION_MAX_CHAIN = 15;
 }

@@ -12,7 +12,7 @@ public class BattleSystem : Singleton<BattleSystem>
     public Action<Character> OnLostTarget;
     public Action OnClearTargets;
     
-    private List<Character> _currentTargets = new();
+    public List<Character> CurrentTargets { get; private set; } = new();
 
     protected override void Awake()
     {
@@ -39,21 +39,21 @@ public class BattleSystem : Singleton<BattleSystem>
 
     private void AddTarget(Character target)
     {
-        if (target != null && !_currentTargets.Contains(target))
+        if (target != null && !CurrentTargets.Contains(target))
         {
             Debug.Log($"TragetAdded : {target.name}");
-            _currentTargets.Add(target);
+            CurrentTargets.Add(target);
         }
     }
 
     private void RemoveTarget(Character target)
     {
-        if (target != null) _currentTargets.Remove(target);
+        if (target != null) CurrentTargets.Remove(target);
     }
 
     private void ClearTargets()
     {
-        _currentTargets?.Clear();
+        CurrentTargets?.Clear();
     }
 
     private void FindTargetUnderMouse(string tag)
@@ -66,7 +66,7 @@ public class BattleSystem : Singleton<BattleSystem>
             if (hit.collider.CompareTag(tag))
             {
                 Debug.Log($"Gotcha. tag : {tag}");
-                if (hit.transform.TryGetComponent(out Character character) && !_currentTargets.Contains(character))
+                if (hit.transform.TryGetComponent(out Character character) && !CurrentTargets.Contains(character))
                 {
                     OnFoundTarget?.Invoke(character);
                 }

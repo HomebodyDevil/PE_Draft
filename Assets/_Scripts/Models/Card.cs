@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum ECardPlayType
@@ -30,8 +32,14 @@ public class Card
     public string Name { get; set; }
     public string Description { get; set; }
 
+    public List<GameAbility> TargetAbility => _cardData.TargetAbility;
+    public List<GameAbility> NonTargetAbility => _cardData.NonTargetAbility;
+
+    private readonly CardData _cardData;
+    
     public Card(CardData cardData)
     {
+        _cardData = cardData;
         CardPlayType = cardData.CardPlayType;
         Cost = cardData.CardCost;
         Name = cardData.CardName;

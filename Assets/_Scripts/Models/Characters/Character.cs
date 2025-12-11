@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float CurrentHealth { get; private set; }
+    public float MaxHealth { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void Damage(float damageAmount)
     {
+        CurrentHealth -= damageAmount;
+        Debug.Log($"Character damaged. CurrentHealth = {CurrentHealth}");
         
+        if (CurrentHealth <= 0)
+        {
+            Debug.Log("died");    
+        }
+        else
+        {
+            Debug.Log("Survived");
+        }
+        
+        CurrentHealth = Mathf.Max(0f, CurrentHealth);
     }
 }

@@ -148,10 +148,19 @@ public class CardView :
     {
         // BattleSystem의 Target이 있다면, 해당 Target들에 대한 카드 Effect를 수행한다.
         // 이후, BattleSystem의 Target을 초기화 한다.
+
+        if (BattleSystem.Instance.CurrentTargets.Count > 0)
+        {
+            Debug.Log($"Target Valid");
+        }
+        else
+        {    
+            Debug.Log("No target");
+            transform.SetSiblingIndex(_originalIndex);
+        }
         
         LineSystem.Instance?.SetVisible(false);
-        CardViewSystem.Instance?.OnLineupCardViews?.Invoke();
-        transform.SetSiblingIndex(_originalIndex);
+        CardViewSystem.Instance?.OnLineupCardViews?.Invoke(); 
     }
     
     private void OnPlayablePointerDrag(PointerEventData eventData)
