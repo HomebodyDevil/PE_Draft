@@ -85,14 +85,21 @@ public class ReactionContext
         ReactionCount = reactionCount;
     }
 
-    bool Same<T>(Character reactionPerformer, T reactionGA) where T : GameAbility
+    public bool Check(Character reactionPerformer, GameAbility reactionGA)
+    {
+        if (reactionPerformer == null) return false;
+        return Equals(ReactionPerformer, reactionPerformer) && 
+               reactionGA?.GetType() == ReactionGA?.GetType();
+    }
+    
+    public bool Same<T>(Character reactionPerformer, T reactionGA) where T : GameAbility
     {
         if (reactionPerformer == null || reactionGA == null)
         {
             Debug.Log("null ref");
             return false;
         }
-        return Equals(ReactionPerformer, reactionPerformer) && ReactionGA.GetType() == reactionGA.GetType();
+        return Equals(ReactionPerformer, reactionPerformer) && ReactionGA?.GetType() == reactionGA.GetType();
     }
 }
 
@@ -105,8 +112,8 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     // private static Dictionary<ReactionKey, List<GameAbility>> _preReactions = new();
     // private static Dictionary<ReactionKey, List<GameAbility>> _postReactions = new();
 
-    private static Dictionary<GameAbility, List<ReactionContext>> _perReactions = new();
-    private static Dictionary<GameAbility, List<ReactionContext>> _postReactions = new();
+    private static Dictionary<Type, List<ReactionContext>> _preReactions = new();
+    private static Dictionary<Type, List<ReactionContext>> _postReactions = new();
     
     // 해당 Type(GameAbility)에 대한 Performer(IEnumerator)를 반환합니다.
     private static Dictionary<Type, Func<GameAbility, IEnumerator>> _performers = new();
@@ -155,6 +162,77 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     private IEnumerator GameAbilityFlowCoroutine(GameAbility gameAbility)
     {
         yield break;
+    }
+
+ /// <summary>
+ /// T에 대한 Reaction을 등록합니다.
+ /// </summary>
+ /// <param name="responder"></param>
+ /// <param name="reactionGA"></param>
+ /// <param name="reactionTarget"></param>
+ /// <param name="reactionCount"></param>
+ /// <param name="timing"></param>
+ /// <typeparam name="T">Reaction을 수행하게 될 일종의 트리거</typeparam>
+    public void AddReaction<T>(
+        Character responder, 
+        GameAbility reactionGA, 
+        ReactionTarget reactionTarget, 
+        int reactionCount, 
+        ReactionTiming timing) where T : GameAbility
+    {
+        var list = timing == ReactionTiming.Pre ? _preReactions : _postReactions;
+
+        Type triggerType = typeof(T);
+        ReactionContext reactionCtx = new(responder, reactionGA, reactionTarget, reactionCount);
+
+        if (list.ContainsKey(triggerType))
+        {
+            list[triggerType].Add(reactionCtx);
+        }
+        else
+        {
+            list[triggerType] = new() { reactionCtx };
+        }
+        
+        responder.AddAddedReaction(reactionGA, timing);
+    }
+
+    // responder가 hold하고 있는, 그가 등록한 Reaction들의 리스트를 확인한다.(Timing이 맞는)
+    // T : Reaction의 Trigger의 타입
+    // T1 Type에 해당하는 Reaction들을 GameAbilitySystem 내에서 지운다. 
+    // 타입은 정확히 일치해야 함.
+    public void RemoveReaction<TTrigger, TReaction>(
+        Character responder, 
+        ReactionTiming timing) 
+        where TTrigger : GameAbility 
+        where TReaction : GameAbility
+    {
+        if (responder.AddedReactions.TryGetValue(timing, out var respondersList))
+        {
+            for (int i = respondersList.Count - 1; i >= 0; i--)
+            {
+                if (respondersList[i].GetType() == typeof(TReaction))
+                    respondersList.RemoveAt(i);
+            }
+        }
+        
+        var systemReactionDict = timing == ReactionTiming.Pre ? _preReactions : _postReactions;
+        Type reactionType = typeof(TReaction);
+        
+        if (!systemReactionDict.TryGetValue(typeof(TTrigger), out var systemReactionList))
+        {
+            Debug.Log("Cant find systemReactionList");
+            return;
+        }
+
+        for (int i = systemReactionList.Count - 1; i >= 0; i--)
+        {
+            var ctx = systemReactionList[i];
+            if (ReferenceEquals(ctx.ReactionPerformer, responder) && ctx.ReactionGA.GetType() == reactionType)
+            {
+                systemReactionList.RemoveAt(i);
+            }
+        }
     }
     
     public void AddPerformer<T>(Func<T, IEnumerator> performer) where T : GameAbility
