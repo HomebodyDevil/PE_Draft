@@ -13,6 +13,7 @@ public class BattleSystem : Singleton<BattleSystem>
     public Action OnClearTargets;
     
     public List<Character> CurrentTargets { get; private set; } = new();
+    public List<Character> ReactionAbilityTargets { get; private set; } = new();
 
     protected override void Awake()
     {
@@ -69,6 +70,10 @@ public class BattleSystem : Singleton<BattleSystem>
                 if (hit.transform.TryGetComponent(out Character character) && !CurrentTargets.Contains(character))
                 {
                     OnFoundTarget?.Invoke(character);
+                }
+                else
+                {
+                    OnClearTargets?.Invoke();
                 }
             }
         }

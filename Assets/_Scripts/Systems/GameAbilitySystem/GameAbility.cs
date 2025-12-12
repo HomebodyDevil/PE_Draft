@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class GameAbility
+public abstract class GameAbility
 {
-    
+    public abstract void ExecuteGameAbility(Character executor);
 }

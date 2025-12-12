@@ -1,12 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class DealDamageGA : GameAbility
 {
-    public float DamageAmount { get; private set; }
-
-    public DealDamageGA(float damageAmount)
+    public override void ExecuteGameAbility(Character executor)
     {
-        DamageAmount = damageAmount;
+        Debug.Log($"{executor.gameObject.name} execute dealing damage");
     }
 }
