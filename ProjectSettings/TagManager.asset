@@ -20,7 +20,7 @@ TagManager:
   - Targetable
   - MapNodeView
   - HoveringCardView
-  - 
+  - PanelUI
   - 
   - 
   - 
@@ -42,6 +42,21 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ButtonUI
+    uniqueID: 1705388999
+    locked: 0
+  - name: WorldView
+    uniqueID: 4276464123
+    locked: 0
+  - name: CardView
+    uniqueID: 504594789
+    locked: 0
+  - name: LineView
+    uniqueID: 2330654809
+    locked: 0
+  - name: PanelUI
+    uniqueID: 1260294735
     locked: 0
   m_RenderingLayers:
   - Default

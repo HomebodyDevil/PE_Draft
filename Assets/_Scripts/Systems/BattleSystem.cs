@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -77,5 +78,10 @@ public class BattleSystem : Singleton<BattleSystem>
                 }
             }
         }
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneService.Instance?.ChangeScene(sceneName);
     }
 }

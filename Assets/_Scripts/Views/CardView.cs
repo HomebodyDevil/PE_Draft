@@ -14,6 +14,7 @@ public class CardView :
     IPointerEnterHandler, 
     IPointerExitHandler
 {
+    public static bool CanInteract = true;
     public InBattleCard _card { get; private set; }
 
     [SerializeField] public TextMeshProUGUI cardNameTMP;
@@ -73,6 +74,8 @@ public class CardView :
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!CanInteract) return;
+        
         _originalIndex = transform.GetSiblingIndex();
         transform.SetAsLastSibling();
         
@@ -96,6 +99,8 @@ public class CardView :
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (!CanInteract) return;
+        
         switch (_card.BattleCard.CardPlayType)
         {
             case ECardPlayType.Playable:
@@ -111,6 +116,8 @@ public class CardView :
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!CanInteract) return;
+        
         switch (_card.BattleCard.CardPlayType)
         {
             case ECardPlayType.Playable:
@@ -181,6 +188,7 @@ public class CardView :
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!CanInteract) return;
         if (HoveringCardViewSystem.Instance != null && HoveringCardViewSystem.Instance._dragging) return;
         
         HoveringCardViewSystem.Instance?.OnSetHoveringCardViewVisible?.Invoke(true);
@@ -192,6 +200,7 @@ public class CardView :
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!CanInteract) return;
         if (HoveringCardViewSystem.Instance != null && HoveringCardViewSystem.Instance._dragging) return;
         
         if (HoveringCardViewSystem.Instance?._currentHoveringCard == _card.BattleCard)
@@ -204,11 +213,23 @@ public class CardView :
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!CanInteract) return;
         if (HoveringCardViewSystem.Instance != null) HoveringCardViewSystem.Instance._dragging = true;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!CanInteract) return;
         if (HoveringCardViewSystem.Instance != null) HoveringCardViewSystem.Instance._dragging = false;
+    }
+
+    private void OnShowCards()
+    {
+        CanInteract = false;
+    }
+    
+    private void OnHideCards()
+    {
+        CanInteract = true;
     }
 }

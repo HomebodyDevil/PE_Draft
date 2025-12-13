@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapNodeSystem : Singleton<MapNodeSystem>
 {
     [SerializeField] private GameObject _mapNodeViewPrefab;
-    [SerializeField, Range(3, 6)] private int _verticalNodeCount = 4;
+    //[SerializeField, Range(3, 6)] private int _verticalNodeCount = 4;
     [SerializeField, Range(1, 10)] private int _maxNodeCountInLevel = 5;
     [SerializeField, Min(1)] private int _maxNodesLevel = 15;
 

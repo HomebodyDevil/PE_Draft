@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3204128866983830460}
   - component: {fileID: 2120667983043125248}
   - component: {fileID: 7017807005901714777}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardViewBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 4736548556104411456}
   - component: {fileID: 9054319258522065853}
   - component: {fileID: 5928960975502926265}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 4212524817856582342}
   - component: {fileID: 5553642215274564844}
   - component: {fileID: 1028341790314977668}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardDescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 3088086986205354254}
   - component: {fileID: 7577446161179267361}
   - component: {fileID: 514452971991569155}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: TextBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 2160185199743753667}
   - component: {fileID: 191078030791980199}
   - component: {fileID: 3217823695124522889}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 1185137908984647327}
   - component: {fileID: 3788664411685348065}
   - component: {fileID: 936714595459432960}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: TextBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4769642901955258320}
   - component: {fileID: 3370166674537243110}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -641,7 +641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4072516863314349698}
   - component: {fileID: 2897816780413457728}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: CardDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 673828230403954961}
   - component: {fileID: 2317658596056837715}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: HoveringCardView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6746334831578029471}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}

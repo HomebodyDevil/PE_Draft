@@ -96,7 +96,7 @@ public class CardViewSystem : Singleton<CardViewSystem>
     // PlayerCardSystem.Instance.OnDrawCard를 구독한다.
     private void DrawCardView(InBattleCard inBattleCard)
     {
-        CardView cardView = GetAvaiablableCardView(true);
+        CardView cardView = GetAvailableCardView(true);
         cardView?.SetCardView(inBattleCard);
         cardView?.transform.SetParent(cardViews);
 
@@ -139,7 +139,7 @@ public class CardViewSystem : Singleton<CardViewSystem>
     }
     
     // 일종의 pool 패턴.
-    private CardView GetAvaiablableCardView(bool setActive = true)
+    private CardView GetAvailableCardView(bool setActive = true)
     {
         CardView ret = null;
         

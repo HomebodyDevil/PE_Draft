@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum ShowCards
+public enum ShowCardsType
 {
     None,
     Deck,
@@ -13,7 +13,7 @@ public enum ShowCards
 
 public class PersistantUIManager : Singleton<PersistantUIManager>
 {
-    public Action<bool, ShowCards> OnShowCardsExhibition;
+    public Action<bool, ShowCardsType> OnShowCardsExhibition;
     
     [SerializeField] private GameObject _exhibitCardViewPrefab;
     [SerializeField] private Camera _persistantUiCamera;
@@ -42,33 +42,33 @@ public class PersistantUIManager : Singleton<PersistantUIManager>
         OnShowCardsExhibition -= ShowCardsExhibition;
     }
 
-    private void ShowCardsExhibition(bool show, ShowCards type =  ShowCards.None)
+    private void ShowCardsExhibition(bool show, ShowCardsType type =  ShowCardsType.None)
     {
         _showCardsPanel.gameObject.SetActive(show);
-        if (type == ShowCards.None) return;
+        if (type == ShowCardsType.None) return;
         
         SetShowCardsPanel(type);
     }
 
-    private void SetShowCardsPanel(ShowCards type)
+    private void SetShowCardsPanel(ShowCardsType type)
     {
         ClearExhibitCards();
         
         List<Card> cards = new();
         switch (type)
         {
-            case ShowCards.Deck:
+            case ShowCardsType.Deck:
                 cards = PlayerStatusService.Instance.PlayerStatus.PlayerDeck;
                 break;
-            case ShowCards.BattleDeck:
+            case ShowCardsType.BattleDeck:
                 foreach (var card in PlayerCardSystem.Instance.Deck)
                     cards.Add(card.BattleCard);
                 break;
-            case ShowCards.BattleGraveyard:
+            case ShowCardsType.BattleGraveyard:
                 foreach (var card in PlayerCardSystem.Instance.Graveyard)
                     cards.Add(card.BattleCard);
                 break;
-            case ShowCards.None:
+            case ShowCardsType.None:
                 break;
             default:
                 break;
@@ -105,6 +105,6 @@ public class PersistantUIManager : Singleton<PersistantUIManager>
 
     public void ShowCardsButtonClick(int type)
     {
-        OnShowCardsExhibition?.Invoke(true, (ShowCards)type);
+        OnShowCardsExhibition?.Invoke(true, (ShowCardsType)type);
     }
 }
