@@ -34,6 +34,16 @@ public class CardView :
         transform.AssignChildVar<Transform>("Visuals", ref _visuals);
     }
 
+    private void OnEnable()
+    {
+        PlayerCardSystem.Instance.OnCardMoveToGraveyard += OnCardMoveToGraveyard;
+    }
+
+    private void OnDisable()
+    {
+        PlayerCardSystem.Instance.OnCardMoveToGraveyard -= OnCardMoveToGraveyard;
+    }
+
     public void SetVisible(bool visible)
     {
         _visuals.gameObject.SetActive(visible);
@@ -46,6 +56,15 @@ public class CardView :
         SetCardViewNameText(card.BattleCard.Name);
         SetCardViewDescriptionText(card.BattleCard.Description);
         SetCardViewCostText(card.BattleCard.Cost);
+    }
+
+    public void OnCardMoveToGraveyard(InBattleCard inBattleCard)
+    {
+        if (inBattleCard == InBattleCard)
+        {
+            //Debug.Log("AAAAAA");
+            InBattleCard = null;
+        }
     }
 
     public void SetCardViewVisuals(Card card)
@@ -178,9 +197,12 @@ public class CardView :
             gaForRequest.AddRange(InBattleCard.BattleCard.NonTargetAbility);
 
             Debug.Log("caster를 null로 했는데, 나중에 고치자");
-            GameAbilitySystem.Instance?.RequestPerformGameAbility(
-                null,
-                gaForRequest);
+            if (GameAbilitySystem.Instance != null &&
+                GameAbilitySystem.Instance.RequestPerformGameAbility(null, gaForRequest))
+            {
+                PlayerCardSystem.Instance?.OnCardMoveToGraveyard?.Invoke(InBattleCard);
+                Debug.Log($"Hand Cnt: {PlayerCardSystem.Instance.Hand.Count}");
+            }
         }
         else
         {    

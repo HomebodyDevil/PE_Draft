@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerCardSystem : Singleton<PlayerCardSystem>
 {
     public Action<InBattleCard> OnDrawCard;
-    public Action<InBattleCard> OnCardMoveToGraveyard;
+    public Action<InBattleCard> OnCardMoveToGraveyard;  // 예시) CardView를 사용할 때 호출.
     public Action<InBattleCard> OnUseCard;
     
     public List<InBattleCard> Deck { get; private set; } = new();
@@ -17,6 +17,16 @@ public class PlayerCardSystem : Singleton<PlayerCardSystem>
     private void Start()
     {
         SetupDeck();
+    }
+
+    private void OnEnable()
+    {
+        OnCardMoveToGraveyard += MoveCardToGraveyard;
+    }
+
+    private void OnDisable()
+    {
+        OnCardMoveToGraveyard -= MoveCardToGraveyard;
     }
 
     private void SetupDeck()
@@ -108,8 +118,7 @@ public class PlayerCardSystem : Singleton<PlayerCardSystem>
         }
         
         Graveyard.Add(card);
-        OnCardMoveToGraveyard?.Invoke(card);
-
+        
         yield break;
     }
 
