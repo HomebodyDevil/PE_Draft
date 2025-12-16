@@ -201,7 +201,7 @@ public class CardView :
                 GameAbilitySystem.Instance.RequestPerformGameAbility(null, gaForRequest))
             {
                 PlayerCardSystem.Instance?.OnCardMoveToGraveyard?.Invoke(InBattleCard);
-                Debug.Log($"Hand Cnt: {PlayerCardSystem.Instance.Hand.Count}");
+                //Debug.Log($"Hand Cnt: {PlayerCardSystem.Instance.Hand.Count}");
             }
         }
         else

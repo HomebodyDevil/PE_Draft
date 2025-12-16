@@ -13,6 +13,7 @@ namespace PEEnum
     // Hostile : Enemy 기준, Enemy의 Hostile(Player)의 Action이 대상.
     public enum ReactionTarget
     {
+        None,
         All,
         Caster,
         Friendly,

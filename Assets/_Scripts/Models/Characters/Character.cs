@@ -7,7 +7,8 @@ public class Character : MonoBehaviour
 {
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
-
+    public TeamType TeamType { get; private set; }
+    
     // Character들은 본인이 등록한 Reaction에 관한 리스트를 hold한다.
     public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
 

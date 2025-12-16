@@ -52,6 +52,9 @@ public class ReactionContext
     public Character ReactionPerformer { get; private set; } 
     public GameAbility ReactionGA { get; private set; }
     public PEEnum.ReactionTarget ReactionTarget { get; private set; }
+    // Reaction을 수행할 수 있는 턴
+    // i.e. ReactionCount가 3이다 -> 3턴 후, Reaction을 제거.
+    // -1234면, 무한으로 동작하는 걸로 설정할지 고민중.
     public int ReactionCount { get; private set; }
 
     public ReactionContext(
@@ -64,6 +67,29 @@ public class ReactionContext
         ReactionGA = reactionGA;
         ReactionTarget = reactionTarget;
         ReactionCount = reactionCount;
+    }
+
+    public bool IsValid()
+    {
+        if (ReactionPerformer == null)
+        {
+            Debug.Log("ReactionPerformer is null");
+            return false;
+        }
+
+        if (ReactionGA == null)
+        {
+            Debug.Log("ReactionGA is null");
+            return false;
+        }
+
+        if (ReactionTarget == PEEnum.ReactionTarget.None)
+        {
+            Debug.Log("ReactionTarget is None");
+            return false;
+        }
+
+        return true;
     }
 
     public bool Check(Character reactionPerformer, GameAbility reactionGA)
@@ -172,27 +198,88 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     
     private IEnumerator GameAbilityFlowCoroutine(PerformGameAbilityContext gaCtx)
     {
-        yield return PerformPreReaction(gaCtx);
+        yield return PerformReaction(gaCtx, PEEnum.ReactionTiming.Pre);
         yield return PerformGameAbility(gaCtx);
-        yield return PerformPostReaction(gaCtx);
+        yield return PerformReaction(gaCtx, PEEnum.ReactionTiming.Post);
     }
 
     private IEnumerator PerformGameAbility(PerformGameAbilityContext gaCtx)
     {
         Debug.Log("Performing Game Ability");
+
+        if (_performers.TryGetValue(gaCtx.GameAbility.GetType(), out Func<GameAbility, IEnumerator> performer))
+        {
+            //Debug.Log("Found Performer");
+            yield return performer(gaCtx.GameAbility);
+        }
+        else
+        {
+            Debug.Log("Cant Find Performer");
+        }
+    }
+
+    private IEnumerator PerformReaction(PerformGameAbilityContext ctx, PEEnum.ReactionTiming timing)
+    {
+        Debug.Log($"Performing {timing.ToString()} Reaction");
+        var reactions = timing ==  PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
+        Type gaType = ctx.GameAbility.GetType();
+
+        // gaType의 Reaction들을 순회한다.
+        // 즉, ReactionContext들을 순회.
+        if (reactions.TryGetValue(gaType, out var reactionCtxs))
+        {
+            foreach (var reactionCtx in reactionCtxs)
+            {
+                if (!reactionCtx.IsValid())
+                {
+                    Debug.Log("Invalid reaction context");
+                    continue;
+                }
+            
+                List<Character> reactionTargets =
+                    FindReactionTargets(ctx, reactionCtx.ReactionPerformer, reactionCtx.ReactionTarget);
+
+                if (reactionCtx.ReactionGA is TargetGameAbility targetGameAbility)
+                {
+                    targetGameAbility.Targets.Clear();
+                    targetGameAbility.Targets.AddRange(reactionTargets);
+                }
+            
+                PerformGameAbilityContext gaCtx = new(reactionCtx.ReactionPerformer, reactionCtx.ReactionGA);
+
+                yield return PerformGameAbility(gaCtx);
+            }
+        }
+
         yield break;
     }
 
-    private IEnumerator PerformPreReaction(PerformGameAbilityContext ctx)
+    private List<Character> FindReactionTargets(PerformGameAbilityContext ctx, Character responder, PEEnum.ReactionTarget targetType)
     {
-        Debug.Log("Performing Pre Reaction");
-        yield break;
-    }
-    
-    private IEnumerator PerformPostReaction(PerformGameAbilityContext ctx)
-    {
-        Debug.Log("Performing Post Reaction");
-        yield break;
+        List<Character> targets = new();
+        
+        switch (targetType)
+        {
+            case PEEnum.ReactionTarget.All:
+                targets.AddRange(PlayerSystem.Instance.PlayerCharacters);
+                targets.AddRange(EnemySystem.Instance.EnemyCharacters);
+                break;
+            case PEEnum.ReactionTarget.Caster:
+                targets.Add(ctx.Caster);
+                break;
+            case PEEnum.ReactionTarget.Friendly:
+                // 차후 FriendlySystem을 추가할지 확실X...
+                // 추가한다면, Hostile에서도 responder가 Enemy일 경우, 추가할 수 있도록 해야 할듯.
+                break;
+            case PEEnum.ReactionTarget.Hostile:
+                List<Character> hostileList = TeamSystem.Instance.GetHostileTeamAgents(responder.TeamType.Team);
+                targets.AddRange(hostileList);
+                break;
+            default:
+                break;
+        }
+        
+        return targets;
     }
 
  /// <summary>
