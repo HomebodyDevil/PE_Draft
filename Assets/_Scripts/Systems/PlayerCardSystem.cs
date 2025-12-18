@@ -90,19 +90,28 @@ public class PlayerCardSystem : Singleton<PlayerCardSystem>
         {
             if (Deck.Count < _pendingDrawCount)
             {
-                RefillDeck();
+                yield return RefillDeck();
             }
+
+            if (Deck.Count == 0)
+                break;
 
             yield return DrawCardCoroutine();
             
             _pendingDrawCount--;
         }
 
+        _pendingDrawCount = 0;
         _drawCardsCoroutine = null;
     }
 
     private IEnumerator DrawCardCoroutine()
     {
+        if (Deck.Count == 0)
+        {
+            yield return RefillDeck();
+        }
+        
         Hand.Add(Deck[0]);
         OnDrawCard?.Invoke(Deck[0]);
         Deck.RemoveAt(0);
@@ -126,12 +135,14 @@ public class PlayerCardSystem : Singleton<PlayerCardSystem>
         yield break;
     }
 
-    public void RefillDeck()
+    public IEnumerator RefillDeck()
     {
         Deck.AddRange(Graveyard);
         Deck.Shuffle();
         
         Graveyard.Clear();
+
+        yield break;
     }
 
     public void TestMoveCardToGraveyard(int index)
