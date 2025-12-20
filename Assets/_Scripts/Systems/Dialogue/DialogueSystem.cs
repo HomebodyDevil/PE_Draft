@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
+    [SerializeField] private Transform _dialogueCanvas;
     [SerializeField] private Transform _dialoguePanel;
     [SerializeField] private Transform _backgroundPanel;
     [SerializeField] private Transform _selectButtonsPanel;
@@ -34,18 +35,21 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void OnEnable()
     {
-        DialogueService.Instance.OnSetCurrentDialogue += SetCurrentDialogue;
+        DialogueService.Instance.OnSetCurrentDialogueLine += SetCurrentDialogue;
         DialogueService.Instance.OnSetSpeakerName += SetSpeakerName;
+        DialogueService.Instance.OnSetDialogueVisible += SetDialogueVisible;
     }
 
     private void OnDisable()
     {
-        DialogueService.Instance.OnSetCurrentDialogue -= SetCurrentDialogue;
+        DialogueService.Instance.OnSetCurrentDialogueLine -= SetCurrentDialogue;
         DialogueService.Instance.OnSetSpeakerName -= SetSpeakerName;
+        DialogueService.Instance.OnSetDialogueVisible -= SetDialogueVisible;
     }
 
     private void SetVars()
     {
+        if (_dialogueCanvas == null) transform.AssignChildVar<Transform>("DialogueCanvas", ref _dialogueCanvas);
         if (_dialoguePanel == null) transform.AssignChildVar<Transform>("DialoguePanel", ref _dialoguePanel);
         if (_backgroundPanel == null) transform.AssignChildVar<Transform>("BackgroundPanel", ref _backgroundPanel);
         if (_dialogueText == null) transform.AssignChildVar<TextMeshProUGUI>("DialogueText", ref _dialogueText);
@@ -57,6 +61,11 @@ public class DialogueSystem : Singleton<DialogueSystem>
         if (_selectButtonsPanel == null) transform.AssignChildVar<Transform>("SelectButtonsPanel", ref _selectButtonsPanel);
     }
 
+    private void SetDialogueVisible(bool visible)
+    {
+        _dialogueCanvas.gameObject.SetActive(visible);
+    }
+    
     private void OnClickClockCatcher()
     {
         DialogueService.Instance.OnDialogueClick?.Invoke();
@@ -67,9 +76,12 @@ public class DialogueSystem : Singleton<DialogueSystem>
         
     }
 
-    private void SetCurrentDialogue(string dialogue)
+    private void SetCurrentDialogue(DialogueLine dialogueLine)
     {
-        _currentDialogue = dialogue;
+        if (dialogueLine == null) return;
+        
+        SetSpeakerName(dialogueLine.Speaker);
+        SetDialogueText(dialogueLine.DialogueText);
     }
 
     private void SetSpeakerName(string speakerName)

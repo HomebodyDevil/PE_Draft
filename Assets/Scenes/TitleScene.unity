@@ -1487,6 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b37732e2631f8344902b612204d24be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSystem
+  _dialogueCanvas: {fileID: 0}
   _dialoguePanel: {fileID: 0}
   _backgroundPanel: {fileID: 0}
   _selectButtonsPanel: {fileID: 0}
