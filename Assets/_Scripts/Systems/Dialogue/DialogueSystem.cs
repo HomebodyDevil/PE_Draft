@@ -9,7 +9,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
     [SerializeField] private Transform _dialoguePanel;
     [SerializeField] private Transform _backgroundPanel;
     [SerializeField] private Transform _selectButtonsPanel;
-    [SerializeField] private Image _speakerImage;
+    [SerializeField] private Transform _speakerImages;
+    [SerializeField] private Transform _speakerImageLeftPos;
+    [SerializeField] private Transform _speakerImageRightPos;
     [SerializeField] private TextMeshProUGUI _speakerNameText;
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private Button _clickCatcher;
@@ -47,7 +49,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
         if (_dialoguePanel == null) transform.AssignChildVar<Transform>("DialoguePanel", ref _dialoguePanel);
         if (_backgroundPanel == null) transform.AssignChildVar<Transform>("BackgroundPanel", ref _backgroundPanel);
         if (_dialogueText == null) transform.AssignChildVar<TextMeshProUGUI>("DialogueText", ref _dialogueText);
-        if (_speakerImage == null) transform.AssignChildVar<Image>("SpeakerImage", ref _speakerImage);
+        if (_speakerImages == null) transform.AssignChildVar<Transform>("SpeakerImages", ref _speakerImages);
+        if (_speakerImageLeftPos == null) transform.AssignChildVar<Transform>("SpeakerImageLeftPos", ref _speakerImageLeftPos);
+        if (_speakerImageRightPos == null) transform.AssignChildVar<Transform>("SpeakerImageRightPos", ref _speakerImageRightPos);
         if (_speakerNameText == null) transform.AssignChildVar<TextMeshProUGUI>("SpeakerNameText", ref _speakerNameText);
         if (_clickCatcher == null) transform.AssignChildVar<Button>("ClickCatcher", ref _clickCatcher);
         if (_selectButtonsPanel == null) transform.AssignChildVar<Transform>("SelectButtonsPanel", ref _selectButtonsPanel);
@@ -55,7 +59,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void OnClickClockCatcher()
     {
-        Debug.Log("ASDFASDF");
+        DialogueService.Instance.OnDialogueClick?.Invoke();
     }
 
     private void SetSpeakerImage()

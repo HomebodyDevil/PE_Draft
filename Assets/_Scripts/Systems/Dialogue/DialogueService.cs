@@ -5,22 +5,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-[Serializable]
-public struct DialogueLine
-{
-    public int Id;
-    public string Speaker;
-    public string DialogueText;
-    public int NextDialogueId;
-    public string Condition;
-    public string Choices;
-    public string Actions;
-}
-
 public class DialogueService : PersistantSingleton<DialogueService>
 {
     public Action<string> OnSetSpeakerName;
     public Action<string> OnSetCurrentDialogue;
+    public Action OnDialogueClick;
 
     private List<DialogueLine> _currentDialogueLines;
     
@@ -29,19 +18,38 @@ public class DialogueService : PersistantSingleton<DialogueService>
         ReadCSV("Assets/Medias/P&E_Dialogue.csv");
     }
 
+    private void OnEnable()
+    {
+        OnDialogueClick += DialogueClick;
+    }
+
+    private void OnDisable()
+    {
+        OnDialogueClick -= DialogueClick;
+    }
+
+    private void DialogueClick()
+    {
+        Debug.Log("DialogueClick");
+    }
+
     public void ReadCSV(string path)
     {
         Addressables.LoadAssetAsync<TextAsset>(path).Completed += handle =>
         {
             string currentDialogueLineText = handle.Result.text;
-            GetDialogueLineFromCSV(currentDialogueLineText);
+            //GetDialogueLineFromCSV(currentDialogueLineText);
+            
+            CSVReader cr = new();
             Debug.Log(currentDialogueLineText);
+            _currentDialogueLines = cr.MakeDialogueLinesFromCSV(currentDialogueLineText);
+            //Debug.Log(_currentDialogueLines.Count);
         };
     }
 
-    private void GetDialogueLineFromCSV(string csvStr)
-    {
-        CSVReader cr = new();
-        _currentDialogueLines = cr.MakeDialogueLineFromCSV(csvStr);
-    }
+    // private void GetDialogueLineFromCSV(string csvStr)
+    // {
+    //     CSVReader cr = new();
+    //     _currentDialogueLines = cr.MakeDialogueLinesFromCSV(csvStr);
+    // }
 }
