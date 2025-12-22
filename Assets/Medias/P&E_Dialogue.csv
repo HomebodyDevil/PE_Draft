@@ -1,5 +1,9 @@
 Id,Speaker,Text,NextId,Condition,Choices,Actions
 0,TEST,Hi. Click to continue the dialogue.,1,,"1000, 1001",
-1,TEST,Good,-1,,,
+1,TEST,Good,2,,,
+2, TEST2,Good2,3,,,
+3, TEST2,Good3,4,,,
+4, TEST2,Good4,5,,,
+5, TEST2,Good5,-1,,,
 1000,TEST_CHOICE,What1,1,,,
 1001,TEST_CHOICE,What2,1,,,

@@ -8,7 +8,7 @@ public class TeamSystem : Singleton<TeamSystem>
         List<Character> agents = new List<Character>();
         switch (team)
         {
-            case Team.Player:
+            case Team.PlayerCharacter:
                 agents.AddRange(PlayerSystem.Instance.PlayerCharacters);
                 break;
             case Team.Enemy:
@@ -23,8 +23,8 @@ public class TeamSystem : Singleton<TeamSystem>
     {
         Team hostileTeam = myTeam switch
         {
-            Team.Player => Team.Enemy,
-            Team.Enemy  => Team.Player,
+            Team.PlayerCharacter => Team.Enemy,
+            Team.Enemy  => Team.PlayerCharacter,
             _           => Team.None
         };
 

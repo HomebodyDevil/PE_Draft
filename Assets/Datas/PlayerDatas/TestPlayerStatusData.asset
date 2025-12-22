@@ -23,3 +23,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 889c3f6a833eb9044b3036da2a3a93fd, type: 2}
   - {fileID: 11400000, guid: 889c3f6a833eb9044b3036da2a3a93fd, type: 2}
   - {fileID: 11400000, guid: 889c3f6a833eb9044b3036da2a3a93fd, type: 2}
+  <CharactersData>k__BackingField:
+  - {fileID: 11400000, guid: b58e792ff021ec84592acbdde067f3c8, type: 2}
