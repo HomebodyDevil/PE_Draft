@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class BattleSystem : Singleton<BattleSystem>
+public class BattleTargetsSystem : Singleton<BattleTargetsSystem>
 {
     [SerializeField] private Camera _battleViewCamera;
 
@@ -47,8 +47,13 @@ public class BattleSystem : Singleton<BattleSystem>
     {
         if (target != null && !CurrentTargets.Contains(target))
         {
-            Debug.Log($"TragetAdded : {target.name}");
+            //Debug.Log($"TragetAdded : {target.name}");
+            Debug.Log("target Added");
             CurrentTargets.Add(target);
+        }
+        else
+        {
+            Debug.Log("target Not Added");
         }
     }
 
@@ -77,10 +82,10 @@ public class BattleSystem : Singleton<BattleSystem>
             if (hit.collider.CompareTag(tag))
             {
                 Debug.Log($"Gotcha. tag : {tag}");
-                if (hit.transform.TryGetComponent(out Character character) && 
-                    !CurrentTargets.Contains(character))
+                if (hit.transform.TryGetComponent(out CharacterView characterView) && 
+                    !CurrentTargets.Contains(characterView.Character))
                 {
-                    OnFoundTarget?.Invoke(character);
+                    OnFoundTarget?.Invoke(characterView.Character);
                 }
             }
             else

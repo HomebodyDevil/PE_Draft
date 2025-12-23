@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines.Interpolators;
 
 public static class SetupHelper
 {
@@ -11,12 +13,10 @@ public static class SetupHelper
     public static bool AssignChildVar<T>(
         this Transform self, 
         string childName, 
-        ref T childVar
-    )
-        where T: Component
+        ref T childVar) where T: Component
     {
         if (!CanSetup() || self == null || string.IsNullOrEmpty(childName)) return false;
-
+    
         foreach (var tr in self.GetComponentsInChildren<Transform>(true)) // true : 비활성도 포함.
         {
             if (tr == self) continue;
@@ -35,6 +35,48 @@ public static class SetupHelper
         Debug.Log("해당 이름의 Child가 없음.");
         return false;
     }
+
+    public static bool GetChildByName<T>(
+        this Transform self,
+        string childName,
+        out T var) where T: Component
+    {
+        var = default(T);
+        
+        if (!CanSetup() || self == null || string.IsNullOrEmpty(childName))
+        {
+            return false;
+        }
+    
+        foreach (var tr in self.GetComponentsInChildren<Transform>(true))
+        {
+            if (tr == self) continue;
+            if (!tr.name.Equals(childName)) continue;
+    
+            if (tr.TryGetComponent<T>(out var comp))
+            {
+                var = comp;
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // public static void GetChildrenComponents<T>(
+    //     this Transform self,
+    //     ref List<T> list) where T: Component
+    // {
+    //     if (self == null) return;
+    //
+    //     list ??= new();
+    //     list.AddRange(self.GetComponentsInChildren<T>(true));
+    //
+    //     if (self.TryGetComponent<T>(out var comp))
+    //     {
+    //         list.Remove(comp);
+    //     }
+    // }
 
     /// <summary>
     /// 루트 오브젝트로의 자식 오브젝트를 변수로 할당.

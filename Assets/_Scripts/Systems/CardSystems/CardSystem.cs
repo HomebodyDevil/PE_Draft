@@ -33,11 +33,11 @@ public class CardSystem : Singleton<CardSystem>
             if (ga is TargetGameAbility targetGa)
             {
                 ga.SetExecutor(PEEnum.GAExecutor.Player);
-                targetGa.SetTargets(BattleSystem.Instance.CurrentTargets);
+                targetGa.SetTargets(BattleTargetsSystem.Instance.CurrentTargets);
             }
         }
 
-        BattleSystem.Instance?.OnClearTargets?.Invoke();
+        BattleTargetsSystem.Instance?.OnClearTargets?.Invoke();
 
         List<GameAbility> gaForRequest = new();
         gaForRequest.AddRange(inBattleCard.BattleCard.TargetAbility);

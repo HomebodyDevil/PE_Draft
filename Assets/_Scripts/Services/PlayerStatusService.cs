@@ -12,6 +12,7 @@ public class PlayerStatusService : PersistantSingleton<PlayerStatusService>
         base.Awake();
 
         // PlayerStatus를 세팅.
+        // 차후 저장된 데이터가 있다면, 그 데이터를 쓰도록 하자.
         if (defaultPayerStatusData == null)
         {
             SetupDefaultPlayerStatusData();

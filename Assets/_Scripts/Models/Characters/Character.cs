@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Character : MonoBehaviour
+public class Character
 {
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
@@ -11,6 +11,8 @@ public class Character : MonoBehaviour
     // Character들은 본인이 등록한 Reaction에 관한 리스트를 hold한다.
     public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
 
+    public Character() { }
+    
     public Character(CharacterData characterData)
     {
         CurrentHealth = MaxHealth = characterData.MaxHealth;
@@ -44,10 +46,5 @@ public class Character : MonoBehaviour
         {
             AddedReactions.Add(timing, new List<GameAbility>() { reaction });
         }
-    }
-
-    protected virtual void  StartTurn()
-    {
-        Debug.Log($"My Turn: {gameObject.name}");
     }
 }

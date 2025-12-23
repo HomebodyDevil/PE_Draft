@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: CharacterView
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: CharacterView
+  m_GUID: dcb807a5e80adf34c95efae9ea72a53e
+  m_SerializeEntries:
+  - m_GUID: 09348445df6a05f4d92cdae0a1e38a87
+    m_Address: Assets/Prefabs/Views/Character/DefaultEnemyView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterView
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 702c016e99b48864291bf6f0e824268c
+    m_Address: Assets/Prefabs/Views/Character/DefaultPlayerView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterView
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 530a06f2fcea6d54aa419b98c20febe5, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1f2d08bea05bd0048bd1715e504db669, type: 2}
+    - {fileID: 11400000, guid: 7ef1b246b1d8ebf4ab55d266bf14f65a, type: 2}

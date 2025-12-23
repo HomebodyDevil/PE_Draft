@@ -196,9 +196,9 @@ public class CardView :
     {
         // BattleSystem의 Target이 있다면, 해당 Target들에 대한 카드 Effect를 수행한다.
         // 이후, BattleSystem의 Target을 초기화 한다.
-        BattleSystem.Instance?.OnFindTarget?.Invoke("Enemy");
+        BattleTargetsSystem.Instance?.OnFindTarget?.Invoke("Enemy");
         
-        if (BattleSystem.Instance?.CurrentTargets.Count > 0)
+        if (BattleTargetsSystem.Instance?.CurrentTargets.Count > 0)
         {
             RequestPerformGameAbility();
         }
@@ -256,7 +256,7 @@ public class CardView :
         LineSystem.Instance?.OnSetEndDrawLine?.Invoke(LineSystem.Instance.GetLinePointPosOfMousePos());
         
         // 1. Raycast를 수행해서 BattleSystem의 Target을 설정할 수 있는지 확인한다.
-        BattleSystem.Instance?.OnFindTarget.Invoke("Enemy");
+        BattleTargetsSystem.Instance?.OnFindTarget.Invoke("Enemy");
         Debug.Log("Enemy로 설정돼있는 거 나중에 TeamSystem을 사용하는 거로 수정 예정.");
     }
 

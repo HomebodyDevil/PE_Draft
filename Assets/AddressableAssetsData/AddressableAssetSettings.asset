@@ -62,6 +62,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 81fc311298d5c79408aabd5215e7c9b3, type: 2}
   - {fileID: 11400000, guid: c62da2131a58af94898550de8c50dde0, type: 2}
+  - {fileID: 11400000, guid: c6f9581beb42d0644a0ee7d9c2847454, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -102,6 +103,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Dialogue
+    - CharacterView
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 4798a9575c16d504a8a35ac39b328ca1, type: 2}
