@@ -22,6 +22,9 @@ public class Character
     public void SetCurrentHealth(float health)
     {
         CurrentHealth = Mathf.Clamp(health, 0, MaxHealth);
+        
+        //Debug.Log($"current health: {CurrentHealth}");
+        
         if (CurrentHealth == 0)
         {
             Debug.Log("zero health");

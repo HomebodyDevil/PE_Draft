@@ -20,17 +20,23 @@ public class EnemyCharacterViewSystem : Singleton<EnemyCharacterViewSystem>
 
     private void Setup()
     {
-        CreateCharacterView();
+        CreateEnemyCharacterView();
     }
 
-    private void CreateCharacterView()
+    private void CreateEnemyCharacterView()
     {
         Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Views/Character/DefaultEnemyView.prefab").Completed +=
             handle =>
             {
                 GameObject enemyViewPrefab = handle.Result;
-                Debug.Log("여기선 하나만 소환하는데, EnemyService의 데이터를 기반으로 데이터에 맞춰 생성토록 하자.");
-                Instantiate(enemyViewPrefab, _enemyCharacterPositions[0]);
+                for (int i = 0; i < EnemySystem.Instance.EnemyCharacters.Count; i++)
+                {
+                    GameObject go = Instantiate(enemyViewPrefab, _enemyCharacterPositions[i]);
+                    if (go.TryGetComponent<CharacterView>(out CharacterView characterView))
+                    {
+                        characterView.SetCharacter(EnemySystem.Instance.EnemyCharacters[i]);
+                    }
+                }
             };
     }
 

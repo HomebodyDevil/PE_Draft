@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageSystem : Singleton<DamageSystem>
@@ -63,7 +64,16 @@ public class DamageSystem : Singleton<DamageSystem>
             Debug.Log("No Targets");
             yield break;
         }
+
+        Debug.Log("여기도 나중에 바꿀 것.(지금은 적만 데미지 주고 있음)");
+        int targetCnt = dealDamageToRandomTargetsGA.TargetCount;
+        List<Character> targets = EnemySystem.Instance.EnemyCharacters.PickN(targetCnt);
         
-        Debug.Log("Deal Damage To Random Targets");
+        //Debug.Log($"Target Count {targets.Count}");
+
+        foreach (var target in targets)
+        {
+            ReduceHealth(target, dealDamageToRandomTargetsGA.BaseDamage);
+        }
     }
 }

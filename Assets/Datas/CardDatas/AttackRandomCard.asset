@@ -26,4 +26,5 @@ MonoBehaviour:
       type: {class: DealDamageToRandomTargetsGA, ns: , asm: Assembly-CSharp}
       data:
         <BaseDamage>k__BackingField: 2
+        <TargetType>k__BackingField: 4
         <TargetCount>k__BackingField: 2
