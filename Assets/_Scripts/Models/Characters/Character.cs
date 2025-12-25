@@ -33,6 +33,9 @@ public class Character
         if (CurrentHealth == 0)
         {
             Debug.Log("zero health");
+
+            CharacterDeathGA deathGA = new(this);
+            GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() {deathGA});
         }
     }
 

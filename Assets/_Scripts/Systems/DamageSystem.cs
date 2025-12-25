@@ -71,6 +71,12 @@ public class DamageSystem : Singleton<DamageSystem>
         
         //Debug.Log($"Target Count {targets.Count}");
 
+        if (targets == null || targets.Count == 0)
+        {
+            Debug.Log("No Targets Found");
+            yield break;
+        }
+        
         foreach (var target in targets)
         {
             ReduceHealth(target, dealDamageToRandomTargetsGA.BaseDamage);

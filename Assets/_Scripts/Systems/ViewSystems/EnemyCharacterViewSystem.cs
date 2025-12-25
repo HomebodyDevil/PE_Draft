@@ -5,12 +5,23 @@ using UnityEngine.AddressableAssets;
 
 public class EnemyCharacterViewSystem : Singleton<EnemyCharacterViewSystem>
 {
-    [SerializeField] private List<Transform> _enemyCharacterPositions = new(); 
+    [SerializeField] private List<Transform> _enemyCharacterPositions = new();
+    private List<CharacterView> _enemyCharacterViews = new();
     
     protected override void Awake()
     {
         base.Awake();
         SetVars();
+    }
+
+    private void OnEnable()
+    {
+        BattleEventSystem.Instance.OnCharacterDeath += DisableEnemyCharacterView;
+    }
+
+    private void OnDisable()
+    {
+        BattleEventSystem.Instance.OnCharacterDeath -= DisableEnemyCharacterView;
     }
 
     private void Start()
@@ -21,6 +32,28 @@ public class EnemyCharacterViewSystem : Singleton<EnemyCharacterViewSystem>
     private void Setup()
     {
         CreateEnemyCharacterView();
+    }
+    
+    private void EnableEnemyCharacterView(Character character)
+    {
+        foreach (var view in _enemyCharacterViews)
+        {
+            if (view.Character == character)
+            {
+                view.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void DisableEnemyCharacterView(Character character)
+    {
+        foreach (var view in _enemyCharacterViews)
+        {
+            if (view.Character == character)
+            {
+                view.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void CreateEnemyCharacterView()
@@ -35,6 +68,7 @@ public class EnemyCharacterViewSystem : Singleton<EnemyCharacterViewSystem>
                     if (go.TryGetComponent<CharacterView>(out CharacterView characterView))
                     {
                         characterView.SetCharacter(EnemySystem.Instance.EnemyCharacters[i]);
+                        _enemyCharacterViews.Add(characterView);
                     }
                 }
             };
