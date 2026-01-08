@@ -26,6 +26,9 @@ public class DialogueBehaviour : PlayableBehaviour
             return;
         }
         
+        //TEST
+        // TEST@
+        
         director.time = director.time + remainTime;
         director.Pause();
     }
