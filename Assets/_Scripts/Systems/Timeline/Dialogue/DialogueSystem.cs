@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
+    [Header("Initialize Settings")] 
+    [SerializeField] private bool _InitialVisible = false;
+    [Space(10f)]
+    
     [SerializeField] private Transform _dialogueCanvas;
     [SerializeField] private Transform _dialoguePanel;
     [SerializeField] private Transform _backgroundPanel;
@@ -31,6 +35,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _backgroundPanel.gameObject.SetActive(false);
         _selectButtonsPanel.gameObject.SetActive(false);
         _clickCatcher.onClick.AddListener(OnClickClockCatcher);
+        
+        SetDialogueVisible(_InitialVisible);
     }
 
     private void OnEnable()

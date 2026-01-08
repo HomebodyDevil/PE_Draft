@@ -64,7 +64,7 @@ public class CSVReader
             }
             
             vars.Add(sb.ToString().Trim());
-            Debug.Log(vars[1]);
+            //Debug.Log(vars[1]);
             dialogueLines.Add(new(vars));
         }
         

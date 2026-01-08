@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: cbeef3aad30267249ba2f654af7d1246
   m_SerializeEntries:
   - m_GUID: 2bd5b84cffd909544850bcf9b1ee5cab
-    m_Address: Assets/Medias/P&E_Dialogue.csv
+    m_Address: Assets/Medias/Dialogues/TestDialogue.csv
     m_ReadOnly: 0
     m_SerializedLabels:
     - Dialogue

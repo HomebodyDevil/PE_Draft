@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -11,7 +12,8 @@ public class DialogueService : PersistantSingleton<DialogueService>
     public Action<string> OnSetSpeakerName;
     public Action<DialogueLine> OnSetCurrentDialogueLine;
     public Action OnDialogueClick;
-
+    public Action OnDialogueEnd;
+    
     private List<DialogueLine> _currentDialogueLines;
     private DialogueLine _currentDialogueLine;
     private int _currentDialogueLineId = -10;
@@ -19,7 +21,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
     private void Start()
     {
         Debug.Log("임시로 한 것. 나중에 바꾸기(DialogueService Start)");
-        EnableDialogue(true, "Assets/Medias/P&E_Dialogue.csv");
+        //EnableDialogue(true, "P&E_Dialogue.csv");
     }
 
     private void OnEnable()
@@ -70,6 +72,8 @@ public class DialogueService : PersistantSingleton<DialogueService>
         }
         
         OnSetDialogueVisible?.Invoke(enable);
+
+        path = $"Assets/Medias/Dialogues/{path}.csv";
         
         Addressables.LoadAssetAsync<TextAsset>(path).Completed += handle =>
         {
@@ -88,6 +92,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
         if (lineId == -1)
         {
             OnSetDialogueVisible?.Invoke(false);
+            OnDialogueEnd?.Invoke();
             return;
         }
         
