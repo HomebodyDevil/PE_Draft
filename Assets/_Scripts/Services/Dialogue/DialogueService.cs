@@ -12,6 +12,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
     public Action<DialogueLine> OnSetCurrentDialogueLine;
     public Action OnDialogueClick;
     public Action OnDialogueEnd;
+    public Action<bool> OnEnableClickPreventer;
     
     private List<DialogueLine> _currentDialogueLines;
     private DialogueLine _currentDialogueLine;
@@ -89,6 +90,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
             _currentDialogueLines = cr.MakeDialogueLinesFromCSV(currentDialogueLineText);
             
             SetCurrentDialogueLineId(dialogueLineId);
+            DialogueService.Instance.OnEnableClickPreventer?.Invoke(false);
         };
     }
 
@@ -102,6 +104,11 @@ public class DialogueService : PersistantSingleton<DialogueService>
         }
         
         _currentDialogueLineId = lineId;
+        SetCurrentDialogueLine(_currentDialogueLineId);
+    }
+
+    private void SetCurrentDialogueLine(int lineId)
+    {
         _currentDialogueLine = FindDialogueLineByID(lineId);
         OnSetCurrentDialogueLine?.Invoke(_currentDialogueLine);
     }

@@ -20,6 +20,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     [SerializeField] private TextMeshProUGUI _speakerNameText;
     [SerializeField] private TextMeshProUGUI _dialogueText;
     [SerializeField] private Button _clickCatcher;
+    [SerializeField] private Transform _clickPreventer;
 
     private Coroutine _playDialogueCoroutine;
     private string _currentDialogue;
@@ -44,6 +45,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         DialogueService.Instance.OnSetCurrentDialogueLine += SetCurrentDialogue;
         DialogueService.Instance.OnSetSpeakerName += SetSpeakerName;
         DialogueService.Instance.OnSetDialogueVisible += SetDialogueVisible;
+        DialogueService.Instance.OnEnableClickPreventer += SetClickPreventer;
     }
 
     private void OnDisable()
@@ -51,6 +53,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         DialogueService.Instance.OnSetCurrentDialogueLine -= SetCurrentDialogue;
         DialogueService.Instance.OnSetSpeakerName -= SetSpeakerName;
         DialogueService.Instance.OnSetDialogueVisible -= SetDialogueVisible;
+        DialogueService.Instance.OnEnableClickPreventer -= SetClickPreventer;
     }
 
     private void SetVars()
@@ -65,6 +68,12 @@ public class DialogueSystem : Singleton<DialogueSystem>
         if (_speakerNameText == null) transform.AssignChildVar<TextMeshProUGUI>("SpeakerNameText", ref _speakerNameText);
         if (_clickCatcher == null) transform.AssignChildVar<Button>("ClickCatcher", ref _clickCatcher);
         if (_selectButtonsPanel == null) transform.AssignChildVar<Transform>("SelectButtonsPanel", ref _selectButtonsPanel);
+        if (_clickPreventer == null) transform.AssignChildVar<Transform>("ClickPreventer", ref _clickPreventer);
+    }
+
+    private void SetClickPreventer(bool enable)
+    {
+        _clickPreventer.gameObject.SetActive(enable);
     }
 
     private void SetDialogueVisible(bool visible)
