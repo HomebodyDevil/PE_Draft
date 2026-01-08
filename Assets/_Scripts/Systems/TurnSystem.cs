@@ -11,6 +11,7 @@ public class TurnSystem : Singleton<TurnSystem>
     private WrappedPlayerCharacters wrappedPlayerCharacters;
     
     private int _currentTurnOrder = 0;
+    private bool _turnRequested = false;
     
     private void Start()
     {
@@ -51,7 +52,13 @@ public class TurnSystem : Singleton<TurnSystem>
         {
             return;
         }
-        
+
+        if (_turnRequested)
+        {
+            return;
+        }
+
+        _turnRequested = true;
         EndCharacterTurnGA endTurnGA = new(_charactersTurnOrder[_currentTurnOrder]);
         GameAbilitySystem.Instance.RequestPerformGameAbility(
             _charactersTurnOrder[_currentTurnOrder],
@@ -76,6 +83,8 @@ public class TurnSystem : Singleton<TurnSystem>
         {
             Debug.Log("여기서 그냥 5장 드로우 함. 차후 수정할 필요 있음");
 
+            _turnRequested = false;
+            
             DrawCardsGA drawCardGA = new(5);
             GameAbilitySystem.Instance?.RequestPerformGameAbility(
                 startCharacterTurnGA.TurnCharacter,
