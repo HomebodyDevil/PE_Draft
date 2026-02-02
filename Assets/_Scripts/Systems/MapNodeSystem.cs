@@ -139,6 +139,8 @@ public class MapNodeSystem : Singleton<MapNodeSystem>
 
     public IEnumerator InitializeMapNodeLocations()
     {
+        List<AsyncOperationHandle> mapNodeLocationHandles = new();
+        
         foreach (NodeType nodeType in Enum.GetValues(typeof(NodeType)))
         {
             if (!MapNodeLocations.ContainsKey(nodeType)) MapNodeLocations.Add(nodeType, new());
@@ -157,9 +159,11 @@ public class MapNodeSystem : Singleton<MapNodeSystem>
             }
             
             MapNodeLocations[nodeType].AddRange(handle.Result);
-        
-            Addressables.Release(handle);
+            mapNodeLocationHandles.Add(handle);
         }
+        
+        foreach (var handle in mapNodeLocationHandles)
+            Addressables.Release(handle);
     }
     
     private IEnumerator GetMapNodeDataAndSet(NodeType nodeType, MapNode mapNode)

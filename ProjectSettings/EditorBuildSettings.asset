@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EventBattleScene.unity
     guid: d8c639637e8f8da4b98f1825214937b4
+  - enabled: 1
+    path: Assets/Scenes/AddtionalScene/Persistant.unity
+    guid: e4183a5247d8c524ea6989217f683c10
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 7d567482d3085dc47b8177b3935dabc7, type: 2}
   m_UseUCBPForAssetBundles: 0

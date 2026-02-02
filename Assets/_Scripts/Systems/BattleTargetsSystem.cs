@@ -99,8 +99,8 @@ public class BattleTargetsSystem : Singleton<BattleTargetsSystem>
         }
     }
 
-    public void ChangeScene(string sceneName)
+    public void ToMapScene()
     {
-        SceneService.Instance?.ChangeScene(sceneName);
+        SceneService.Instance?.ChangeScene(SceneType.MapScene);
     }
 }

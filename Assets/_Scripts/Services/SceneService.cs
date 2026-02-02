@@ -1,7 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public enum SceneType
+{
+    BattleScene,
+    TitleScene,
+    MapScene,
+    EventBattleScene,
+    EventMapScene,
+}
 
 public class SceneService : PersistantSingleton<SceneService>
 {
@@ -9,10 +19,20 @@ public class SceneService : PersistantSingleton<SceneService>
     
     private Coroutine _sceneLoadCoroutine;
     private List<string> _loadingScenes = new();
-    
-    public void ChangeScene(string scene)
+
+    private static readonly Dictionary<SceneType, string> Scene = new()
     {
-        _sceneLoadCoroutine = StartCoroutine(LoadSceneCoroutine(scene));
+        { SceneType.BattleScene, "BattleScene" },
+        { SceneType.TitleScene, "TitleScene" },
+        { SceneType.MapScene, "MapScene" },
+        { SceneType.EventBattleScene, "EventBattleScene" },
+        { SceneType.EventMapScene, "EventMapScene" },
+    };
+    
+    public void ChangeScene(SceneType sceneType)
+    {
+        string sceneName = GetSceneName(sceneType);
+        _sceneLoadCoroutine = StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
@@ -40,5 +60,13 @@ public class SceneService : PersistantSingleton<SceneService>
         }
 
         _loadingScenes.Remove(sceneName);
+    }
+
+    private string GetSceneName(SceneType scene)
+    {
+        if (!Scene.TryGetValue(scene, out var sceneName))
+            throw new ArgumentOutOfRangeException(nameof(scene), scene, "Missing Scene");
+        
+        return sceneName;
     }
 }

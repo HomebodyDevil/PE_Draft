@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PEEnum;
-using Unity.VisualScripting;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -11,15 +11,15 @@ public class CharacterView : MonoBehaviour
 {
     [SerializeField] private CharacterData _defaultCharacterData;
     [SerializeField] private CharacterVisual _characterVisual;
-    
+
     public Character Character { get; private set; }
 
     public Transform Text;
 
-    private Coroutine _setCharacterCoroutine;
+    private Coroutine _setCharacterViewCoroutine;
 
     private AsyncOperationHandle<GameObject> _characterViewHandle;
-    
+
     private void Awake()
     {
         SetCharacter();
@@ -32,14 +32,28 @@ public class CharacterView : MonoBehaviour
             Text.gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        if (_setCharacterViewCoroutine != null)
+        {
+            StopCoroutine(_setCharacterViewCoroutine);
+            _setCharacterViewCoroutine = null;
+        }
+
+        if (_characterViewHandle.IsValid())
+        {
+            Debug.Log("Releasing");
+            Addressables.Release(_characterViewHandle);
+        }
+    }
+
     private void SetTestGA()
     {
-        Debug.Log("여기도 Testing중, 차후 바꿔줄 것");
         if (Character.TeamType.Team == Team.Enemy && Character != null)
         {
             TestGAContext ctx = new("Reacting to TurnEnd", Text);
             TestGA ga = new(ctx);
-            
+
             Debug.Log("Test Reaction 등록");
             GameAbilitySystem.Instance.AddReaction<EndCharacterTurnGA>(
                 ReactionTiming.Pre,
@@ -51,24 +65,14 @@ public class CharacterView : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        if (_setCharacterCoroutine != null)
-        {
-            StopCoroutine(_setCharacterCoroutine);
-            _setCharacterCoroutine = null;
-        }
-        
-        if (_characterViewHandle.IsValid()) Addressables.Release(_characterViewHandle);
-    }
-
     private void SetVar()
     {
         if (Text == null) transform.AssignChildVar<Transform>("Panel", ref Text);
-        if (_characterVisual == null) transform.AssignChildVar<CharacterVisual>("CharacterVisual", ref _characterVisual);
+        if (_characterVisual == null)
+            transform.AssignChildVar<CharacterVisual>("CharacterVisual", ref _characterVisual);
     }
 
-    public void SetCharacter(Character character=null)
+    public void SetCharacter(Character character = null)
     {
         Debug.Log("DefaultCharacter를 넣을지 말지 고민중");
         // if (character == null && _defaultCharacterData != null)
@@ -76,36 +80,31 @@ public class CharacterView : MonoBehaviour
         //     Character = new(_defaultCharacterData);
         //     return;
         // }
-        
+
         Character = character;
     }
 
-    public void SetCharacter(CharacterData characterData)
+    public void SetCharacterView(Character character = null)
     {
-        _setCharacterCoroutine = StartCoroutine(SetCharacterCoroutine(characterData));
-    }
-    
-    public IEnumerator SetCharacterCoroutine(CharacterData characterData)
-    {
-        // Character의 Data(스펙?)을 Setting.
-        Character = new(characterData);
-        yield return SetCharacterViewCoroutine(characterData);
+        if (_setCharacterViewCoroutine != null)
+        {
+            Debug.Log("SetCharacterViewCoroutine");
+            StopCoroutine(_setCharacterViewCoroutine);
+            _setCharacterViewCoroutine = null;
+        }
 
-        SetTestGA();
-        _setCharacterCoroutine = null;
-
-        yield break;
+        _setCharacterViewCoroutine = StartCoroutine(SetCharacterViewCoroutine(character));
     }
 
-    private IEnumerator SetCharacterViewCoroutine(CharacterData characterData)
+    private IEnumerator SetCharacterViewCoroutine(Character character)
     {
-        string characterName = characterData.CharacterName;
-        string teamType = characterData.TeamType.Team.ToString();
-        
-        Debug.Log($"characterName: {characterName}, teamType: {teamType}");
+        Character = character;
+
+        string characterName = character.CharacterName;
+        string team = character.TeamType.Team.ToString();
 
         var locHandle = Addressables.LoadResourceLocationsAsync(
-            new List<object>() { characterName, teamType, "CharacterVisual" },
+            new List<object>() { characterName, team, "CharacterVisual" },
             Addressables.MergeMode.Intersection,
             typeof(Sprite));
 
@@ -113,43 +112,102 @@ public class CharacterView : MonoBehaviour
         if (locHandle.Status != AsyncOperationStatus.Succeeded ||
             locHandle.Result.Count == 0)
         {
-            Debug.Log("Failed to load CharacterVisual Location");
+            Debug.Log("Theres no location of asset");
             yield break;
         }
 
         var assetLoc = locHandle.Result[0];
         var assetHandle = Addressables.LoadAssetAsync<Sprite>(assetLoc);
-        
+
         yield return assetHandle;
         if (assetHandle.Status != AsyncOperationStatus.Succeeded)
         {
-            Debug.Log("Failed to load CharacterVisual Asset");
+            Debug.Log("Theres no asset");
             yield break;
         }
         
         var visualAsset = assetHandle.Result;
-        
         _characterVisual.SetVisual(visualAsset);
         _characterVisual.SetOperationHandle(assetHandle);
+        SetTestGA();
+        Debug.Log("SetCharacterViewCoroutine에서 TestGA를 등록함.");
         
         Addressables.Release(locHandle);
+        
+        _setCharacterViewCoroutine = null;
+        yield break;
     }
-    
-    public IEnumerator SetCharacterCoroutine(AssetReferenceT<CharacterData> characterDataRef)
-    {
-        var handle = Addressables.LoadAssetAsync<CharacterData>(characterDataRef);
 
-        yield return handle;
+    // public void SetCharacter(CharacterData characterData)
+    // {
+    //     _setCharacterCoroutine = StartCoroutine(SetCharacterCoroutine(characterData));
+    // }
+    //
+    // public IEnumerator SetCharacterCoroutine(CharacterData characterData)
+    // {
+    //     // Character의 Data(스펙?)을 Setting.
+    //     Character = new(characterData);
+    //     yield return SetCharacterViewCoroutine(characterData);
+    //
+    //     SetTestGA();
+    //     _setCharacterCoroutine = null;
+    //
+    //     yield break;
+    // }
 
-        if (handle.Status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("Failed to load character data");
-            yield break;
-        }
-
-        Character = new(handle.Result);
-        _setCharacterCoroutine = null;
-    }
+    // private IEnumerator SetCharacterViewCoroutine(CharacterData characterData)
+    // {
+    //     string characterName = characterData.CharacterName;
+    //     string teamType = characterData.TeamType.Team.ToString();
+    //     
+    //     Debug.Log($"characterName: {characterName}, teamType: {teamType}");
+    //
+    //     var locHandle = Addressables.LoadResourceLocationsAsync(
+    //         new List<object>() { characterName, teamType, "CharacterVisual" },
+    //         Addressables.MergeMode.Intersection,
+    //         typeof(Sprite));
+    //
+    //     yield return locHandle;
+    //     if (locHandle.Status != AsyncOperationStatus.Succeeded ||
+    //         locHandle.Result.Count == 0)
+    //     {
+    //         Debug.Log("Failed to load CharacterVisual Location");
+    //         yield break;
+    //     }
+    //
+    //     var assetLoc = locHandle.Result[0];
+    //     var assetHandle = Addressables.LoadAssetAsync<Sprite>(assetLoc);
+    //     
+    //     yield return assetHandle;
+    //     if (assetHandle.Status != AsyncOperationStatus.Succeeded)
+    //     {
+    //         Debug.Log("Failed to load CharacterVisual Asset");
+    //         yield break;
+    //     }
+    //     
+    //     var visualAsset = assetHandle.Result;
+    //     
+    //     _characterVisual.SetVisual(visualAsset);
+    //     _characterVisual.SetOperationHandle(assetHandle);
+    //     
+    //     Addressables.Release(locHandle);
+    // }
+    //
+    // public IEnumerator SetCharacterCoroutine(AssetReferenceT<CharacterData> characterDataRef)
+    // {
+    //     var handle = Addressables.LoadAssetAsync<CharacterData>(characterDataRef);
+    //
+    //     yield return handle;
+    //
+    //     if (handle.Status != AsyncOperationStatus.Succeeded)
+    //     {
+    //         Debug.Log("Failed to load character data");
+    //         yield break;
+    //     }
+    //
+    //     Character = new(handle.Result);
+    //     _setCharacterCoroutine = null;
+    // }
 
     public void SetHandle(AsyncOperationHandle<GameObject> handle)
     {

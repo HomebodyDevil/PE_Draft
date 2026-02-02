@@ -29,6 +29,8 @@ public class EnemyCharacter : Character
         
         EndCharacterTurnGA endTurnGA = new(this);
         GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() { endTurnGA });
+
+        _enemyTurnCoroutine = null;
         
         yield break;
 

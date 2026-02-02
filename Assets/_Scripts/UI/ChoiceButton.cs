@@ -26,6 +26,6 @@ public class ChoiceButton : PEButton
     private void SetOnclick()
     {
         DialogueService.Instance.SetCurrentDialogueLineId(_nextDialogueId);
-        DialogueService.Instance.OnMadeChoice?.Invoke();
+        DialogueService.OnMadeChoice?.Invoke();
     }
 }

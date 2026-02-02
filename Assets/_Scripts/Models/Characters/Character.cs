@@ -17,8 +17,15 @@ public class Character
     
     public Character(CharacterData characterData)
     {
+        CharacterName = characterData.CharacterName;
         CurrentHealth = MaxHealth = characterData.MaxHealth;
+        MaxHealth = characterData.MaxHealth;
         TeamType = characterData.TeamType;
+    }
+
+    public void PrintStatus()
+    {
+        Debug.Log($"Name : {CharacterName}\nMax Health : {MaxHealth}\nTeamType : {TeamType.Team.ToString()}");
     }
 
     public void SetTeamType(TeamType teamType)

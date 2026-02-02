@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class EnemySystem : Singleton<EnemySystem>
 {
@@ -9,6 +12,8 @@ public class EnemySystem : Singleton<EnemySystem>
     public List<Character> EnemyCharacters { get; private set; } = new();
     public List<Character> DeadEnemyCharacters { get; private set; } = new();
 
+    private Coroutine _setEnemiesBasedOnMapNodeStatusCoroutine;
+    
     private void OnEnable()
     {
         BattleEventSystem.Instance.OnCharacterDeath += MoveEnemyCharacterToDeadList;
@@ -21,8 +26,11 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private void Start()
     {
-        EnemyCharacters.AddRange(EnemyService.Instance.EnemyCharacterList);
-        Debug.Log($"EnemyCharacters Count: {EnemyCharacters.Count}");
+        // EnemyCharacters.AddRange(EnemyService.Instance.EnemyCharacterList);
+        // Debug.Log($"EnemyCharacters Count: {EnemyCharacters.Count}");
+        
+        EnemyCharacters.Clear();
+        SetEnemiesBasedOnMapNodeStatus();
     }
 
     private void MoveEnemyCharacterToDeadList(Character character)
@@ -37,5 +45,65 @@ public class EnemySystem : Singleton<EnemySystem>
         DeadEnemyCharacters.Add(character);
 
         Debug.Log($"EnemyCharacters Count: {EnemyCharacters.Count}, DeadCount: {DeadEnemyCharacters.Count}");
+    }
+
+    public void RemoveEnemyInList(Character character)
+    {
+        if (character == null)
+        {
+            Debug.Log("Character to remove is null");
+            return;
+        }
+        
+        EnemyCharacters.Remove(character);
+    }
+
+    private void SetEnemiesBasedOnMapNodeStatus(MapNodeStatus mapNodeStatus = null)
+    {
+        if (_setEnemiesBasedOnMapNodeStatusCoroutine != null)
+        {
+            Debug.Log("SetEnemiesBasedOnMapNodeStatusCoroutine is running");
+            StopCoroutine(_setEnemiesBasedOnMapNodeStatusCoroutine);
+            _setEnemiesBasedOnMapNodeStatusCoroutine = null;
+        }
+
+        _setEnemiesBasedOnMapNodeStatusCoroutine = StartCoroutine(SetEnemiesBasedOnMapNodeStatusCoroutine(mapNodeStatus));
+    }
+    
+    private IEnumerator SetEnemiesBasedOnMapNodeStatusCoroutine(MapNodeStatus mapNodeStatus = null)
+    {
+        mapNodeStatus ??= PlayerStatusService.Instance.CurrentMapNodeStatus;
+
+        EnemyCharacters.Clear();
+        
+        AssetReferenceT<BattleEnemiesData> battleEnemiesData = mapNodeStatus.BattleEnemiesData;
+        var handle = battleEnemiesData.LoadAssetAsync();
+
+        yield return handle;
+
+        if (handle.Status == AsyncOperationStatus.Failed)
+        {
+            Debug.Log("Failed to load battle enemies");
+            yield break;
+        }
+
+        BattleEnemiesData enemiesData = handle.Result;
+        for (int i = 0; i < enemiesData.Enemies.Count; i++)
+        {
+            EnemyCharacter newEnemyCharacter = new(enemiesData.Enemies[i]);
+            EnemyCharacters.Add(newEnemyCharacter);
+            //newEnemyCharacter.PrintStatus();
+        }
+        // foreach (var enemyData in enemiesData.Enemies)
+        // {
+        //     EnemyCharacter newEnemyCharacter = new(enemyData);
+        //     //newEnemyCharacter.PrintStatus();
+        //     EnemyCharacterViewSystem.Instance.AddEnemyCharacterView(newEnemyCharacter);
+        // }
+        
+        EnemyCharacterViewSystem.Instance.SetEnemyCharacterViewsBasedOnEnemySystem();
+        
+        // Final
+        _setEnemiesBasedOnMapNodeStatusCoroutine = null;
     }
 }

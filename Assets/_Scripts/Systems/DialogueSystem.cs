@@ -66,22 +66,22 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void OnEnable()
     {
-        DialogueService.Instance.OnSetCurrentDialogueLine += SetCurrentDialogueLine;
-        DialogueService.Instance.OnSetSpeakerName += SetSpeakerName;
-        DialogueService.Instance.OnSetDialogueVisible += SetDialogueVisible;
-        DialogueService.Instance.OnEnableClickPreventer += SetClickPreventer;
-        DialogueService.Instance.OnPlayDialogue += PlayDialogue;
-        DialogueService.Instance.OnMadeChoice += OnMadeChoice;
+        DialogueService.OnSetCurrentDialogueLine += SetCurrentDialogueLine;
+        DialogueService.OnSetSpeakerName += SetSpeakerName;
+        DialogueService.OnSetDialogueVisible += SetDialogueVisible;
+        DialogueService.OnEnableClickPreventer += SetClickPreventer;
+        DialogueService.OnPlayDialogue += PlayDialogue;
+        DialogueService.OnMadeChoice += OnMadeChoice;
     }
 
     private void OnDisable()
     {
-        DialogueService.Instance.OnSetCurrentDialogueLine -= SetCurrentDialogueLine;
-        DialogueService.Instance.OnSetSpeakerName -= SetSpeakerName;
-        DialogueService.Instance.OnSetDialogueVisible -= SetDialogueVisible;
-        DialogueService.Instance.OnEnableClickPreventer -= SetClickPreventer;
-        DialogueService.Instance.OnPlayDialogue -= PlayDialogue;
-        DialogueService.Instance.OnMadeChoice -= OnMadeChoice;
+        DialogueService.OnSetCurrentDialogueLine -= SetCurrentDialogueLine;
+        DialogueService.OnSetSpeakerName -= SetSpeakerName;
+        DialogueService.OnSetDialogueVisible -= SetDialogueVisible;
+        DialogueService.OnEnableClickPreventer -= SetClickPreventer;
+        DialogueService.OnPlayDialogue -= PlayDialogue;
+        DialogueService.OnMadeChoice -= OnMadeChoice;
     }
 
     private void SetVars()
@@ -117,7 +117,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     
     private void OnClickClockCatcher()
     {
-        DialogueService.Instance.OnDialogueClick?.Invoke();
+        DialogueService.OnDialogueClick?.Invoke();
     }
 
     private void SetCurrentDialogueLine(DialogueLine dialogueLine)

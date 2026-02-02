@@ -22,17 +22,17 @@ public class TimelineSystem : Singleton<TimelineSystem>
 
     private void OnEnable()
     {
-        DialogueService.Instance.OnDialogueEnd += OnDialogueEnd;
+        DialogueService.OnDialogueEnd += OnDialogueEnd;
     }
 
     private void OnDisable()
     {
-        DialogueService.Instance.OnDialogueEnd -= OnDialogueEnd;
+        DialogueService.OnDialogueEnd -= OnDialogueEnd;
     }
 
     private void Start()
     {
-        
+        Debug.Log("EventMapScene의 TimelineSystem의 자식인 PlayableDirector에서 TestPlayable을 사용중.");
     }
 
     public void SetBinding()

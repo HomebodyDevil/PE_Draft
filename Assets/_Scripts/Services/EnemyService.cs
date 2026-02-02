@@ -10,8 +10,8 @@ public class EnemyService : PersistantSingleton<EnemyService>
     
     private void Start()
     {
-        Debug.Log("임시로 작업한 부분, 나중에 바꿔주자.");
-        EnemyCharacter enemyChar = new(_testEnemyCharacterData);
-        EnemyCharacterList.Add(enemyChar);
+        // Debug.Log("임시로 작업한 부분, 나중에 바꿔주자.");
+        // EnemyCharacter enemyChar = new(_testEnemyCharacterData);
+        // EnemyCharacterList.Add(enemyChar);
     }
 }

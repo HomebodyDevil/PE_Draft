@@ -7,23 +7,23 @@ using UnityEngine.AddressableAssets;
 
 public class DialogueService : PersistantSingleton<DialogueService>
 {
-    public Action<bool> OnSetDialogueVisible;
-    public Action<string> OnSetSpeakerName;
-    public Action<DialogueLine> OnSetCurrentDialogueLine;
-    public Action OnDialogueClick;
-    public Action OnDialogueEnd;
-    public Action OnPlayDialogue;
-    public Action<bool> OnEnableClickPreventer;
-    public Action<List<DialogueLine>> OnSetChoices;
-    public Action OnMadeChoice;
+    public static Action<bool> OnSetDialogueVisible;
+    public static Action<string> OnSetSpeakerName;
+    public static Action<DialogueLine> OnSetCurrentDialogueLine;
+    public static Action OnDialogueClick;
+    public static Action OnDialogueEnd;
+    public static Action OnPlayDialogue;
+    public static Action<bool> OnEnableClickPreventer;
+    //public static Action<List<DialogueLine>> OnSetChoices;
+    public static Action OnMadeChoice;
     
     public List<DialogueLine> CurrentDialogueLines { get; private set; }
     private DialogueLine _currentDialogueLine;
     private int _currentDialogueLineId = -10;
-    
+
     private void Start()
     {
-        Debug.Log("임시로 한 것. 나중에 바꾸기(DialogueService Start)");
+        //Debug.Log("임시로 한 것. 나중에 바꾸기(DialogueService Start)");
         //EnableDialogue(true, "TestDialogue.csv");
     }
 
@@ -67,7 +67,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
             return;
         }
         
-        DialogueService.Instance.OnEnableClickPreventer?.Invoke(true);
+        DialogueService.OnEnableClickPreventer?.Invoke(true);
         OnSetDialogueVisible?.Invoke(enable);
 
         path = $"Assets/Medias/Dialogues/{path}.csv";
@@ -81,7 +81,7 @@ public class DialogueService : PersistantSingleton<DialogueService>
             CurrentDialogueLines = cr.MakeDialogueLinesFromCSV(currentDialogueLineText);
             
             SetCurrentDialogueLineId(dialogueLineId);
-            DialogueService.Instance.OnEnableClickPreventer?.Invoke(false);
+            DialogueService.OnEnableClickPreventer?.Invoke(false);
 
             Addressables.Release(handle);
         };
