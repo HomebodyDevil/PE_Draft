@@ -6,14 +6,14 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class EnemyCharacterViewSystem : CharacterViewSystem
+public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSystem>
 {
     //[SerializeField] private List<Transform> _enemyCharacterPositions = new();
     //public List<CharacterView> EnemyCharacterViews { get; private set; }= new();
 
     //private Coroutine _makeEnemyCharacterViewsCoroutine;
     private Coroutine _initialSettingCoroutine;
-    private Coroutine _setEnemyCharacterViewsBasedOnEnemySystemCoroutine;
+    private Coroutine _setCharacterViewsBasedOnSystemCoroutine;
     private int _numberOfPositions = 6;
     
     protected override void Awake()
@@ -60,6 +60,17 @@ public class EnemyCharacterViewSystem : CharacterViewSystem
         SetEnableCharacterView(character, false);
     }
     
+    protected override void MakeCharacterViews(Team team)
+    {
+        if (CharacterViews.Count >= ConstValue.NUMBER_OF_ENEMY_CHARACTERS)
+        {
+            Debug.Log("Already Made Character Views");
+            return;
+        }
+        
+        base.MakeCharacterViews(team);
+    }
+    
     protected override void SetCharacterPositions()
     {
         _characterPositions.Clear();
@@ -94,7 +105,7 @@ public class EnemyCharacterViewSystem : CharacterViewSystem
         SetCharacterPositions();
     }
     
-    public CharacterView GetEnemyCharacterView(Character character)
+    public CharacterView GetCharacterView(Character character)
     {
         foreach (var characterView in CharacterViews)
         {
@@ -104,27 +115,30 @@ public class EnemyCharacterViewSystem : CharacterViewSystem
         return null;
     }
     
-    public void SetEnemyCharacterViewsBasedOnEnemySystem()
+    public override void SetCharacterViewsBasedOnSystem(Team team)
     {
-        if (_setEnemyCharacterViewsBasedOnEnemySystemCoroutine != null)
+        base.SetCharacterViewsBasedOnSystem(team);
+        
+        if (_setCharacterViewsBasedOnSystemCoroutine != null)
         {
             Debug.Log("_setEnemyCharacterViewBasedOnEnemySystemCoroutine is not null");
-            StopCoroutine(_setEnemyCharacterViewsBasedOnEnemySystemCoroutine);
-            _setEnemyCharacterViewsBasedOnEnemySystemCoroutine = null;
+            StopCoroutine(_setCharacterViewsBasedOnSystemCoroutine);
+            _setCharacterViewsBasedOnSystemCoroutine = null;
         }
         
-        _setEnemyCharacterViewsBasedOnEnemySystemCoroutine = StartCoroutine(SetEnemyCharacterViewsBasedOnEnemySystemCoroutine());
+        _setCharacterViewsBasedOnSystemCoroutine = 
+            StartCoroutine(SetCharacterViewsBasedOnSystemCoroutine());
     }
 
-    private IEnumerator SetEnemyCharacterViewsBasedOnEnemySystemCoroutine()
+    protected override IEnumerator SetCharacterViewsBasedOnSystemCoroutine()
     {
         int loopCnt = 0;
-        Debug.Log("CharacterView들 만들어지기를 기다리기");
+        //Debug.Log("CharacterView들 만들어지기를 기다리기");
         while (_makeCharacterViewsCoroutine != null)
         {
             if (loopCnt++ >= ConstValue.MAX_LOOP)
             {
-                Debug.Log("Max Loop in SetEnemyCharacterViewsBasedOnEnemySystemCoroutine");
+                Debug.Log("Max Loop in SetCharacterViewsBasedOnSystemCoroutine");
                 yield break;
             }
             
@@ -138,70 +152,11 @@ public class EnemyCharacterViewSystem : CharacterViewSystem
             yield break;
         }
         
-        //Debug.Log("Views Count : " + EnemyCharacterViews.Count);
         for (int i = 0; i < enemies.Count; i++)
         {
             CharacterViews[i].SetCharacterView(enemies[i]);
         }
+        
+        _setCharacterViewsBasedOnSystemCoroutine = null;
     }
-    
-        // private void MakeEnemyCharacterViews()
-    // {
-    //     if (_makeEnemyCharacterViewsCoroutine != null)
-    //     {
-    //         Debug.Log("MakeEnemyCharacterViewsCoroutine is not null");
-    //         StopCoroutine(_makeEnemyCharacterViewsCoroutine);
-    //         _makeEnemyCharacterViewsCoroutine = null;
-    //     }
-    //     
-    //     _makeEnemyCharacterViewsCoroutine = StartCoroutine(MakeEnemyCharacterViewsCoroutine());
-    // }
-    //
-    // // View들을 생성 및 위치시킴.
-    // // _EnemyCharacterViews 리스트에 추가함.
-    // private IEnumerator MakeEnemyCharacterViewsCoroutine()
-    // {
-    //     var locHandle = Addressables.LoadResourceLocationsAsync(
-    //         new List<object>(){"Default", "CharacterView", "Enemy"},
-    //         Addressables.MergeMode.Intersection,
-    //         typeof(GameObject));
-    //     yield return locHandle;
-    //
-    //     if (locHandle.Status != AsyncOperationStatus.Succeeded || 
-    //         locHandle.Result.Count == 0)
-    //     {
-    //         Debug.Log("Failed to load character view asset ref");
-    //         yield break;
-    //     }
-    //
-    //     var characterViewAssetLoc = locHandle.Result[0];
-    //     
-    //     var assetHandle = Addressables.LoadAssetAsync<GameObject>(characterViewAssetLoc);
-    //     yield return assetHandle;
-    //
-    //     if (assetHandle.Status != AsyncOperationStatus.Succeeded)
-    //     {
-    //         Debug.Log("Failed to load character view asset");
-    //         yield break;
-    //     }
-    //     
-    //     var characterViewAsset = assetHandle.Result;
-    //
-    //     for (int i = 0; i < _enemyCharacterPositions.Count; i++)
-    //     {
-    //         var characterViewInstance = 
-    //             Instantiate(characterViewAsset, 
-    //                 _enemyCharacterPositions[i],
-    //                 false);
-    //
-    //         CharacterView charView = characterViewInstance.GetComponent<CharacterView>();
-    //         charView.SetHandle(assetHandle);
-    //         
-    //         EnemyCharacterViews.Add(charView);
-    //     }
-    //     
-    //     Addressables.Release(locHandle);
-    //
-    //     _makeEnemyCharacterViewsCoroutine = null;
-    // }
 }

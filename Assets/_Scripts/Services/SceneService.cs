@@ -75,7 +75,8 @@ public class SceneService : PersistantSingleton<SceneService>
             
             yield return null;
         }
-
+        
+        // race 걸릴 수도 있으니까 한 번 기다려주고.
         if (_fadeLoadingPanelCoroutine != null)
             yield return _fadeLoadingPanelCoroutine;
         FadeLoadingPanel(false);

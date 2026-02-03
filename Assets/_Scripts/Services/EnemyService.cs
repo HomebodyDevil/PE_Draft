@@ -14,4 +14,9 @@ public class EnemyService : PersistantSingleton<EnemyService>
         // EnemyCharacter enemyChar = new(_testEnemyCharacterData);
         // EnemyCharacterList.Add(enemyChar);
     }
+
+    public void SetEnemyCharactersBasedOnMapNodeStatus(MapNodeStatus mapNodeStatus)
+    {
+        var enemiesData = mapNodeStatus.BattleEnemiesData;
+    }
 }

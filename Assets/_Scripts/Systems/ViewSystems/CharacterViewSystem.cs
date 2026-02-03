@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class CharacterViewSystem : Singleton<EnemyCharacterViewSystem>
+public class CharacterViewSystem<T> : Singleton<T> where T : MonoBehaviour
 {
     [SerializeField] protected List<Transform> _characterPositions = new();
     public List<CharacterView> CharacterViews { get; private set; } = new();
@@ -21,7 +21,7 @@ public class CharacterViewSystem : Singleton<EnemyCharacterViewSystem>
         
         _makeCharacterViewsCoroutine = StartCoroutine(MakeCharacterViewsCoroutine(team));
     }
-    
+
     protected IEnumerator MakeCharacterViewsCoroutine(Team team)
     {
         string teamStr = team.ToString();
@@ -72,7 +72,9 @@ public class CharacterViewSystem : Singleton<EnemyCharacterViewSystem>
 
     protected virtual void SetCharacterPositions()
     {
-        
+        // 그냥 이 함수에서 _characterPositions를 설정한다 알리기 위한 코드.
+        // 실질적으로 하는 것은 없음.
+        var a = _characterPositions;
     }
 
     protected void SetEnableCharacterView(Character character, bool enable)
@@ -80,6 +82,20 @@ public class CharacterViewSystem : Singleton<EnemyCharacterViewSystem>
         foreach (var characterView in CharacterViews)
             if (characterView.Character == character)
                 characterView.gameObject.SetActive(enable);
+    }
+
+    public virtual void SetCharacterViewsBasedOnSystem(Team team)
+    {
+        if (CharacterViews.Count == 0)
+        {
+            Debug.Log("Theres No Character Views. Make Character Views First.");
+            MakeCharacterViews(team);
+        }
+    }
+    
+    protected virtual IEnumerator SetCharacterViewsBasedOnSystemCoroutine()
+    {
+        yield break;
     }
 
     public CharacterView GetCharacterView(Character character)

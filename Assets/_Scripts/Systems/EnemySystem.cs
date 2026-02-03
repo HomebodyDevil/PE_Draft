@@ -73,6 +73,12 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator SetEnemiesBasedOnMapNodeStatusCoroutine(MapNodeStatus mapNodeStatus = null)
     {
         mapNodeStatus ??= PlayerStatusService.Instance.CurrentMapNodeStatus;
+        if (mapNodeStatus == null)
+        {
+            Debug.Log("MapNodeStatus is null");
+            _setEnemiesBasedOnMapNodeStatusCoroutine = null;
+            yield break;
+        }
 
         EnemyCharacters.Clear();
         
@@ -101,9 +107,10 @@ public class EnemySystem : Singleton<EnemySystem>
         //     EnemyCharacterViewSystem.Instance.AddEnemyCharacterView(newEnemyCharacter);
         // }
         
-        EnemyCharacterViewSystem.Instance.SetEnemyCharacterViewsBasedOnEnemySystem();
+        EnemyCharacterViewSystem.Instance.SetCharacterViewsBasedOnSystem(Team.Enemy);
         
         // Final
+        Addressables.Release(handle);
         _setEnemiesBasedOnMapNodeStatusCoroutine = null;
     }
 }

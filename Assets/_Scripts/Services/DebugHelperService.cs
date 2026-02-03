@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TestGAContext
@@ -39,9 +40,37 @@ public class DebugHelperService : PersistantSingleton<DebugHelperService>
         if (_text == null) transform.AssignChildVar<TextMeshProUGUI>("Text", ref _text);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.activeSceneChanged += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.activeSceneChanged -= OnSceneLoaded;
+    }
+
     private void Start()
     {
-        GameAbilitySystem.Instance.AddPerformer<TestGA>(TestGAPerformer);
+        AddTestGAPerformer();
+    }
+
+    private void OnSceneLoaded(Scene oldScene, Scene newScene)
+    {
+        if (newScene.name.EndsWith("BattleScene"))
+        {
+            Debug.Log("BattleScene Loaded");
+            AddTestGAPerformer();
+        }
+    }
+
+    private void AddTestGAPerformer()
+    {
+        if (GameAbilitySystem.Instance != null)
+        {
+            Debug.Log("AddTestGAPerformer");
+            GameAbilitySystem.Instance.AddPerformer<TestGA>(TestGAPerformer);
+        }
     }
 
     private IEnumerator TestGAPerformer(TestGA testGA)

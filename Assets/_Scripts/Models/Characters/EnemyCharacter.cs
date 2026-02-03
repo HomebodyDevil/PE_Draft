@@ -9,6 +9,12 @@ public class EnemyCharacter : Character
     {
         
     }
+
+    public void AddEnemyReactions()
+    {
+        // InBattle에서 Reactino을 추가한다면 이것을 사용할 예정.
+        Debug.Log("AddEnemyReactions : InBattle에서 Reaction을 추가");
+    }
     
     public override void StartTurn()
     {

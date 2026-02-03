@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: beb77f6666cb37344b0b0d337889d89f
   m_currentHash:
     serializedVersion: 2
-    Hash: e53b992c3afb816643dc28a4cfa60ba8
+    Hash: 8148f8f1d689f3104a80c11550d48502
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
     - CharacterVisual
     - Hina
     - El
+    - PlayerStatusData
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 4798a9575c16d504a8a35ac39b328ca1, type: 2}

@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1886531e18e1ad7498f39fe5717afb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCharacterViewSystem
-  _enemyCharacterPositions: []
+  _characterPositions: []
 --- !u!1 &129473581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2919,7 +2919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6274414d9e5aa504a86b06c95aab3a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacterViewSystem
-  _playerCharacterPositions: []
+  _characterPositions: []
 --- !u!1 &807024880
 GameObject:
   m_ObjectHideFlags: 0
@@ -6893,7 +6893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6187e7b668ca646947fff659fc0a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSystem
-  _forTest: 1
+  _forTest: 0
 --- !u!1 &1998036417
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class Character
     public float MaxHealth { get; private set; }
     public TeamType TeamType { get; private set; }
     // Character들은 본인이 등록한 Reaction에 관한 리스트를 hold한다.
+    // GameAbilitySystem의 AddReaction에서 추가해주고 있음.
     public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
     public List<ReactionContext> Reactions { get; private set; } = new();
 
@@ -21,8 +22,16 @@ public class Character
         CurrentHealth = MaxHealth = characterData.MaxHealth;
         MaxHealth = characterData.MaxHealth;
         TeamType = characterData.TeamType;
+
+        AddReactionsBasedOnData();
     }
 
+    protected void AddReactionsBasedOnData()
+    {
+        // 초기 Reaction을 추가하고자 할 때는 이것을 사용할 예정.
+        Debug.Log("Adding reactions based on data : 초기 Reaction Setting");
+    }
+    
     public void PrintStatus()
     {
         Debug.Log($"Name : {CharacterName}\nMax Health : {MaxHealth}\nTeamType : {TeamType.Team.ToString()}");

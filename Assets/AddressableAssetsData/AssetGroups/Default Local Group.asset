@@ -15,6 +15,13 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: beb77f6666cb37344b0b0d337889d89f
   m_SerializeEntries:
+  - m_GUID: 874e8d5779f5db949b72609de61078a7
+    m_Address: Assets/Datas/PlayerDatas/TestPlayerStatusData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Default
+    - PlayerStatusData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b58e792ff021ec84592acbdde067f3c8
     m_Address: Assets/Datas/CharacterDatas/TestPlayersCharacter.asset
     m_ReadOnly: 0

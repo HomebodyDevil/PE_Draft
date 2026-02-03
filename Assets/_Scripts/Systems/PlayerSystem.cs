@@ -23,5 +23,6 @@ public class PlayerSystem : Singleton<PlayerSystem>
         }
         
         PlayerCharacters.AddRange(PlayerStatusService.Instance.GetPlayerCharacters());
+        PlayerCharacterViewSystem.Instance.SetCharacterViewsBasedOnSystem(Team.PlayerCharacter);
     }
 }

@@ -47,27 +47,28 @@ public class CharacterView : MonoBehaviour
         }
     }
 
-    private void SetTestGA()
-    {
-        if (Character.TeamType.Team == Team.Enemy && Character != null)
-        {
-            TestGAContext ctx = new("Reacting to TurnEnd", Text);
-            TestGA ga = new(ctx);
-
-            Debug.Log("Test Reaction 등록");
-            GameAbilitySystem.Instance.AddReaction<EndCharacterTurnGA>(
-                ReactionTiming.Pre,
-                Character,
-                ga,
-                ReactionTarget.Hostile,
-                ConstValue.INFINITE_TURN_COUNT,
-                false);
-        }
-    }
+    // private void SetTestGA()
+    // {
+    //     if (Character != null && Character.TeamType.Team == Team.Enemy)
+    //     {
+    //         TestGAContext ctx = new("Reacting to TurnEnd", Text);
+    //         TestGA ga = new(ctx);
+    //
+    //         Debug.Log("Test Reaction 등록");
+    //         GameAbilitySystem.Instance.AddReaction<EndCharacterTurnGA>(
+    //             ReactionTiming.Pre,
+    //             Character,
+    //             ga,
+    //             ReactionTarget.Hostile,
+    //             ConstValue.INFINITE_TURN_COUNT,
+    //             false);
+    //     }
+    // }
 
     private void SetVar()
     {
-        if (Text == null) transform.AssignChildVar<Transform>("Panel", ref Text);
+        if (Text == null && Character != null && Character.TeamType.Team == Team.Enemy) 
+            transform.AssignChildVar<Transform>("Panel", ref Text);
         if (_characterVisual == null)
             transform.AssignChildVar<CharacterVisual>("CharacterVisual", ref _characterVisual);
     }
@@ -86,6 +87,12 @@ public class CharacterView : MonoBehaviour
 
     public void SetCharacterView(Character character = null)
     {
+        if (character == null)
+        {
+            Debug.Log("Character is null");
+            return;
+        }
+        
         if (_setCharacterViewCoroutine != null)
         {
             Debug.Log("SetCharacterViewCoroutine");
@@ -98,6 +105,12 @@ public class CharacterView : MonoBehaviour
 
     private IEnumerator SetCharacterViewCoroutine(Character character)
     {
+        if (character == null)
+        {
+            Debug.Log("Character is null");
+            yield break;
+        }
+        
         Character = character;
 
         string characterName = character.CharacterName;
@@ -129,7 +142,7 @@ public class CharacterView : MonoBehaviour
         var visualAsset = assetHandle.Result;
         _characterVisual.SetVisual(visualAsset);
         _characterVisual.SetOperationHandle(assetHandle);
-        SetTestGA();
+        
         Debug.Log("SetCharacterViewCoroutine에서 TestGA를 등록함.");
         
         Addressables.Release(locHandle);
