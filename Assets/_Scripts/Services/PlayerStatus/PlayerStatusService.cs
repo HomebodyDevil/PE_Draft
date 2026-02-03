@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SerializeReferenceEditor;
 using UnityEngine;
@@ -29,6 +30,11 @@ public class PlayerStatusService : PersistantSingleton<PlayerStatusService>
         PlayerStatus.MaxHealth = ConstValue.DEFAULT_PLAYER_HEALTH;
         PlayerStatus.CurrentHealth = ConstValue.DEFAULT_PLAYER_HEALTH;
         PlayerStatus.MaxCost = ConstValue.DEFAULT_PLAYER_COST;
+    }
+
+    public void LoadPlayerStatusData()
+    {
+        Debug.Log("Loading player status data: 차후 구현 바람.");
     }
 
     public List<Character> GetPlayerCharacters()

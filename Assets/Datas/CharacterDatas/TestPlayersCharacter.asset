@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e298d46403c55774f8ef5ab278e5ba82, type: 3}
   m_Name: TestPlayersCharacter
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  <CharacterName>k__BackingField: Hina
+  <CharacterName>k__BackingField: El
   <MaxHealth>k__BackingField: 10
   <MaxCost>k__BackingField: 5
   <TeamType>k__BackingField:

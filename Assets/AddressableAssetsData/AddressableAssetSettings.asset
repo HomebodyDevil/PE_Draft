@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: beb77f6666cb37344b0b0d337889d89f
   m_currentHash:
     serializedVersion: 2
-    Hash: a3d7353c7c4ccdb3c6ad21fbbe846f79
+    Hash: e53b992c3afb816643dc28a4cfa60ba8
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
     - Default
     - CharacterVisual
     - Hina
+    - El
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 4798a9575c16d504a8a35ac39b328ca1, type: 2}

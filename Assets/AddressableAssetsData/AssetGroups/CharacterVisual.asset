@@ -31,6 +31,14 @@ MonoBehaviour:
     - Hina
     - PlayerCharacter
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee7e51e86bc6b104a9eb5956baea2227
+    m_Address: Assets/Medias/Visuals/PlayerCharacter/El.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterVisual
+    - El
+    - PlayerCharacter
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 530a06f2fcea6d54aa419b98c20febe5, type: 2}
   m_SchemaSet:
