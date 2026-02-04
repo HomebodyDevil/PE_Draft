@@ -13,13 +13,19 @@ MonoBehaviour:
   m_Name: TestBattleMapNodeData
   m_EditorClassIdentifier: Assembly-CSharp::MapNodeData
   <StartTimeline>k__BackingField:
-    m_AssetGUID: 3bf306f3b6f3ae34a88d8bba3a2e4594
+    m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   <BattleEnemiesData>k__BackingField:
     m_AssetGUID: 7c785587a92a7824e94e5ff58530233b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  <EventData>k__BackingField:
+    m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 

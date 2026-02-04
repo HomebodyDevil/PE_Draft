@@ -30,7 +30,7 @@ public class EnemySystem : Singleton<EnemySystem>
         // Debug.Log($"EnemyCharacters Count: {EnemyCharacters.Count}");
         
         EnemyCharacters.Clear();
-        SetEnemiesBasedOnMapNodeStatus();
+        SetEnemiesBasedOnMapNodeStatus(PlayerStatusService.Instance.CurrentMapNodeStatus);
     }
 
     private void MoveEnemyCharacterToDeadList(Character character)
@@ -73,17 +73,17 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator SetEnemiesBasedOnMapNodeStatusCoroutine(MapNodeStatus mapNodeStatus = null)
     {
         mapNodeStatus ??= PlayerStatusService.Instance.CurrentMapNodeStatus;
-        if (mapNodeStatus == null)
+        if (!mapNodeStatus.BattleEnemiesData.RuntimeKeyIsValid() || string.IsNullOrEmpty(mapNodeStatus.BattleEnemiesData.AssetGUID))
         {
-            Debug.Log("MapNodeStatus is null");
+            Debug.LogError("MapNodeStatus is Not Valid");
             _setEnemiesBasedOnMapNodeStatusCoroutine = null;
             yield break;
         }
 
         EnemyCharacters.Clear();
         
-        AssetReferenceT<BattleEnemiesData> battleEnemiesData = mapNodeStatus.BattleEnemiesData;
-        var handle = battleEnemiesData.LoadAssetAsync();
+        AssetReferenceT<BattleEnemiesData> battleEnemiesDataRef = mapNodeStatus.BattleEnemiesData;
+        var handle = battleEnemiesDataRef.LoadAssetAsync();
 
         yield return handle;
 
@@ -110,7 +110,7 @@ public class EnemySystem : Singleton<EnemySystem>
         EnemyCharacterViewSystem.Instance.SetCharacterViewsBasedOnSystem(Team.Enemy);
         
         // Final
-        Addressables.Release(handle);
+        //Addressables.Release(handle);
         _setEnemiesBasedOnMapNodeStatusCoroutine = null;
     }
 }

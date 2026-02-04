@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04121509e6d2eef4fbbd262f0f9b0957, type: 3}
-  m_Name: TestRestMapNodeData
+  m_Name: TestEventMapNodeData
   m_EditorClassIdentifier: Assembly-CSharp::MapNodeData
   <StartTimeline>k__BackingField:
     m_AssetGUID: 3bf306f3b6f3ae34a88d8bba3a2e4594
@@ -25,7 +25,7 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   <EventData>k__BackingField:
-    m_AssetGUID: 
+    m_AssetGUID: 2edfaae91e316c443b0a202b68398ffb
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 

@@ -1,4 +1,5 @@
 using System;
+using SerializeReferenceEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +35,8 @@ public class MapNodeView : MonoBehaviour
                 NodeType.None => Color.black,
                 NodeType.Elite => Color.blue,
                 NodeType.Rest => Color.yellow,
-                _ => Color.white,
+                NodeType.Event => Color.white,
+                _ => Color.violet,
             };
             
             _mapNodeImage.color = color;
@@ -44,7 +46,8 @@ public class MapNodeView : MonoBehaviour
     public void OnClick()
     {
         Debug.Log("현재 MapNodeView에선, Click시, BattleScene으로만 전환.");
-        SceneService.Instance.ChangeScene(SceneType.BattleScene);
+        SceneType sceneType = SceneService.Instance.GetSceneTypeBasedOnNodeType(MapNode.NodeType);
+        SceneService.Instance.ChangeScene(sceneType);
         if (MapNode == null)
         {
             Debug.Log("MapNodeView: MapNode is null");
@@ -53,6 +56,10 @@ public class MapNodeView : MonoBehaviour
 
         Debug.Log($"MapNode Type: {MapNode.NodeType.ToString()}");
         Debug.Log("PlayerStatusService의 MapNodeStatus Set.");
+
+        MapNode.MapNodeStatus.CheckIsValid(out var timeline, out var enemiesDataCheck, out var eventDataCheck);
+        Debug.LogError($"SetMapNodeStatus\ntimeline : {timeline}\nenemies : {enemiesDataCheck}\nevents : {eventDataCheck}");
+        
         PlayerStatusService.Instance.CurrentMapNodeStatus = MapNode.MapNodeStatus;
     }
 }

@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using SerializeReferenceEditor;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public enum NodeType
 {
@@ -8,6 +12,7 @@ public enum NodeType
     Rest,
     Battle,
     Elite,
+    Event,
 }
 
 public class MapNode
@@ -23,10 +28,18 @@ public class MapNode
         NodeLevel = nodeLevel;
         NodeType = nodeType;
     }
-
+    
     public void SetMapNodeData(MapNodeData mapNodeData)
     {
         MapNodeStatus = new(mapNodeData);
+        // if (!MapNodeStatus.CheckIsValid(out var time, out var enemies, out var events))
+        // {
+        //     if (!time) Debug.LogError("Timeline is Invalid");
+        //     if (!enemies) Debug.LogError("Enemies is Invalid");
+        //     if (!events) Debug.LogError("Events is Invalid");
+        // }
+        // else
+        //     Debug.Log("Success to Set Map Node Status");
     }
 
     // public void SetMapNodeDataByNodeType()

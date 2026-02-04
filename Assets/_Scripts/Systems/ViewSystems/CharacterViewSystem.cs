@@ -98,7 +98,7 @@ public class CharacterViewSystem<T> : Singleton<T> where T : MonoBehaviour
         yield break;
     }
 
-    public CharacterView GetCharacterView(Character character)
+    public virtual CharacterView GetCharacterView(Character character)
     {
         foreach (var characterView in CharacterViews)
         {

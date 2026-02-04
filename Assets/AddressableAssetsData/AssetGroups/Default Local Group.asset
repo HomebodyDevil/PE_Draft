@@ -15,6 +15,30 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: beb77f6666cb37344b0b0d337889d89f
   m_SerializeEntries:
+  - m_GUID: 2edfaae91e316c443b0a202b68398ffb
+    m_Address: Assets/Datas/EventDatas/TestEventData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34737511663cef74c8e1516ad8888d4b
+    m_Address: Assets/Datas/MapNodeDatas/EliteMapNodes/TestEliteMapNodeData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Elite
+    - MapNodes
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 383d76816458a014bafab49d0d603153
+    m_Address: Assets/Datas/MapNodeDatas/BattleMapNodes/TestBattleMapNodeData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Battle
+    - MapNodes
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64e53f5ba6592834bb06dfce27e74eff
+    m_Address: Assets/Datas/EventDatas/TestEventButtonData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 874e8d5779f5db949b72609de61078a7
     m_Address: Assets/Datas/PlayerDatas/TestPlayerStatusData.asset
     m_ReadOnly: 0
@@ -22,12 +46,33 @@ MonoBehaviour:
     - Default
     - PlayerStatusData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96ce105f08a5c134793b944e32a2b6c4
+    m_Address: Assets/Datas/MapNodeDatas/EventMapNodes/TestEventMapNodeData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Event
+    - MapNodes
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b58e792ff021ec84592acbdde067f3c8
     m_Address: Assets/Datas/CharacterDatas/TestPlayersCharacter.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - CharacterData
     - PlayerCharacter
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdb32ed729e055a4ab67aad57aae291b
+    m_Address: Assets/Datas/MapNodeDatas/EventMapNodes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Event
+    - MapNodes
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7ce6092fb72fa14ca0d63efe437c482
+    m_Address: Assets/Datas/MapNodeDatas/RestMapNodes/TestRestMapNodeData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MapNodes
+    - Rest
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 530a06f2fcea6d54aa419b98c20febe5, type: 2}

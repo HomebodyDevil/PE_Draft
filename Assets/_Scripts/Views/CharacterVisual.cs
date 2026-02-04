@@ -20,7 +20,7 @@ public class CharacterVisual : MonoBehaviour
 
     public void SetVisual(Sprite sprite)
     {
-        Debug.Log("지금은 스프라이트를 설정중. 차후, 애니메이션으로 바뀌지 않을까");
+        Debug.Log($"sprite를 설정중. 차후, 애니메이션으로 바뀌지 않을까 : {sprite.name}");
         _sr.sprite = sprite;
     }
 

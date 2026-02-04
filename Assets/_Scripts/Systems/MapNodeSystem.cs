@@ -107,6 +107,36 @@ public class MapNodeSystem : Singleton<MapNodeSystem>
         // 2. 만들어진 노드들을 연결해준다.
         ConnectMapNodes();
     }
+    
+    private IEnumerator GetMapNodeDataAndSet(NodeType nodeType, MapNode mapNode)
+    {
+        if (MapNodeLocations[nodeType].Count == 0)
+        {
+            Debug.Log($"{nodeType.ToString()} has no map nodes.");
+            yield break;
+        }
+        
+        int randomNum = UnityEngine.Random.Range(0, MapNodeLocations[nodeType].Count);
+        var handle = Addressables.LoadAssetAsync<MapNodeData>(MapNodeLocations[nodeType][randomNum]);
+        
+        yield return handle;
+
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.Log("Failed to Load Map Node Data");
+            Addressables.Release(handle);
+            yield break;
+        }
+
+        var result = handle.Result;
+        // Debug.Log($"enemies : {result.BattleEnemiesData.RuntimeKeyIsValid() && !string.IsNullOrEmpty(result.BattleEnemiesData.AssetGUID)}");
+        // Debug.Log($"events : {result.EventData.RuntimeKeyIsValid() && !string.IsNullOrEmpty(result.EventData.AssetGUID)}");
+        // Debug.Log($"timeline : {result.StartTimeline.RuntimeKeyIsValid() && !string.IsNullOrEmpty(result.StartTimeline.AssetGUID)}");
+        
+        mapNode.SetMapNodeData(handle.Result);
+
+        Addressables.Release(handle);
+    }
 
     // /// <summary>
     // /// 해당 NodeType으로 세팅된 SO의 location(Addressables)를 가져온다.
@@ -164,31 +194,6 @@ public class MapNodeSystem : Singleton<MapNodeSystem>
         
         foreach (var handle in mapNodeLocationHandles)
             Addressables.Release(handle);
-    }
-    
-    private IEnumerator GetMapNodeDataAndSet(NodeType nodeType, MapNode mapNode)
-    {
-        if (MapNodeLocations[nodeType].Count == 0)
-        {
-            Debug.Log($"{nodeType.ToString()} has no map nodes.");
-            yield break;
-        }
-        
-        int randomNum = UnityEngine.Random.Range(0, MapNodeLocations[nodeType].Count);
-        var handle = Addressables.LoadAssetAsync<MapNodeData>(MapNodeLocations[nodeType][randomNum]);
-        
-        yield return handle;
-
-        if (handle.Status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("Failed to Load Map Node Data");
-            Addressables.Release(handle);
-            yield break;
-        }
-        
-        mapNode.SetMapNodeData(handle.Result);
-        
-        Addressables.Release(handle);
     }
 
     private void ConnectMapNodes()

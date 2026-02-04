@@ -12,6 +12,7 @@ public enum SceneType
     MapScene,
     EventBattleScene,
     EventMapScene,
+    EventScene,
 }
 
 public class SceneService : PersistantSingleton<SceneService>
@@ -35,6 +36,15 @@ public class SceneService : PersistantSingleton<SceneService>
         _loadingPanel.gameObject.SetActive(false);
     }
 
+    private static readonly Dictionary<NodeType, SceneType> NodeSceneMap = new()
+    {
+        { NodeType.Battle, SceneType.BattleScene },
+        { NodeType.Elite, SceneType.BattleScene },
+        { NodeType.Event, SceneType.EventScene },
+        { NodeType.Rest, SceneType.EventScene },
+        { NodeType.None, SceneType.EventScene },
+    };
+
     private static readonly Dictionary<SceneType, string> Scene = new()
     {
         { SceneType.BattleScene, "BattleScene" },
@@ -42,8 +52,9 @@ public class SceneService : PersistantSingleton<SceneService>
         { SceneType.MapScene, "MapScene" },
         { SceneType.EventBattleScene, "EventBattleScene" },
         { SceneType.EventMapScene, "EventMapScene" },
+        { SceneType.EventScene, "EventScene" },
     };
-    
+
     public void ChangeScene(SceneType sceneType)
     {
         string sceneName = GetSceneName(sceneType);
@@ -55,10 +66,10 @@ public class SceneService : PersistantSingleton<SceneService>
     {
         if (_loadingScenes.Contains(sceneName))
             yield break;
-        
+
         _loadingScenes.Add(sceneName);
         float time = 0f;
-        
+
         var loadSceneOP = SceneManager.LoadSceneAsync(sceneName);
         loadSceneOP.allowSceneActivation = false;
 
@@ -72,15 +83,15 @@ public class SceneService : PersistantSingleton<SceneService>
                 // allowSceneActivation이 false면, isDone은 true로 바뀔 수 없음.
                 loadSceneOP.allowSceneActivation = true;
             }
-            
+
             yield return null;
         }
-        
+
         // race 걸릴 수도 있으니까 한 번 기다려주고.
         if (_fadeLoadingPanelCoroutine != null)
             yield return _fadeLoadingPanelCoroutine;
         FadeLoadingPanel(false);
-        
+
         _loadingScenes.Remove(sceneName);
     }
 
@@ -88,16 +99,16 @@ public class SceneService : PersistantSingleton<SceneService>
     {
         if (!Scene.TryGetValue(scene, out var sceneName))
             throw new ArgumentOutOfRangeException(nameof(scene), scene, "Missing Scene");
-        
+
         return sceneName;
     }
 
     private void FadeLoadingPanel(bool isIn)
     {
         Debug.Log("Fading LoadingPanel");
-        
+
         _loadingPanel.gameObject.SetActive(true);
-        
+
         if (isIn)
         {
             if (_fadeLoadingPanelCoroutine != null)
@@ -131,7 +142,7 @@ public class SceneService : PersistantSingleton<SceneService>
         float startAlpha = isIn ? 0f : 1f;
         float targetAlpha = isIn ? 1f : 0f;
         float currentAlpha;
-        
+
         while (time <= _fadeTime)
         {
             time += Time.deltaTime;
@@ -141,14 +152,19 @@ public class SceneService : PersistantSingleton<SceneService>
             //     currentAlpha = targetAlpha;
             // else
             //     currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, delta);
-            
+
             currentAlpha = Mathf.Lerp(startAlpha, targetAlpha, delta);
             panelImage.color = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, currentAlpha);
-            
+
             yield return null;
         }
 
         if (!isIn) _loadingPanel.gameObject.SetActive(false);
         _fadeLoadingPanelCoroutine = null;
+    }
+
+    public SceneType GetSceneTypeBasedOnNodeType(NodeType nodeType)
+    {
+        return NodeSceneMap[nodeType];
     }
 }

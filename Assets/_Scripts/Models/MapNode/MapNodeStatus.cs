@@ -9,6 +9,7 @@ public class MapNodeStatus
 {
     [field: SerializeField] public AssetReferenceT<TimelineAsset> StartTimeline { get; set; } = null;
     [field: SerializeField] public AssetReferenceT<BattleEnemiesData> BattleEnemiesData { get; set; } = null;
+    [field: SerializeField] public AssetReferenceT<EventData> EventData { get; set; } = null;
     
     public MapNodeStatus() { }
 
@@ -16,5 +17,17 @@ public class MapNodeStatus
     {
         StartTimeline = mapNodeData.StartTimeline;
         BattleEnemiesData = mapNodeData.BattleEnemiesData;
+        EventData = mapNodeData.EventData;
+    }
+
+    public bool CheckIsValid(out bool timelineCheck, out bool enemiesDataCheck, out bool eventDataCheck)
+    {
+        timelineCheck = !string.IsNullOrEmpty(StartTimeline.AssetGUID) && StartTimeline.RuntimeKeyIsValid();
+        enemiesDataCheck = !string.IsNullOrEmpty(BattleEnemiesData.AssetGUID) && BattleEnemiesData.RuntimeKeyIsValid();
+        eventDataCheck = !string.IsNullOrEmpty(EventData.AssetGUID) && EventData.RuntimeKeyIsValid();
+        
+        Debug.Log($"Check Result\ntimeline : {timelineCheck}\nenemies : {enemiesDataCheck}\nevents : {eventDataCheck}\n");
+        
+        return  timelineCheck && enemiesDataCheck && eventDataCheck;
     }
 }

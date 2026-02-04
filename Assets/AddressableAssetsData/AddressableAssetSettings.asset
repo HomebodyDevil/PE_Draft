@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: beb77f6666cb37344b0b0d337889d89f
   m_currentHash:
     serializedVersion: 2
-    Hash: 8148f8f1d689f3104a80c11550d48502
+    Hash: 795c35d1d4d8150b9f993af24a868799
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -114,7 +114,6 @@ MonoBehaviour:
     - Enemy
     - PlayerCharacter
     - CharacterData
-    - MapNodes
     - Battle
     - None
     - EnemiesData
@@ -128,6 +127,9 @@ MonoBehaviour:
     - Hina
     - El
     - PlayerStatusData
+    - MapNodeData
+    - Event
+    - MapNodes
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 4798a9575c16d504a8a35ac39b328ca1, type: 2}

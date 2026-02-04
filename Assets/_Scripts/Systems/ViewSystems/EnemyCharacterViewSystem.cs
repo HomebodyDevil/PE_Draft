@@ -14,7 +14,7 @@ public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSy
     //private Coroutine _makeEnemyCharacterViewsCoroutine;
     private Coroutine _initialSettingCoroutine;
     private Coroutine _setCharacterViewsBasedOnSystemCoroutine;
-    private int _numberOfPositions = 6;
+    //private int _numberOfPositions = 6;
     
     protected override void Awake()
     {
@@ -71,7 +71,7 @@ public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSy
         base.MakeCharacterViews(team);
     }
     
-    protected override void SetCharacterPositions()
+    protected override void SetCharacterPositions() 
     {
         _characterPositions.Clear();
         
@@ -100,19 +100,9 @@ public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSy
             _characterPositions.Remove(tr);
         }
     
-        _numberOfPositions = ConstValue.NUMBER_OF_ENEMY_CHARACTERS;
+        //_numberOfPositions = ConstValue.NUMBER_OF_ENEMY_CHARACTERS;
     
         SetCharacterPositions();
-    }
-    
-    public CharacterView GetCharacterView(Character character)
-    {
-        foreach (var characterView in CharacterViews)
-        {
-            if (characterView.Character == character) return characterView;
-        }
-    
-        return null;
     }
     
     public override void SetCharacterViewsBasedOnSystem(Team team)
@@ -126,6 +116,7 @@ public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSy
             _setCharacterViewsBasedOnSystemCoroutine = null;
         }
         
+        //Debug.Log("Enemy : SetCharacterViewsBasedOnSystem");
         _setCharacterViewsBasedOnSystemCoroutine = 
             StartCoroutine(SetCharacterViewsBasedOnSystemCoroutine());
     }
@@ -148,12 +139,14 @@ public class EnemyCharacterViewSystem : CharacterViewSystem<EnemyCharacterViewSy
         var enemies = EnemySystem.Instance.EnemyCharacters;
         if (enemies == null || enemies.Count == 0)
         {
-            Debug.Log("enemies is null or enemies count is 0");
+            Debug.LogError("enemies is null or enemies count is 0");
             yield break;
         }
         
+        Debug.Log($"Enemies Count : {enemies.Count}");
         for (int i = 0; i < enemies.Count; i++)
         {
+            //Debug.Log("Enemy's SetCharacterView Call");
             CharacterViews[i].SetCharacterView(enemies[i]);
         }
         

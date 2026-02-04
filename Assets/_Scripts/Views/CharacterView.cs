@@ -75,7 +75,7 @@ public class CharacterView : MonoBehaviour
 
     public void SetCharacter(Character character = null)
     {
-        Debug.Log("DefaultCharacter를 넣을지 말지 고민중");
+        //Debug.Log("DefaultCharacter를 넣을지 말지 고민중");
         // if (character == null && _defaultCharacterData != null)
         // {
         //     Character = new(_defaultCharacterData);
