@@ -9,5 +9,13 @@ public class StartCharacterTurnGA : GameAbility
     public StartCharacterTurnGA(Character character)
     {
         TurnCharacter = character;
+        if (character is IEnemyTurnStart enemyTurnStart)
+        {
+            enemyTurnStart.TurnStart();
+        }
+        else
+        {
+            Debug.Log($"StartCharacter Turn : {character.CharacterName}");
+        }
     }
 }

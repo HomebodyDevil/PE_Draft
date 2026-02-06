@@ -26,6 +26,7 @@ public class DamageSystem : Singleton<DamageSystem>
 
         float newHealth = character.CurrentHealth - reduceAmount; 
         character.SetCurrentHealth(newHealth);
+        //Debug.LogError($"{character.CharacterName} New Health : {newHealth}");
     }
 
     private void CalcGiveDamageAmount(Character character, float baseDamage)

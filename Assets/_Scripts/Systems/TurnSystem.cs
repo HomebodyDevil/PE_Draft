@@ -12,16 +12,21 @@ public class TurnSystem : Singleton<TurnSystem>
     
     private int _currentTurnOrder = 0;
     private bool _turnRequested = false;
+    public bool PlayerReady = false;
+    public bool EnemiesReady = false;
+    public bool TurnReady = false;
     
     private void Start()
     {
-        _currentTurnOrder = 0;
-        SetInitialTurnOrder();
+        //_currentTurnOrder = 0;
+        //SetInitialTurnOrder();
         
-        StartCharacterTurnGA startTurnGA = new(_charactersTurnOrder[_currentTurnOrder]);
-        GameAbilitySystem.Instance.RequestPerformGameAbility(
-            _charactersTurnOrder[_currentTurnOrder],
-            new() { startTurnGA });
+        // StartCharacterTurnGA startTurnGA = new(_charactersTurnOrder[_currentTurnOrder]);
+        // GameAbilitySystem.Instance.RequestPerformGameAbility(
+        //     _charactersTurnOrder[_currentTurnOrder],
+        //     new() { startTurnGA });
+
+        InitializeTurn();
     }
 
     private void OnEnable()
@@ -36,18 +41,94 @@ public class TurnSystem : Singleton<TurnSystem>
         GameAbilitySystem.Instance?.RemovePerformer<EndCharacterTurnGA>();
     }
 
-    public void SetInitialTurnOrder()
+    private Coroutine _initializeTurnCoroutine;
+    private void InitializeTurn()
     {
-        wrappedPlayerCharacters = new(PlayerSystem.Instance.PlayerCharacters);
+        if (_initializeTurnCoroutine != null)
+        {
+            Debug.Log("InitializeTurnCoroutine is running");
+            StopCoroutine(_initializeTurnCoroutine);
+            _initializeTurnCoroutine = null;
+        }
         
+        _initializeTurnCoroutine = StartCoroutine(InitializeTurnCoroutine());
+    }
+
+    private IEnumerator InitializeTurnCoroutine()
+    {
+        int loopCnt = 0;
+        while (!PlayerReady || !EnemiesReady)
+        {
+            if (loopCnt > ConstValue.MAX_LOOP)
+            {
+                Debug.Log("Too much loop");
+                yield break;
+            }
+            yield return new WaitForSeconds(0.005f);
+        }
+
+        _charactersTurnOrder.Clear();
+        wrappedPlayerCharacters = new(PlayerSystem.Instance.PlayerCharacters);
         _charactersTurnOrder.Add(wrappedPlayerCharacters);
         _charactersTurnOrder.AddRange(EnemySystem.Instance.EnemyCharacters);
+        
+        _currentTurnOrder = 0;
+        StartCharacterTurnGA startTurnGA = new(_charactersTurnOrder[_currentTurnOrder]);
+        GameAbilitySystem.Instance.RequestPerformGameAbility(
+            _charactersTurnOrder[_currentTurnOrder],
+            new() { startTurnGA });
+
+        TurnReady = true;
+        
+        _initializeTurnCoroutine = null;
+    }
+
+    // public void SetInitialTurnOrder()
+    // {
+    //     wrappedPlayerCharacters = new(PlayerSystem.Instance.PlayerCharacters);
+    //     
+    //     _charactersTurnOrder.Add(wrappedPlayerCharacters);
+    //     _charactersTurnOrder.AddRange(EnemySystem.Instance.EnemyCharacters);
+    //     
+    //     Debug.Log($"Characters Count in Turn System: {_charactersTurnOrder.Count}");
+    //     foreach (var character in _charactersTurnOrder)
+    //         Debug.Log($"Character in Turn System : {character.CharacterName}");
+    // }
+
+    public void AddCharactersToTurnList(List<Character> characters)
+    {
+        _charactersTurnOrder.AddRange(characters);
+        if (_charactersTurnOrder.Count == 0)
+        {
+            Debug.Log("No Characters Turn Order");
+            return;
+        }
+
+        if (_charactersTurnOrder[0] != wrappedPlayerCharacters)
+        {
+            _charactersTurnOrder.Remove(wrappedPlayerCharacters);
+            _charactersTurnOrder.Insert(0, wrappedPlayerCharacters);
+        }
+    }
+
+    public void RemoveCharacterInTurnList(Character character)
+    {
+        if (!_charactersTurnOrder.Contains(character))
+            Debug.Log($"Theres no {character.CharacterName} in Turn list");
+        
+        _charactersTurnOrder.Remove(character);
     }
 
     public void OnTurnButton()
     {
         Debug.Log("일단 시험삼아 TurnButton에 할당한 함수.");
 
+        if (!TurnReady)
+        {
+            Debug.Log("Turn is not ready yet.");
+            return;
+        }
+        
         if (_charactersTurnOrder[_currentTurnOrder] != wrappedPlayerCharacters)
         {
             return;
@@ -104,13 +185,18 @@ public class TurnSystem : Singleton<TurnSystem>
         
         if (endCharacterTurnGA.TurnCharacter.TeamType.Team == Team.PlayerCharacter)
         {
-            Debug.Log("여기서 그냥 DiscardPlayerCardsGA를 사용. 차후 수정할 필요 있어 보임.");
+            Debug.Log("EndCharacterTurnPerformer에서 그냥 DiscardPlayerCardsGA를 사용. 차후 수정할 필요 있어 보임.");
 
             DiscardPlayerCardsGA discardGA = new(true);
             GameAbilitySystem.Instance.RequestPerformGameAbility(
                 endCharacterTurnGA.TurnCharacter,
                 new() { discardGA });
         }
+        
+        if (endCharacterTurnGA.TurnCharacter == wrappedPlayerCharacters)
+            Debug.Log("End Turn : Player");
+        else
+            Debug.Log($"End Turn : {endCharacterTurnGA.TurnCharacter.CharacterName}");
         
         StartCharacterTurnGA startTurnGA = new(_charactersTurnOrder[_currentTurnOrder]);
         GameAbilitySystem.Instance?.RequestPerformGameAbility(

@@ -112,5 +112,6 @@ public class EnemySystem : Singleton<EnemySystem>
         // Final
         //Addressables.Release(handle);
         _setEnemiesBasedOnMapNodeStatusCoroutine = null;
+        TurnSystem.Instance.EnemiesReady = true;
     }
 }

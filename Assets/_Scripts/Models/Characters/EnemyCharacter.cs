@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyCharacter : Character
+public class EnemyCharacter : Character, IEnemyTurnStart    
 {
     private Coroutine _enemyTurnCoroutine;
     
@@ -12,7 +12,7 @@ public class EnemyCharacter : Character
 
     public void AddEnemyReactions()
     {
-        // InBattle에서 Reactino을 추가한다면 이것을 사용할 예정.
+        // InBattle에서 Reaction을 추가한다면 이것을 사용할 예정.
         Debug.Log("AddEnemyReactions : InBattle에서 Reaction을 추가");
     }
     
@@ -66,5 +66,10 @@ public class EnemyCharacter : Character
         //     Reactions[0].ReactionGA.GetType(),
         //     this,
         //     PEEnum.ReactionTiming.Pre);
+    }
+
+    public void TurnStart()
+    {
+        Debug.Log($"{CharacterName} : Enemy Turn Start");
     }
 }
