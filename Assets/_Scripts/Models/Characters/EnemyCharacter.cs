@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyCharacter : Character, IEnemyTurnStart    
 {
     private Coroutine _enemyTurnCoroutine;
+    private int _turnCount = 0;
     
     public EnemyCharacter(CharacterData data) : base(data)
     {
@@ -18,7 +19,7 @@ public class EnemyCharacter : Character, IEnemyTurnStart
     
     public override void StartTurn()
     {
-        Debug.Log("EnemyStartTurn");
+        Debug.Log($"{CharacterName} : Enemy Turn Start");
         if (_enemyTurnCoroutine != null)
         {
             CoroutineRunnerService.Instance.StopCoroutine(_enemyTurnCoroutine);
@@ -31,7 +32,15 @@ public class EnemyCharacter : Character, IEnemyTurnStart
     private IEnumerator EnemyTurnCoroutine()
     {
         // CharacterView에서도 없애줘야 함.
-        Debug.Log("EnemyTurnCoroutine 타이밍");
+        _turnCount++;
+        Debug.Log("Test로 말풍선 보여주기중. 차후 수정.");
+
+        string dialogue = $"My Turn : {_turnCount}";
+        PEEvent.OnSetDialogueBubble?.Invoke(true, this, dialogue);
+        
+        yield return new WaitForSecondsRealtime(1f);
+        
+        PEEvent.OnSetDialogueBubble?.Invoke(false, this, dialogue);
         
         EndCharacterTurnGA endTurnGA = new(this);
         GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() { endTurnGA });
@@ -70,6 +79,6 @@ public class EnemyCharacter : Character, IEnemyTurnStart
 
     public void TurnStart()
     {
-        Debug.Log($"{CharacterName} : Enemy Turn Start");
+        //Debug.Log($"{CharacterName} : Enemy Turn Start");
     }
 }

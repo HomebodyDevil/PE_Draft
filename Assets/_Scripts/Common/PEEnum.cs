@@ -18,6 +18,7 @@ namespace PEEnum
         Caster,
         Friendly,
         Hostile,
+        Player,
     }
     
     public enum TargetType
@@ -34,5 +35,11 @@ namespace PEEnum
         Player,
         Enemy,
         Neutral,
+    }
+
+    public enum PlayerCharacter
+    {
+        Hina,
+        El,
     }
 }

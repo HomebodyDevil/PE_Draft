@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PEEnum;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,28 +9,41 @@ public class Character
     public string CharacterName { get; private set; } = "";
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
+    public int Block;
     public TeamType TeamType { get; private set; }
     // Character들은 본인이 등록한 Reaction에 관한 리스트를 hold한다.
     // GameAbilitySystem의 AddReaction에서 추가해주고 있음.
     public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
     public List<ReactionContext> Reactions { get; private set; } = new();
-
-    public Character() { }
     
+    public Character() { }
     public Character(CharacterData characterData)
     {
         CharacterName = characterData.CharacterName;
         CurrentHealth = MaxHealth = characterData.MaxHealth;
+        Block = 0;
         MaxHealth = characterData.MaxHealth;
         TeamType = characterData.TeamType;
-
-        AddReactionsBasedOnData();
+        
+        //AddReactionsBasedOnData(characterData.InitialReactions);
     }
 
-    protected void AddReactionsBasedOnData()
+    public void AddInitialReactions()
     {
         // 초기 Reaction을 추가하고자 할 때는 이것을 사용할 예정.
         Debug.Log("Adding reactions based on data : 초기 Reaction Setting");
+
+        // foreach (var reaction in _initialReactions)
+        // {
+        //     GameAbilitySystem.Instance.AddReaction<StartCharacterTurnGA>(
+        //         ReactionTiming.Pre,
+        //         this,
+        //         reaction,
+        //         ReactionTarget.Player,
+        //         -1234,
+        //         false
+        //     );
+        // }
     }
     
     public void PrintStatus()
@@ -54,18 +68,6 @@ public class Character
 
             CharacterDeathGA deathGA = new(this);
             GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() {deathGA});
-        }
-    }
-
-    public void AddAddedReaction(GameAbility reaction, PEEnum.ReactionTiming timing)
-    {
-        if (AddedReactions.ContainsKey(timing))
-        {
-            AddedReactions[timing].Add(reaction);
-        }
-        else
-        {
-            AddedReactions.Add(timing, new List<GameAbility>() { reaction });
         }
     }
     

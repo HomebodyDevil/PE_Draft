@@ -20,11 +20,25 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - CharacterView
+    - Enemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e8a6cecf7083f44a8da06d329a4c419
+    m_Address: Assets/Prefabs/Views/Character/EnemyView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterView
     - Default
     - Enemy
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 702c016e99b48864291bf6f0e824268c
     m_Address: Assets/Prefabs/Views/Character/DefaultPlayerView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterView
+    - PlayerCharacter
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f94d7b07f287c144aa78e7a66f3410a8
+    m_Address: Assets/Prefabs/Views/Character/PlayerCharacterView.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - CharacterView

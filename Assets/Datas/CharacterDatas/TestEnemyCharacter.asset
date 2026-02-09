@@ -17,6 +17,7 @@ MonoBehaviour:
   <MaxCost>k__BackingField: 5
   <TeamType>k__BackingField:
     rid: 9223071285349711963
+  <InitialReactions>k__BackingField: []
   references:
     version: 2
     RefIds:

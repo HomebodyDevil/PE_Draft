@@ -25,7 +25,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         Debug.Log("Play Card Performer");
 
-        LastUsedCard = playCardGa.InBattleCardToPlay;
+        //LastUsedCard = playCardGa.InBattleCardToPlay;
         InBattleCard inBattleCard = playCardGa.InBattleCardToPlay;
         
         foreach (var ga in inBattleCard.BattleCard.TargetAbility)

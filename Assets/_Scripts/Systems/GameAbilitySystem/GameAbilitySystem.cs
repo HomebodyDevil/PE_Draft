@@ -308,39 +308,39 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     // T : Reaction의 Trigger의 타입
     // T1 Type에 해당하는 Reaction들을 GameAbilitySystem 내에서 지운다. 
     // 타입은 정확히 일치해야 함.
-    public void RemoveReaction<TTrigger, TReaction>(
-        Character responder, 
-        PEEnum.ReactionTiming timing) 
-        where TTrigger : GameAbility 
-        where TReaction : GameAbility
-    {
-        if (responder.AddedReactions.TryGetValue(timing, out var respondersList))
-        {
-            for (int i = respondersList.Count - 1; i >= 0; i--)
-            {
-                if (respondersList[i].GetType() == typeof(TReaction))
-                    respondersList.RemoveAt(i);
-            }
-        }
-        
-        var systemReactionDict = timing == PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
-        Type reactionType = typeof(TReaction);
-        
-        if (!systemReactionDict.TryGetValue(typeof(TTrigger), out var systemReactionList))
-        {
-            Debug.Log("Cant find systemReactionList");
-            return;
-        }
-
-        for (int i = systemReactionList.Count - 1; i >= 0; i--)
-        {
-            var ctx = systemReactionList[i];
-            if (ReferenceEquals(ctx.ReactionPerformer, responder) && ctx.ReactionGA.GetType() == reactionType)
-            {
-                systemReactionList.RemoveAt(i);
-            }
-        }
-    }
+    // public void RemoveReaction<TTrigger, TReaction>(
+    //     Character responder, 
+    //     PEEnum.ReactionTiming timing) 
+    //     where TTrigger : GameAbility 
+    //     where TReaction : GameAbility
+    // {
+    //     if (responder.AddedReactions.TryGetValue(timing, out var respondersList))
+    //     {
+    //         for (int i = respondersList.Count - 1; i >= 0; i--)
+    //         {
+    //             if (respondersList[i].GetType() == typeof(TReaction))
+    //                 respondersList.RemoveAt(i);
+    //         }
+    //     }
+    //     
+    //     var systemReactionDict = timing == PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
+    //     Type reactionType = typeof(TReaction);
+    //     
+    //     if (!systemReactionDict.TryGetValue(typeof(TTrigger), out var systemReactionList))
+    //     {
+    //         Debug.Log("Cant find systemReactionList");
+    //         return;
+    //     }
+    //
+    //     for (int i = systemReactionList.Count - 1; i >= 0; i--)
+    //     {
+    //         var ctx = systemReactionList[i];
+    //         if (ReferenceEquals(ctx.ReactionPerformer, responder) && ctx.ReactionGA.GetType() == reactionType)
+    //         {
+    //             systemReactionList.RemoveAt(i);
+    //         }
+    //     }
+    // }
     
     public void RemoveReaction(
         Type triggerType,
@@ -353,7 +353,9 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
             for (int i = respondersList.Count - 1; i >= 0; i--)
             {
                 if (respondersList[i].GetType() == reactionType)
+                {
                     respondersList.RemoveAt(i);
+                }
             }
         }
         
@@ -373,6 +375,11 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                 systemReactionList.RemoveAt(i);
             }
         }
+    }
+    
+    public void RemoveReaction(ReactionContext reactionContext)
+    {
+        
     }
     
     public void AddPerformer<T>(Func<T, IEnumerator> performer) where T : GameAbility

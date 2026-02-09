@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PEEnum;
+using TMPro;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,6 +12,11 @@ public class CharacterView : MonoBehaviour
 {
     [SerializeField] private CharacterData _defaultCharacterData;
     [SerializeField] private CharacterVisual _characterVisual;
+    [SerializeField] private Transform _blockAmountView;
+    [SerializeField] private TextMeshProUGUI _blockAmountText;
+    [SerializeField] private Transform _dialogueBubble;
+    [SerializeField] private TextMeshProUGUI _dialogueBubbleText;
+
 
     public Character Character { get; private set; }
 
@@ -30,6 +36,38 @@ public class CharacterView : MonoBehaviour
     {
         if (Text != null)
             Text.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        PEEvent.OnCharacterGainedBlock += SetBlockView;
+        PEEvent.OnCharacterLostBlock += SetBlockView;
+        PEEvent.OnSetDialogueBubble += SetDialogueBubble;
+    }
+
+    private void OnDisable()
+    {
+        PEEvent.OnCharacterGainedBlock -= SetBlockView;
+        PEEvent.OnCharacterLostBlock -= SetBlockView;
+        PEEvent.OnSetDialogueBubble -= SetDialogueBubble;
+    }
+
+    private void SetBlockView(Character character, int blockAmount)
+    {
+        if (Character != character) return;
+        
+        _blockAmountText.text = blockAmount.ToString();
+        _blockAmountView.gameObject.SetActive(blockAmount > 0);
+    }
+
+    private void SetDialogueBubble(bool enable, Character character, string text)
+    {
+        if (Character != character) return;
+        
+        string dialogue = enable ? text : "";
+        
+        _dialogueBubbleText.text = dialogue;
+        _dialogueBubble.gameObject.SetActive(enable);
     }
 
     private void OnDestroy()
@@ -71,6 +109,14 @@ public class CharacterView : MonoBehaviour
             transform.AssignChildVar<Transform>("Panel", ref Text);
         if (_characterVisual == null)
             transform.AssignChildVar<CharacterVisual>("CharacterVisual", ref _characterVisual);
+        if (_blockAmountView == null)
+            transform.AssignChildVar<Transform>("BlockAmountView", ref _blockAmountView);
+        if (_blockAmountText == null)
+            transform.AssignChildVar<TextMeshProUGUI>("BlockAmountText", ref _blockAmountText);
+        if (_dialogueBubble == null)
+            transform.AssignChildVar<Transform>("DialogueBubble", ref _dialogueBubble);
+        if (_dialogueBubbleText == null)
+            transform.AssignChildVar<TextMeshProUGUI>("DialogueBubbleText", ref _dialogueBubbleText);
     }
 
     public void SetCharacter(Character character = null)

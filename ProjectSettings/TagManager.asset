@@ -58,6 +58,9 @@ TagManager:
   - name: PanelUI
     uniqueID: 1260294735
     locked: 0
+  - name: CharacterView
+    uniqueID: 1258383001
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
