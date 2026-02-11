@@ -182,12 +182,12 @@ public class TurnSystem : Singleton<TurnSystem>
                     continue;
                 }
 
-                PlayerReduceBlockGA reduceBlockGA = new(
-                    true,
-                    0,
-                    playerCharacter.CharacterName);
-                
-                GameAbilitySystem.Instance.RequestPerformGameAbility(playerCharacter, new() { reduceBlockGA });
+                // PlayerReduceBlockGA reduceBlockGA = new(
+                //     true,
+                //     0,
+                //     playerCharacter.CharacterName);
+                //
+                // GameAbilitySystem.Instance.RequestPerformGameAbility(playerCharacter, new() { reduceBlockGA });
             }
         }
         else

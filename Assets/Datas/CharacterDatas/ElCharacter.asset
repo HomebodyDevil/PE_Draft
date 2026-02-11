@@ -17,17 +17,10 @@ MonoBehaviour:
   <MaxCost>k__BackingField: 5
   <TeamType>k__BackingField:
     rid: 9223071285349711963
-  <InitialReactions>k__BackingField:
-  - rid: 2556890306006221028
+  <InitialReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: 2556890306006221028
-      type: {class: PlayerReduceBlockGA, ns: , asm: Assembly-CSharp}
-      data:
-        <ReduceAll>k__BackingField: 1
-        <ReduceAmount>k__BackingField: 0
-        <TargetCharacter>k__BackingField: 1
     - rid: 9223071285349711963
       type: {class: TeamType, ns: , asm: Assembly-CSharp}
       data:

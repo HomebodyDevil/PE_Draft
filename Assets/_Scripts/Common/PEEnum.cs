@@ -18,7 +18,7 @@ namespace PEEnum
         Caster,
         Friendly,
         Hostile,
-        Player,
+        PlayerCharacter,
     }
     
     public enum TargetType
@@ -28,6 +28,7 @@ namespace PEEnum
         Caster,
         Friendly,
         Hostile,
+        PlayerCharacter,
     }
 
     public enum GAExecutor
@@ -41,5 +42,19 @@ namespace PEEnum
     {
         Hina,
         El,
+    }
+    
+    public enum Team
+    {
+        None,
+        PlayerCharacter,
+        Enemy,
+    }
+
+    // 종족(?)이라 생각하면 될듯.
+    public enum Classification
+    {
+        None,
+        Human,
     }
 }

@@ -13,7 +13,7 @@ public class Character
     public TeamType TeamType { get; private set; }
     // Character들은 본인이 등록한 Reaction에 관한 리스트를 hold한다.
     // GameAbilitySystem의 AddReaction에서 추가해주고 있음.
-    public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
+    // public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
     public List<ReactionContext> Reactions { get; private set; } = new();
     
     public Character() { }

@@ -1,20 +1,7 @@
 using System;
 using System.Collections.Generic;
+using PEEnum;
 using UnityEngine;
-
-public enum Team
-{
-    None,
-    PlayerCharacter,
-    Enemy,
-}
-
-// 종족(?)이라 생각하면 될듯.
-public enum Classification
-{
-    None,
-    Human,
-}
 
 [Serializable]
 public class TeamType

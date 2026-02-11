@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using PEEnum;
 using UnityEngine;
 
 // public class ReactionKey : IEquatable<ReactionKey>
@@ -196,15 +197,23 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                     continue;
                 }
 
+                if (reactionCtx.TriggerTeamType != ctx.Caster.TeamType.Team)
+                {
+                    Debug.Log("Invalid Trigger Team Type");
+                    continue;
+                }
+
                 if (reactionCtx.ReactionCount == 0)
                 {
-                    Type reactoinGAType = reactionCtx.ReactionGA.GetType();
+                    RemoveReaction(reactionCtx);
                     
-                    RemoveReaction(
-                        reactionCtx.TriggerType,
-                        reactoinGAType,
-                        reactionCtx.ReactionPerformer,
-                        reactionCtx.ReactionTiming);
+                    // Type reactoinGAType = reactionCtx.ReactionGA.GetType();
+                    
+                    // RemoveReaction(
+                    //     reactionCtx.TriggerType,
+                    //     reactoinGAType,
+                    //     reactionCtx.ReactionPerformer,
+                    //     reactionCtx.ReactionTiming);
                 }
             
                 List<Character> reactionTargets =
@@ -277,7 +286,8 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
         GameAbility reactionGA, 
         PEEnum.ReactionTarget reactionTarget, 
         int reactionCount, 
-        bool needResponder) where T : GameAbility
+        bool needResponder,
+        Team triggerTeamType) where T : GameAbility
     {
         var list = timing == PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
 
@@ -289,6 +299,7 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                 reactionCount, 
                 timing,
                 needResponder,
+                triggerTeamType,
                 triggerType);
 
         if (list.ContainsKey(triggerType))
@@ -342,26 +353,63 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     //     }
     // }
     
-    public void RemoveReaction(
-        Type triggerType,
-        Type reactionType,
-        Character responder, 
-        PEEnum.ReactionTiming timing) 
+    // 구버전...
+    // public void RemoveReaction(
+    //     Type triggerType,
+    //     Type reactionType,
+    //     Character responder, 
+    //     PEEnum.ReactionTiming timing) 
+    // {
+    //     if (responder.AddedReactions.TryGetValue(timing, out var respondersList))
+    //     {
+    //         for (int i = respondersList.Count - 1; i >= 0; i--)
+    //         {
+    //             if (respondersList[i].GetType() == reactionType)
+    //             {
+    //                 respondersList.RemoveAt(i);
+    //             }
+    //         }
+    //     }
+    //     
+    //     var systemReactionDict = timing == PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
+    //     
+    //     if (!systemReactionDict.TryGetValue(triggerType, out var systemReactionList))
+    //     {
+    //         Debug.Log("Cant find systemReactionList");
+    //         return;
+    //     }
+    //
+    //     for (int i = systemReactionList.Count - 1; i >= 0; i--)
+    //     {
+    //         var ctx = systemReactionList[i];
+    //         if (ReferenceEquals(ctx.ReactionPerformer, responder) && ctx.ReactionGA.GetType() == reactionType)
+    //         {
+    //             systemReactionList.RemoveAt(i);
+    //         }
+    //     }
+    // }
+    
+    public void RemoveReaction(ReactionContext reactionCtx)
     {
-        if (responder.AddedReactions.TryGetValue(timing, out var respondersList))
+        Character responder = reactionCtx.ReactionPerformer;
+        if (responder == null)
         {
-            for (int i = respondersList.Count - 1; i >= 0; i--)
-            {
-                if (respondersList[i].GetType() == reactionType)
-                {
-                    respondersList.RemoveAt(i);
-                }
-            }
+            Debug.Log("responder is null");
         }
+        else
+        {
+            responder.RemoveAddedReaction(reactionCtx);
+        }
+
+        var systemReactions = reactionCtx.ReactionTiming == 
+                                                    PEEnum.ReactionTiming.Pre ? 
+                                                    _preReactions : 
+                                                    _postReactions;
         
-        var systemReactionDict = timing == PEEnum.ReactionTiming.Pre ? _preReactions : _postReactions;
+        var triggerType = reactionCtx.TriggerType;
+        var reactionType = reactionCtx.ReactionGA.GetType();
         
-        if (!systemReactionDict.TryGetValue(triggerType, out var systemReactionList))
+        if (!systemReactions.TryGetValue(triggerType, out var systemReactionList))
         {
             Debug.Log("Cant find systemReactionList");
             return;
@@ -375,11 +423,6 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                 systemReactionList.RemoveAt(i);
             }
         }
-    }
-    
-    public void RemoveReaction(ReactionContext reactionContext)
-    {
-        
     }
     
     public void AddPerformer<T>(Func<T, IEnumerator> performer) where T : GameAbility

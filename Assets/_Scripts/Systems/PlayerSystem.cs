@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PEEnum;
 using UnityEngine;
 
 public class PlayerSystem : Singleton<PlayerSystem>
@@ -25,10 +26,18 @@ public class PlayerSystem : Singleton<PlayerSystem>
         PlayerCharacters.AddRange(PlayerStatusService.Instance.GetPlayerCharacters());
         PlayerCharacterViewSystem.Instance.SetCharacterViewsBasedOnSystem(Team.PlayerCharacter);
 
-        // foreach (var playerCharacter in PlayerCharacters)
-        // {
-        //     playerCharacter.AddInitialReactions();
-        // }
+        foreach (var playerCharacter in PlayerCharacters)
+        {
+            PlayerReduceBlockGA ga = new(true, 0, playerCharacter.CharacterName);
+            GameAbilitySystem.Instance.AddReaction<StartCharacterTurnGA>(
+                ReactionTiming.Pre,
+                playerCharacter,
+                ga,
+                ReactionTarget.PlayerCharacter,
+                ConstValue.INFINITE_TURN_COUNT,
+                false,
+                Team.PlayerCharacter);
+        }
 
         TurnSystem.Instance.PlayerReady = true;
     }
