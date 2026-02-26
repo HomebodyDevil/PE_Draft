@@ -21,6 +21,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Dialogue
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90833a88bb5ada248aa7b1eeef47fb3c
+    m_Address: Assets/Medias/Dialogues/P&E_Dialogue_story0.csv
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Dialogue
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a83e543ca8bb26c4ca6ec232384a9ae0
+    m_Address: "Assets/Medias/Dialogues/P&E_Dialogue_\uB178\uB4DC1.csv"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Dialogue
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5a3e2a99223ae645895511a54b05d8f
+    m_Address: Assets/Medias/Dialogues/P&E_Dialogue_stroy1.csv
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Dialogue
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 530a06f2fcea6d54aa419b98c20febe5, type: 2}
   m_SchemaSet:
