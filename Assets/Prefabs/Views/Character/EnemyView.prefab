@@ -252,6 +252,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyView
       objectReference: {fileID: 0}
+    - target: {fileID: 2566606783613385595, guid: d454aa691fe8bb04b844cde777ea6e22, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 2818346083896085427, guid: d454aa691fe8bb04b844cde777ea6e22, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -299,10 +303,14 @@ PrefabInstance:
     - target: {fileID: 8691202367900771391, guid: d454aa691fe8bb04b844cde777ea6e22, type: 3}
       propertyPath: m_Sprite
       value: 
+      objectReference: {fileID: 21300000, guid: 76bd40918726d334092915e4b33a6a78, type: 3}
+    - target: {fileID: 8691202367900771391, guid: d454aa691fe8bb04b844cde777ea6e22, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691202367900771391, guid: d454aa691fe8bb04b844cde777ea6e22, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

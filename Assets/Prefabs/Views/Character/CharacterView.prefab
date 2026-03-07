@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 7837402462285334589}
   m_Layer: 9
   m_Name: CharacterView
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,6 +210,7 @@ MonoBehaviour:
   _blockAmountText: {fileID: 0}
   _dialogueBubble: {fileID: 0}
   _dialogueBubbleText: {fileID: 0}
+  _animator: {fileID: 0}
   Text: {fileID: 0}
 --- !u!1 &2818346083896085427
 GameObject:
@@ -628,15 +629,15 @@ SpriteRenderer:
   m_SortingLayerID: 1258383001
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 76bd40918726d334092915e4b33a6a78, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.050909, y: 1.6920297}
+  m_Size: {x: 1.6666666, y: 1.7866666}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8640017309605164021
