@@ -16,6 +16,7 @@ public class CharacterView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _blockAmountText;
     [SerializeField] private Transform _dialogueBubble;
     [SerializeField] private TextMeshProUGUI _dialogueBubbleText;
+    [SerializeField] private Animator _animator;
 
 
     public Character Character { get; private set; }
@@ -43,6 +44,8 @@ public class CharacterView : MonoBehaviour
         PEEvent.OnCharacterGainedBlock += SetBlockView;
         PEEvent.OnCharacterLostBlock += SetBlockView;
         PEEvent.OnSetDialogueBubble += SetDialogueBubble;
+
+        PEEvent.OnPlayTriggerAnimation += SetAnimationTrigger;
     }
 
     private void OnDisable()
@@ -50,6 +53,20 @@ public class CharacterView : MonoBehaviour
         PEEvent.OnCharacterGainedBlock -= SetBlockView;
         PEEvent.OnCharacterLostBlock -= SetBlockView;
         PEEvent.OnSetDialogueBubble -= SetDialogueBubble;
+        
+        PEEvent.OnPlayTriggerAnimation -= SetAnimationTrigger;
+    }
+
+    private void SetAnimationTrigger(Character character, string param)
+    {
+        if (character != Character) return;
+        if (_animator == null)
+        {
+            Debug.LogError($"No Animator : {Character.CharacterName}");
+            return;
+        }
+        
+        _animator.SetTrigger(param);
     }
 
     private void SetBlockView(Character character, int blockAmount)
@@ -117,6 +134,8 @@ public class CharacterView : MonoBehaviour
             transform.AssignChildVar<Transform>("DialogueBubble", ref _dialogueBubble);
         if (_dialogueBubbleText == null)
             transform.AssignChildVar<TextMeshProUGUI>("DialogueBubbleText", ref _dialogueBubbleText);
+        if (_animator == null)
+            transform.AssignChildVar<Animator>("CharacterAnimator", ref _animator);
     }
 
     public void SetCharacter(Character character = null)
@@ -162,11 +181,17 @@ public class CharacterView : MonoBehaviour
         string characterName = character.CharacterName;
         string team = character.TeamType.Team.ToString();
 
+        // Sprite를 로드했던 흔적.
+        // var locHandle = Addressables.LoadResourceLocationsAsync(
+        //     new List<object>() { characterName, team, "CharacterVisual" },
+        //     Addressables.MergeMode.Intersection,
+        //     typeof(Sprite));
+        
         var locHandle = Addressables.LoadResourceLocationsAsync(
             new List<object>() { characterName, team, "CharacterVisual" },
             Addressables.MergeMode.Intersection,
-            typeof(Sprite));
-
+            typeof(RuntimeAnimatorController));
+        
         yield return locHandle;
         if (locHandle.Status != AsyncOperationStatus.Succeeded ||
             locHandle.Result.Count == 0)
@@ -176,7 +201,9 @@ public class CharacterView : MonoBehaviour
         }
 
         var assetLoc = locHandle.Result[0];
-        var assetHandle = Addressables.LoadAssetAsync<Sprite>(assetLoc);
+        //var assetHandle = Addressables.LoadAssetAsync<Sprite>(assetLoc);
+        // var assetHandle = Addressables.LoadAssetAsync<Animator>(assetLoc);
+        var assetHandle = Addressables.LoadAssetAsync<RuntimeAnimatorController>(assetLoc);
 
         yield return assetHandle;
         if (assetHandle.Status != AsyncOperationStatus.Succeeded)

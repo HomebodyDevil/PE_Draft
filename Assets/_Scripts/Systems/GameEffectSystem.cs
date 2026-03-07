@@ -38,7 +38,7 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
     {
         character.Block = character.Block + blockAmount;
         PEEvent.OnCharacterGainedBlock?.Invoke(character, character.Block);
-        
+        PEEvent.OnPlayTriggerAnimation?.Invoke(character, "Block");
         //Debug.Log($"{character.CharacterName} gain block : {blockAmount}, current block : {character.Block}");
     }
     

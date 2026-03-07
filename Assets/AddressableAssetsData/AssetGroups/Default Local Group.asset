@@ -15,6 +15,14 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: beb77f6666cb37344b0b0d337889d89f
   m_SerializeEntries:
+  - m_GUID: 089f711c23c3e644ca275ed4b50297a1
+    m_Address: Assets/Medias/Animation/Character/Player/ProteAnimator.controller
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterVisual
+    - PlayerCharacter
+    - Prote
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2edfaae91e316c443b0a202b68398ffb
     m_Address: Assets/Datas/EventDatas/TestEventData.asset
     m_ReadOnly: 0
@@ -34,6 +42,14 @@ MonoBehaviour:
     - Battle
     - MapNodes
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 388e23408c272f841ae2f64adcefab9f
+    m_Address: Assets/Medias/Animation/Character/PlayerCharacetr/Hina/HinaAnimator.controller
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterVisual
+    - Hina
+    - PlayerCharacter
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64e53f5ba6592834bb06dfce27e74eff
     m_Address: Assets/Datas/EventDatas/TestEventButtonData.asset
     m_ReadOnly: 0
@@ -45,6 +61,21 @@ MonoBehaviour:
     m_SerializedLabels:
     - Default
     - PlayerStatusData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 916bf4cc92c36f449b42c6f69bd76313
+    m_Address: Assets/Medias/Animation/Character/EnemyCharacter/Hina/EnemyHinaAnimator.controller
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterVisual
+    - Enemy
+    - Hina
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92d7c232ab3fe0b46a290b400d2d02d7
+    m_Address: Assets/Datas/CharacterDatas/ProteCharacter.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterData
+    - PlayerCharacter
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 96ce105f08a5c134793b944e32a2b6c4
     m_Address: Assets/Datas/MapNodeDatas/EventMapNodes/TestEventMapNodeData.asset

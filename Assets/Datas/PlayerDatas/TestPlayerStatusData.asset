@@ -20,6 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 889c3f6a833eb9044b3036da2a3a93fd, type: 2}
   - {fileID: 11400000, guid: 3ecdf8db2cc51a541ad89d66bbb73c84, type: 2}
   - {fileID: 11400000, guid: a1c5187f479659f4fa2e0c81e6567a35, type: 2}
+  - {fileID: 11400000, guid: a83f79bfd7b19ac4b9d1e127902c35f1, type: 2}
   <CharactersData>k__BackingField:
-  - {fileID: 11400000, guid: b58e792ff021ec84592acbdde067f3c8, type: 2}
+  - {fileID: 11400000, guid: 92d7c232ab3fe0b46a290b400d2d02d7, type: 2}
   <InitialFlags>k__BackingField: []

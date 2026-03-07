@@ -42,6 +42,7 @@ namespace PEEnum
     {
         Hina,
         El,
+        Prote,
     }
     
     public enum Team

@@ -6,11 +6,14 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class CharacterVisual : MonoBehaviour
 {
     private SpriteRenderer _sr;
+    private Animator _animator;
     private AsyncOperationHandle<Sprite> _opHandle;
+    private AsyncOperationHandle<RuntimeAnimatorController> _opHandleAnimator;
 
     private void Awake()
     {
         if (_sr == null)  _sr = GetComponent<SpriteRenderer>();
+        if (_animator == null)  transform.AssignChildVar<Animator>("CharacterAnimator", ref _animator);
     }
 
     private void OnDestroy()
@@ -24,8 +27,18 @@ public class CharacterVisual : MonoBehaviour
         _sr.sprite = sprite;
     }
 
+    public void SetVisual(RuntimeAnimatorController animator)
+    {
+        _animator.runtimeAnimatorController = animator;
+    }
+
     public void SetOperationHandle(AsyncOperationHandle<Sprite> opHandle)
     {
         _opHandle = opHandle;
+    }
+    
+    public void SetOperationHandle(AsyncOperationHandle<RuntimeAnimatorController> opHandle)
+    {
+        _opHandleAnimator = opHandle;
     }
 }

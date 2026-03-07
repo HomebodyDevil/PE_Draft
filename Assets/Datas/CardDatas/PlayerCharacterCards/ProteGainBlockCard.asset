@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c5ba74eeeae49d439f37e772e611e0e, type: 3}
-  m_Name: HinaGainBlockCard
+  m_Name: ProteGainBlockCard
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  <CardName>k__BackingField: GainBlock(Hina)
+  <CardName>k__BackingField: GainBlock(Porte)
   <CardDescription>k__BackingField: GainBlock
   <CardCost>k__BackingField: 0
   <CardPlayType>k__BackingField: 0
@@ -26,4 +26,4 @@ MonoBehaviour:
       type: {class: PlayerGainBlockGA, ns: , asm: Assembly-CSharp}
       data:
         <BlockAmount>k__BackingField: 5
-        <TargetCharacter>k__BackingField: 0
+        <TargetCharacter>k__BackingField: 2

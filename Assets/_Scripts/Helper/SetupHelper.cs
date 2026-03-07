@@ -32,7 +32,7 @@ public static class SetupHelper
             return false;
         }
 
-        Debug.Log("해당 이름의 Child가 없음.");
+        Debug.Log($"해당 이름의 Child가 없음 : {childName}");
         return false;
     }
 
