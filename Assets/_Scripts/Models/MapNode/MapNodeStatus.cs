@@ -12,7 +12,7 @@ public class MapNodeStatus
     [field: SerializeField] public AssetReferenceT<EventData> EventData { get; set; } = null;
     
     public MapNodeStatus() { }
-
+    
     public MapNodeStatus(MapNodeData mapNodeData)
     {
         StartTimeline = mapNodeData.StartTimeline;

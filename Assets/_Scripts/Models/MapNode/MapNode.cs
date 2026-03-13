@@ -18,28 +18,29 @@ public enum NodeType
 public class MapNode
 {
     public NodeType NodeType { get; private set; }
-    public List<MapNode> ParentNode { get; private set; } = new();
-    public List<MapNode> ChildNode { get; private set; } = new();
+    public List<MapNode> ParentNodes { get; private set; } = new();
+    public List<MapNode> ChildNodes { get; private set; } = new();
     public int NodeLevel { get; private set; } = 0;
+    public int NodeSlot { get; private set; } = 0;
     public MapNodeStatus MapNodeStatus { get; private set; } = new();
     
-    public MapNode(int nodeLevel, NodeType nodeType = NodeType.None)
+    public MapNode(int nodeLevel, int nodeSlot, NodeType nodeType = NodeType.None)
     {
         NodeLevel = nodeLevel;
+        NodeSlot = nodeSlot;
         NodeType = nodeType;
     }
     
     public void SetMapNodeData(MapNodeData mapNodeData)
     {
         MapNodeStatus = new(mapNodeData);
-        // if (!MapNodeStatus.CheckIsValid(out var time, out var enemies, out var events))
-        // {
-        //     if (!time) Debug.LogError("Timeline is Invalid");
-        //     if (!enemies) Debug.LogError("Enemies is Invalid");
-        //     if (!events) Debug.LogError("Events is Invalid");
-        // }
-        // else
-        //     Debug.Log("Success to Set Map Node Status");
+    }
+
+    public static void Connect(MapNode parent, MapNode child)
+    {
+        if (parent == null || child == null) return;
+        if (!parent.ChildNodes.Contains(child)) parent.ChildNodes.Add(child);
+        if (!child.ParentNodes.Contains(parent)) child.ParentNodes.Add(parent);
     }
 
     // public void SetMapNodeDataByNodeType()

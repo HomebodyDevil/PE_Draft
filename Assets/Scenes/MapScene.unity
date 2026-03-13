@@ -1719,6 +1719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapNodeSystem
   _isEventScene: 0
+  _presetLayout: {fileID: 0}
   _mapNodeViewPrefab: {fileID: 2058214766370397321, guid: 71bc864d7b9f9ca45846520ede904f04, type: 3}
   _maxNodeCountInLevel: 5
   _maxNodesLevel: 15
@@ -1726,6 +1727,7 @@ MonoBehaviour:
   _mapNodeEndPoint: {fileID: 0}
   _mapScrollView: {fileID: 0}
   _mapNodesPanel: {fileID: 0}
+  _volatilityRatio: 0.1
 --- !u!1 &1985291216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,10 +1764,10 @@ RectTransform:
   - {fileID: 1815195358}
   m_Father: {fileID: 466767188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -549.9996}
-  m_SizeDelta: {x: 0, y: 4000}
+  m_SizeDelta: {x: 900, y: 4000}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1985291218
 MonoBehaviour:

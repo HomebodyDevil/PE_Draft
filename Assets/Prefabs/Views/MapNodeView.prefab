@@ -183,6 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d91f660b8d2e2042b234ee4e13562d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapNodeView
+  _nodeIcon: {fileID: 0}
+  _nodeLevelText: {fileID: 0}
+  _connectionLinePrefab: {fileID: 1645284064751581754, guid: b811910333679d04491ad5a6afe11210, type: 3}
 --- !u!1 &7768483027678324881
 GameObject:
   m_ObjectHideFlags: 0
