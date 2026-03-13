@@ -17,6 +17,9 @@ public class MapNodeLayoutData : ScriptableObject
         [Tooltip("노드의 타입")]
         public NodeType nodeType;
 
+        [Tooltip("이 노드에 사용될 MapNodeData SO. 없다면 랜덤 로드/설정됨")]
+        public MapNodeData mapNodeData;
+
         [Tooltip("부모 노드의 (level, slot)쌍. 비워져있다면, 연결 없음")]
         public List<Vector2Int> parentEntries = new();
     }

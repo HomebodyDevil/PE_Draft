@@ -1719,7 +1719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapNodeSystem
   _isEventScene: 0
-  _presetLayout: {fileID: 0}
+  _presetLayout: {fileID: 11400000, guid: f905cfd05f8f15d4283755696f9f39ae, type: 2}
   _mapNodeViewPrefab: {fileID: 2058214766370397321, guid: 71bc864d7b9f9ca45846520ede904f04, type: 3}
   _maxNodeCountInLevel: 5
   _maxNodesLevel: 15

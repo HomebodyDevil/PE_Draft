@@ -128,7 +128,12 @@ public class MapNodeSystem : Singleton<MapNodeSystem>
         foreach (var entry in _presetLayout.nodeEntries)
         {
             var node = new MapNode(entry.level, entry.slot, entry.nodeType);
-            yield return GetMapNodeDataAndSet(entry.nodeType, node);
+
+            if (entry.mapNodeData != null)
+                node.SetMapNodeData(entry.mapNodeData);
+            else
+                yield return GetMapNodeDataAndSet(entry.nodeType, node);
+            
             RegisterNode(node);
         }
         
