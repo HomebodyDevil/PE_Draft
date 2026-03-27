@@ -18,48 +18,54 @@ MonoBehaviour:
     nodeType: 4
     mapNodeData: {fileID: 0}
     parentEntries: []
-  - level: 4
+  - level: 1
     slot: 2
     nodeType: 2
     mapNodeData: {fileID: 0}
     parentEntries:
     - {x: 0, y: 2}
-  - level: 6
+  - level: 2
     slot: 2
     nodeType: 3
     mapNodeData: {fileID: 0}
     parentEntries:
-    - {x: 4, y: 2}
-  - level: 6
+    - {x: 1, y: 2}
+  - level: 2
     slot: 4
     nodeType: 2
     mapNodeData: {fileID: 0}
     parentEntries:
-    - {x: 4, y: 2}
-    - {x: 4, y: 3}
-  - level: 6
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+  - level: 2
     slot: 1
     nodeType: 1
     mapNodeData: {fileID: 0}
     parentEntries:
-    - {x: 4, y: 2}
-  - level: 11
+    - {x: 1, y: 2}
+  - level: 3
     slot: 2
     nodeType: 2
     mapNodeData: {fileID: 0}
     parentEntries:
-    - {x: 6, y: 2}
-  - level: 11
+    - {x: 2, y: 2}
+  - level: 3
     slot: 3
     nodeType: 1
     mapNodeData: {fileID: 0}
     parentEntries:
-    - {x: 6, y: 2}
-  - level: 4
+    - {x: 2, y: 4}
+  - level: 1
     slot: 3
     nodeType: 3
     mapNodeData: {fileID: 0}
     parentEntries:
     - {x: 0, y: 2}
+  - level: 4
+    slot: 2
+    nodeType: 2
+    mapNodeData: {fileID: 0}
+    parentEntries:
+    - {x: 3, y: 2}
   totalLevels: 15
   maxNodesPerLevel: 5
