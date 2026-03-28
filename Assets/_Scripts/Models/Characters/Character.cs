@@ -15,17 +15,31 @@ public class Character
     // GameAbilitySystem의 AddReaction에서 추가해주고 있음.
     // public Dictionary<PEEnum.ReactionTiming, List<GameAbility>> AddedReactions { get; private set; } = new();
     public List<ReactionContext> Reactions { get; private set; } = new();
+
+    private CharacterSkill characterSkill;
+    public CharacterSkill CharacterSkill => characterSkill; 
     
     public Character() { }
     public Character(CharacterData characterData)
     {
+        if (characterData == null)
+        {
+            Debug.LogError("CharacterData is null");
+            return;
+        }
+        
         CharacterName = characterData.CharacterName;
         CurrentHealth = MaxHealth = characterData.MaxHealth;
         Block = 0;
         MaxHealth = characterData.MaxHealth;
         TeamType = characterData.TeamType;
-        
-        //AddReactionsBasedOnData(characterData.InitialReactions);
+
+        if (characterData.CharacterSkillData != null)
+        {
+            characterSkill = new(characterData.CharacterSkillData);
+        }
+        else
+            Debug.LogError($"CharacterData.CharacterSkillData({characterData.CharacterName}) is null");
     }
 
     public void AddInitialReactions()

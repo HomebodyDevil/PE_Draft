@@ -18,6 +18,7 @@ MonoBehaviour:
   <TeamType>k__BackingField:
     rid: 9223071285349711963
   <InitialReactions>k__BackingField: []
+  <CharacterSkillData>k__BackingField: {fileID: 11400000, guid: d2f5336e568a3084ea08e2b7cbd46adb, type: 2}
   references:
     version: 2
     RefIds:

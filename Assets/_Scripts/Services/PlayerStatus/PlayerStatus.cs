@@ -11,7 +11,6 @@ public class PlayerStatus
     public List<Character> PlayerCharacters { get; set; } = new();
     public List<Card> PlayerDeck { get; private set; } = new();
     public GameFlags GameFlags { get; private set; }
-    public List<CharacterSkill> PlayerSkills { get; private set; } = new();
     
     public PlayerStatus(
         PlayerStatusData data=null

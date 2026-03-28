@@ -10,6 +10,7 @@ public class BattleUIManager : Singleton<BattleUIManager>
     [SerializeField] private Button _deckButton;
     [SerializeField] private Button _graveyardButton;
     [SerializeField] private RectTransform _showCardsPanel;
+    [SerializeField] private RectTransform _characterSkillButtonsRT;
     [SerializeField] private Transform _showCardsContainer;
     [SerializeField] private GameObject _exhibitCardViewPrefab;
 
@@ -18,6 +19,8 @@ public class BattleUIManager : Singleton<BattleUIManager>
     
     private List<GameObject> _usingExhibitCards = new();
     private List<GameObject> _storedExhibitCards = new();
+
+    [SerializeField] private List<CharacterSkillButton> _characterSkillButtons = new();
     
     protected override void Awake()
     {
@@ -27,6 +30,18 @@ public class BattleUIManager : Singleton<BattleUIManager>
         Setup();
     }
 
+    private void Start()
+    {
+        List<Character> playerCharacters = PlayerStatusService.Instance.GetPlayerCharacters();
+        int i = 0;
+        
+        for (; i < playerCharacters.Count; i++)
+            _characterSkillButtons[i].SetButton(playerCharacters[i]);
+        
+        for (; i < _characterSkillButtons.Count; i++)
+            _characterSkillButtons[i].gameObject.SetActive(false);
+    }
+
     private void VarSetup()
     {
         if (_buttonsUiCanvas == null) transform.AssignChildVar<Canvas>("ButtonsUICanvas", ref _buttonsUiCanvas);
@@ -34,6 +49,16 @@ public class BattleUIManager : Singleton<BattleUIManager>
         if (_graveyardButton == null) transform.AssignChildVar<Button>("GraveyardButton", ref _graveyardButton);
         if (_showCardsPanel == null) transform.AssignChildVar<RectTransform>("ShowCardsPanel", ref _showCardsPanel);
         if (_showCardsContainer == null) transform.AssignChildVar<Transform>("ShowCardsContainer", ref _showCardsContainer);
+        if (_characterSkillButtonsRT == null) transform.AssignChildVar<RectTransform>("CharacterSkillButtons", ref _characterSkillButtonsRT);
+
+        if (_characterSkillButtonsRT)
+        {
+            foreach (var button in _characterSkillButtonsRT.GetComponentsInChildren<CharacterSkillButton>())
+                _characterSkillButtons.Add(button);
+
+            if (_characterSkillButtons.Count > 1)
+                _characterSkillButtons.Reverse();
+        }
     }
 
     private void Setup()

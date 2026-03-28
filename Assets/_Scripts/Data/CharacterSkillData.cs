@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SerializeReferenceEditor;
 using UnityEngine;
 
 [CreateAssetMenu(
@@ -16,7 +17,7 @@ public class CharacterSkillData : ScriptableObject
     [SerializeField] private string skillDescription;
 
     [Header("Abilities")]
-    [SerializeReference] private List<GameAbility> skillAbilities = new List<GameAbility>();
+    [SerializeReference, SR] private List<GameAbility> skillAbilities = new List<GameAbility>();
 
     public Sprite SkillImage => skillImage;
     public int SkillCost => skillCost;
