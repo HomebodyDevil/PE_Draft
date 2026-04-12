@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada240deb4a9f0843a29d3aed8f41f9b, type: 3}
+  m_Name: TestEnemyBehaviourPattern
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBehaviorPatternData
+  patternDesc: Test Pattern
+  loop: 1
+  turns:
+  - behaviors:
+    - ability:
+        rid: 6783676940653953153
+      weight: 49
+    - ability:
+        rid: 6783676940653953152
+      weight: 74
+  - behaviors:
+    - ability:
+        rid: 6783676940653953154
+      weight: 0
+  - behaviors:
+    - ability:
+        rid: 6783676940653953157
+      weight: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6783676940653953152
+      type: {class: DealDamageToRandomTargetsGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 0
+        <BaseDamage>k__BackingField: 0
+        <TargetType>k__BackingField: 0
+        <TargetCount>k__BackingField: 0
+    - rid: 6783676940653953153
+      type: {class: DrawCardsGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 0
+        <DrawCount>k__BackingField: 0
+    - rid: 6783676940653953154
+      type: {class: CharacterDeathGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 0
+    - rid: 6783676940653953157
+      type: {class: DealDamageToRandomTargetsGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 0
+        <BaseDamage>k__BackingField: 0
+        <TargetType>k__BackingField: 0
+        <TargetCount>k__BackingField: 0

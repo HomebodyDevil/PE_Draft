@@ -5,6 +5,8 @@ public class EnemyCharacter : Character, IEnemyTurnStart
 {
     private Coroutine _enemyTurnCoroutine;
     private int _turnCount = 0;
+
+    private EnemyBehaviorPatternData _enemyBehaviorPatternData;
     
     public EnemyCharacter(CharacterData data) : base(data)
     {
@@ -32,19 +34,36 @@ public class EnemyCharacter : Character, IEnemyTurnStart
     private IEnumerator EnemyTurnCoroutine()
     {
         // CharacterView에서도 없애줘야 함.
-        _turnCount++;
-        Debug.Log("Test로 말풍선 보여주기중. 차후 수정.");
+        // Debug.Log("Test로 말풍선 보여주기중. 차후 수정.");
+        //
+        // string dialogue = $"My Turn : {_turnCount}";
+        // PEEvent.OnSetDialogueBubble?.Invoke(true, this, dialogue);
+        //
+        // yield return new WaitForSecondsRealtime(1f);
+        //
+        // PEEvent.OnSetDialogueBubble?.Invoke(false, this, dialogue);
 
-        string dialogue = $"My Turn : {_turnCount}";
-        PEEvent.OnSetDialogueBubble?.Invoke(true, this, dialogue);
-        
-        yield return new WaitForSecondsRealtime(1f);
-        
-        PEEvent.OnSetDialogueBubble?.Invoke(false, this, dialogue);
+        if (_enemyBehaviorPatternData == null)
+        {
+            Debug.LogWarning($"_enemyBehaviorPatternData is null");
+        }
+        else
+        {
+            var turnAbility = _enemyBehaviorPatternData.GetAbilityForTurn(_turnCount);
+            if (turnAbility != null)
+            {
+                yield return GameAbilitySystem.Instance.RequestPerformGameAbilityAndWait(
+                    this,
+                    new() { turnAbility });
+            }
+            else
+                Debug.LogWarning($"turnAbility is null : turn = {_turnCount}");
+        }
         
         EndCharacterTurnGA endTurnGA = new(this);
         GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() { endTurnGA });
 
+        _turnCount++;
         _enemyTurnCoroutine = null;
         
         yield break;
@@ -75,6 +94,25 @@ public class EnemyCharacter : Character, IEnemyTurnStart
         //     Reactions[0].ReactionGA.GetType(),
         //     this,
         //     PEEnum.ReactionTiming.Pre);
+    }
+
+    private void DoBehavior(int turnIndex)
+    {
+        if (_enemyBehaviorPatternData == null)
+        {
+            Debug.LogError("EnemyBehaviorPatternData is null");
+            return;
+        }
+        
+        var turnAbility = _enemyBehaviorPatternData.GetAbilityForTurn(turnIndex);
+
+        if (turnAbility == null)
+        {
+            Debug.LogWarning($"No Ability found for turn {turnIndex}");
+            return;
+        }
+        
+        GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() { turnAbility });
     }
 
     public void TurnStart()

@@ -65,6 +65,8 @@ class PerformGameAbilityContext
 
 public class GameAbilitySystem : Singleton<GameAbilitySystem>
 {
+    public Action OnPerformSequenceCompleted;
+    
     // private static Dictionary<ReactionKey, List<GameAbility>> _preReactions = new();
     // private static Dictionary<ReactionKey, List<GameAbility>> _postReactions = new();
 
@@ -91,6 +93,22 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
         if (_performAbilityFlowCoroutine != null) StopCoroutine(_performAbilityFlowCoroutine);
     }
 
+    public IEnumerator RequestPerformGameAbilityAndWait(
+        Character caster,
+        List<GameAbility> gameAbilities)
+    {
+        bool completed = false;
+
+        void Handler() { completed = true; }
+
+        OnPerformSequenceCompleted += Handler;
+        RequestPerformGameAbility(caster, gameAbilities);
+        
+        yield return new WaitUntil(() => completed);
+        
+        OnPerformSequenceCompleted -= Handler;
+    }
+    
     /// <summary></summary>
     /// <param name="caster">GameAbility 시전자</param>
     // 아마 CardView에서 이 함수를 호출할 확률이 클 것인데..
@@ -117,14 +135,15 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                 PerformGameAbilityContext gaCtx = new(caster, gameAbility);
                 _piledGameAbility.Enqueue(gaCtx);
             }
-        
+
+            IsPerforming = true;
             _performAbilityFlowCoroutine = StartCoroutine(PerformGameAbilitySequence());   
         }
     }
 
     private IEnumerator PerformGameAbilitySequence()
     {
-        IsPerforming = true;
+        // IsPerforming = true;
 
         int performCount = 0;
         while (_piledGameAbility.Count > 0 && performCount < ConstValue.MAX_PERFORM_CHAIN_COUNT)
@@ -153,6 +172,7 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
         _gameAbilityBuffer.Clear();
         
         IsPerforming = false;
+        OnPerformSequenceCompleted?.Invoke();
     }
     
     private IEnumerator GameAbilityFlowCoroutine(PerformGameAbilityContext gaCtx)
