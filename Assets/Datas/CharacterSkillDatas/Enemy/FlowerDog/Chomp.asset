@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e1a3e99d3fff842b3f98828c9f1215, type: 3}
+  m_Name: Chomp
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterSkillData
+  skillImage: {fileID: 21300000, guid: feabe4d81416a0b46bcb3dd464a907a0, type: 3}
+  skillCost: 0
+  skillName: Chomp
+  skillDescription: 
+  skillAbilities:
+  - rid: 6783677097264545793
+  references:
+    version: 2
+    RefIds:
+    - rid: 6783677097264545793
+      type: {class: DealDamageToRandomTargetsGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 1
+        <BaseDamage>k__BackingField: 8
+        <TargetType>k__BackingField: 5
+        <TargetCount>k__BackingField: 1
