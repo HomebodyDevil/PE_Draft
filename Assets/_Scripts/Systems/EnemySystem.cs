@@ -10,7 +10,7 @@ public class EnemySystem : Singleton<EnemySystem>
 {
     [SerializeField] private EnemyCharacter _testEnemy;
     
-    public List<Character> EnemyCharacters { get; private set; } = new();
+    [field: SerializeField] public List<Character> EnemyCharacters { get; private set; } = new();
     public List<Character> DeadEnemyCharacters { get; private set; } = new();
 
     private Coroutine _setEnemiesBasedOnMapNodeStatusCoroutine;

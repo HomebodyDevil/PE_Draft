@@ -8,12 +8,14 @@ public class DamageSystem : Singleton<DamageSystem>
     {
         GameAbilitySystem.Instance?.AddPerformer<DealDamageToTargetsGA>(DealDamageToTargetPerformer);
         GameAbilitySystem.Instance?.AddPerformer<DealDamageToRandomTargetsGA>(DealDamageToRandomTargetsPerformer);
+        GameAbilitySystem.Instance?.AddPerformer<DealDamageToAllGA>(DealDamageToAllPerformer);
     }
 
     private void OnDisable()
     {
         GameAbilitySystem.Instance?.RemovePerformer<DealDamageToTargetsGA>();
         GameAbilitySystem.Instance?.RemovePerformer<DealDamageToRandomTargetsGA>();
+        GameAbilitySystem.Instance?.RemovePerformer<DealDamageToAllGA>();
     }
 
     private void ReduceHealth(Character character, float reduceAmount)
@@ -26,7 +28,7 @@ public class DamageSystem : Singleton<DamageSystem>
 
         float newHealth = character.CurrentHealth - reduceAmount; 
         character.SetCurrentHealth(newHealth);
-        //Debug.LogError($"{character.CharacterName} New Health : {newHealth}");
+        Debug.LogError($"{character.CharacterName} New Health : {newHealth}");
     }
 
     private void CalcGiveDamageAmount(Character character, float baseDamage)
@@ -66,7 +68,7 @@ public class DamageSystem : Singleton<DamageSystem>
             yield break;
         }
 
-        Debug.Log("여기도 나중에 바꿀 것.(지금은 적에게만 데미지 주고 있음)");
+        Debug.Log("여기도 나중에 바꿀지 고민중.(지금은 적에게만 데미지 주고 있음)");
         int targetCnt = dealDamageToRandomTargetsGA.TargetCount;
         List<Character> targets = EnemySystem.Instance.EnemyCharacters.PickN(targetCnt);
         
@@ -82,5 +84,35 @@ public class DamageSystem : Singleton<DamageSystem>
         {
             ReduceHealth(target, dealDamageToRandomTargetsGA.BaseDamage);
         }
+    }
+
+    public IEnumerator DealDamageToAllPerformer(DealDamageToAllGA dealDamageToAllGA)
+    {
+        var targetType = dealDamageToAllGA.TargetType;
+
+        List<Character> targets = new();
+        switch (targetType)
+        {
+            case PEEnum.TargetType.PlayerCharacter:
+                targets = PlayerSystem.Instance.PlayerCharacters;
+                break;
+            case PEEnum.TargetType.Hostile:
+                targets = EnemySystem.Instance.EnemyCharacters;
+                break;
+        }
+
+        if (targets == null || targets.Count == 0)
+        {
+            Debug.Log("No Targets Found");
+            yield break;
+        }
+        
+        foreach (var target in targets)
+            Debug.Log($"Target : {target.CharacterName}");
+        
+        foreach (var target in targets)
+            ReduceHealth(target, dealDamageToAllGA.BaseDamage);
+        
+        yield break;
     }
 }

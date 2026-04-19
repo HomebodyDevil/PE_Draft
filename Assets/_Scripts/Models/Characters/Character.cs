@@ -4,6 +4,7 @@ using PEEnum;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[Serializable]
 public class Character
 {
     public string CharacterName { get; private set; } = "";
