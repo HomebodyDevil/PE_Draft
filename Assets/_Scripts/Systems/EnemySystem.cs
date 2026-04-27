@@ -115,4 +115,17 @@ public class EnemySystem : Singleton<EnemySystem>
         _setEnemiesBasedOnMapNodeStatusCoroutine = null;
         TurnSystem.Instance.EnemiesReady = true;
     }
+
+    public EnemyCharacter FindEnemyCharacter(EnemyCharacter enemy)
+    {
+        Character target = enemy as Character;
+        Character res = EnemyCharacters.Find((Character character) => character == target);
+        if (res == null)
+        {
+            Debug.LogError("No Character found");
+            return null;
+        }
+
+        return res as EnemyCharacter;
+    }
 }

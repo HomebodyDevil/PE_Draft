@@ -8,6 +8,16 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
     {
         GameAbilitySystem.Instance.AddPerformer<PlayerGainBlockGA>(PlayerGainBlockPerformer);
         GameAbilitySystem.Instance.AddPerformer<PlayerReduceBlockGA>(PlayerReduceBlockPerformer);
+
+        GameAbilitySystem.Instance.AddPerformer<EnemyGainBlockGA>(EnemyGainBlockPerformer);
+    }
+
+    private void OnDisable()
+    {
+        GameAbilitySystem.Instance.RemovePerformer<PlayerGainBlockGA>();
+        GameAbilitySystem.Instance.RemovePerformer<PlayerReduceBlockGA>();
+        
+        GameAbilitySystem.Instance.RemovePerformer<EnemyGainBlockGA>();
     }
 
     public IEnumerator PlayerGainBlockPerformer(PlayerGainBlockGA gainBlockGA)
@@ -20,6 +30,36 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
     {
         PlayerReduceBlock(reduceBlockGA.TargetCharacterName, reduceBlockGA.ReduceAmount, reduceBlockGA.ReduceAll);
         yield break;
+    }
+
+    public IEnumerator EnemyGainBlockPerformer(EnemyGainBlockGA gainBlockGA)
+    {
+        EnemyCharacter targetEnemy = gainBlockGA.TargetEnemy;
+        int blockAmount = gainBlockGA.BlockAmount;
+        
+        Character target = EnemySystem.Instance.FindEnemyCharacter(targetEnemy) as Character;
+        if (target == null)
+        {
+            Debug.LogError("No target found");
+            yield break;
+        }
+        
+        GainBlock(target, blockAmount);
+    }
+
+    public IEnumerator EnemyReduceBlockPerformer(EnemyReduceBlockGA reduceBlockGA)
+    {
+        EnemyCharacter targetEnemy = reduceBlockGA.TargetEnemy;
+        int reduceAmount = reduceBlockGA.ReduceBlockAmount;
+
+        if (targetEnemy == null)
+        {
+            Debug.LogError("No target found");
+            yield break;
+        }
+
+        Character target = targetEnemy as Character;
+        ReduceBlock(target, reduceAmount);
     }
 
     public void PlayerGainBlock(PEEnum.PlayerCharacter playerCharacter, int blockAmount)
