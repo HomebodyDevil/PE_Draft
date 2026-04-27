@@ -70,7 +70,8 @@ public class DamageSystem : Singleton<DamageSystem>
 
         Debug.Log("여기도 나중에 바꿀지 고민중.(지금은 적에게만 데미지 주고 있음)");
         int targetCnt = dealDamageToRandomTargetsGA.TargetCount;
-        List<Character> targets = EnemySystem.Instance.EnemyCharacters.PickN(targetCnt);
+        List<Character> targets = TeamSystem.Instance?.GetTeamCharactersByType(dealDamageToRandomTargetsGA.Caster, dealDamageToRandomTargetsGA.TargetType);
+        // List<Character> targets = EnemySystem.Instance.EnemyCharacters.PickN(targetCnt);
         
         //Debug.Log($"Target Count {targets.Count}");
 

@@ -9,7 +9,7 @@ public class EnemyTurnPattern
     
     public List<WeightedEnemyAbility> Behaviors => behaviors;
 
-    public GameAbility GetRandomAbility()
+    public CharacterSkillData GetRandomAbility()
     {
         if (behaviors == null || behaviors.Count == 0)
         {
@@ -35,11 +35,11 @@ public class EnemyTurnPattern
 
         foreach (var behavior in behaviors)
         {
-            if (behavior == null || behavior.Ability == null) continue;
+            if (behavior == null || behavior.CharacterSkillData == null) continue;
             
             current += Mathf.Max(0, behavior.Weight);
             if (roll < current)
-                return behavior.Ability;
+                return behavior.CharacterSkillData;
         }
         
         Debug.LogWarning($"Total weight is more than 0");

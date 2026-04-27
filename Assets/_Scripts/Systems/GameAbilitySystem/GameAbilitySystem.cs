@@ -48,7 +48,7 @@ using UnityEngine;
 //     }
 // }
 
-class PerformGameAbilityContext
+public class PerformGameAbilityContext
 {
     public Character Caster { get; private set; }
     public GameAbility GameAbility { get; private set; }
@@ -185,6 +185,17 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
     private IEnumerator PerformGameAbility(PerformGameAbilityContext gaCtx)
     {
         //Debug.Log("Performing Game Ability");
+        if (gaCtx == null)
+        {
+            Debug.LogError("PerformGameAbilityContext is null");
+            yield break;
+        }
+
+        if (gaCtx.GameAbility == null)
+        {
+            Debug.Log("GameAbility is null");
+            yield break;
+        }
 
         if (_performers.TryGetValue(gaCtx.GameAbility.GetType(), out Func<GameAbility, IEnumerator> performer))
         {
@@ -280,7 +291,7 @@ public class GameAbilitySystem : Singleton<GameAbilitySystem>
                 // 추가한다면, Hostile에서도 responder가 Enemy일 경우, 추가할 수 있도록 해야 할듯.
                 break;
             case PEEnum.ReactionTarget.Hostile:
-                List<Character> hostileList = TeamSystem.Instance.GetHostileTeamAgents(responder.TeamType.Team);
+                List<Character> hostileList = TeamSystem.Instance.GetHostileTeamCharacters(responder.TeamType.Team);
                 targets.AddRange(hostileList);
                 break;
             default:

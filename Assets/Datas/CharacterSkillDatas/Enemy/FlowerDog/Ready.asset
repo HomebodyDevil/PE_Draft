@@ -17,9 +17,12 @@ MonoBehaviour:
   skillName: 
   skillDescription: 
   skillAbilities:
-  - rid: -2
+  - rid: 6783677299079774298
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 6783677299079774298
+      type: {class: EnemyGainBlockGA, ns: , asm: Assembly-CSharp}
+      data:
+        executor: 1
+        BlockAmount: 8

@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e730d234205c44f840ca1bb4aa36f7, type: 3}
   m_Name: TestCharacterData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCharacterData
-  <CharacterName>k__BackingField: TestEnemyCharacterData
+  <CharacterName>k__BackingField: Hina
   <MaxHealth>k__BackingField: 0
   <MaxCost>k__BackingField: 0
   <TeamType>k__BackingField:
-    rid: -2
+    rid: 6783677299079774341
   <InitialReactions>k__BackingField: []
   <CharacterSkillData>k__BackingField: {fileID: 0}
   EnemyBehaviorPatternData: {fileID: 11400000, guid: c04712c0ccef76b448aa82e3e8c38b58, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 6783677299079774341
+      type: {class: TeamType, ns: , asm: Assembly-CSharp}
+      data:
+        <Team>k__BackingField: 2
+        <Classifications>k__BackingField: 01000000

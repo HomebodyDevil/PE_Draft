@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TestBattleEnemiesData
   m_EditorClassIdentifier: Assembly-CSharp::BattleEnemiesData
   Enemies:
-  - {fileID: 11400000, guid: b679a03e4d040534989e97d391bf06d5, type: 2}
-  - {fileID: 11400000, guid: b679a03e4d040534989e97d391bf06d5, type: 2}
-  - {fileID: 11400000, guid: b679a03e4d040534989e97d391bf06d5, type: 2}
+  - {fileID: 11400000, guid: 53d9d0d8d41bb9f4ca60bf368b69a670, type: 2}
+  - {fileID: 11400000, guid: 53d9d0d8d41bb9f4ca60bf368b69a670, type: 2}
+  - {fileID: 11400000, guid: 53d9d0d8d41bb9f4ca60bf368b69a670, type: 2}

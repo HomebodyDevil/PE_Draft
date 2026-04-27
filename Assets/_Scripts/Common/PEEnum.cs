@@ -33,6 +33,7 @@ namespace PEEnum
 
     public enum GAExecutor
     {
+        None,
         Player,
         Enemy,
         Neutral,

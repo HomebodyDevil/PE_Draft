@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada240deb4a9f0843a29d3aed8f41f9b, type: 3}
+  m_Name: TestEnemyBehaviourPattern
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBehaviorPatternData
+  patternDesc: Test Pattern
+  loop: 1
+  turns:
+  - behaviors:
+    - skillData: {fileID: 11400000, guid: dbcfedc739312fb44916520bede56f96, type: 2}
+      weight: 1

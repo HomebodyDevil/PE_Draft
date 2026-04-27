@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyCharacter : Character, IEnemyTurnStart    
@@ -10,7 +11,19 @@ public class EnemyCharacter : Character, IEnemyTurnStart
     
     public EnemyCharacter(CharacterData data) : base(data)
     {
-        
+        if (data is EnemyCharacterData enemyData)
+            InitializeEnemyData(enemyData);
+    }
+
+    private void InitializeEnemyData(EnemyCharacterData data)
+    {
+        if (data.EnemyBehaviorPatternData == null)
+        {
+            Debug.LogWarning($"{data.CharacterName} has no EnemyBehaviorPatternData");
+            return;
+        }
+
+        _enemyBehaviorPatternData = Object.Instantiate(data.EnemyBehaviorPatternData);
     }
 
     public void AddEnemyReactions()
@@ -49,12 +62,17 @@ public class EnemyCharacter : Character, IEnemyTurnStart
         }
         else
         {
-            var turnAbility = _enemyBehaviorPatternData.GetAbilityForTurn(_turnCount);
-            if (turnAbility != null)
+            var turnSkillData = _enemyBehaviorPatternData.GetSkillDataForTurn(_turnCount);
+            var abilityList = turnSkillData.SkillAbilities.ToList(); 
+            
+            foreach (var ability in abilityList)
+                ability.SetCaster(this);
+            
+            if (turnSkillData != null)
             {
                 yield return GameAbilitySystem.Instance.RequestPerformGameAbilityAndWait(
                     this,
-                    new() { turnAbility });
+                    abilityList);
             }
             else
                 Debug.LogWarning($"turnAbility is null : turn = {_turnCount}");
@@ -98,21 +116,22 @@ public class EnemyCharacter : Character, IEnemyTurnStart
 
     private void DoBehavior(int turnIndex)
     {
+        
         if (_enemyBehaviorPatternData == null)
         {
             Debug.LogError("EnemyBehaviorPatternData is null");
             return;
         }
         
-        var turnAbility = _enemyBehaviorPatternData.GetAbilityForTurn(turnIndex);
+        var turnSkillData = _enemyBehaviorPatternData.GetSkillDataForTurn(turnIndex);
 
-        if (turnAbility == null)
+        if (turnSkillData == null)
         {
-            Debug.LogWarning($"No Ability found for turn {turnIndex}");
+            Debug.LogWarning($"No SkillData found for turn {turnIndex}");
             return;
         }
         
-        GameAbilitySystem.Instance.RequestPerformGameAbility(this, new() { turnAbility });
+        GameAbilitySystem.Instance.RequestPerformGameAbility(this, turnSkillData.SkillAbilities.ToList());
     }
 
     public void TurnStart()

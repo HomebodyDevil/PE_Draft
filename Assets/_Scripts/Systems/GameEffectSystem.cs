@@ -10,6 +10,7 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
         GameAbilitySystem.Instance.AddPerformer<PlayerReduceBlockGA>(PlayerReduceBlockPerformer);
 
         GameAbilitySystem.Instance.AddPerformer<EnemyGainBlockGA>(EnemyGainBlockPerformer);
+        GameAbilitySystem.Instance.AddPerformer<EnemyReduceBlockGA>(EnemyReduceBlockPerformer);
     }
 
     private void OnDisable()
@@ -18,6 +19,7 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
         GameAbilitySystem.Instance.RemovePerformer<PlayerReduceBlockGA>();
         
         GameAbilitySystem.Instance.RemovePerformer<EnemyGainBlockGA>();
+        GameAbilitySystem.Instance.RemovePerformer<EnemyReduceBlockGA>();
     }
 
     public IEnumerator PlayerGainBlockPerformer(PlayerGainBlockGA gainBlockGA)
@@ -34,32 +36,30 @@ public class GameEffectSystem : Singleton<GameEffectSystem>
 
     public IEnumerator EnemyGainBlockPerformer(EnemyGainBlockGA gainBlockGA)
     {
-        EnemyCharacter targetEnemy = gainBlockGA.TargetEnemy;
+        Character caster = gainBlockGA.Caster;
         int blockAmount = gainBlockGA.BlockAmount;
         
-        Character target = EnemySystem.Instance.FindEnemyCharacter(targetEnemy) as Character;
-        if (target == null)
+        if (caster == null)
         {
             Debug.LogError("No target found");
             yield break;
         }
         
-        GainBlock(target, blockAmount);
+        GainBlock(caster, blockAmount);
     }
 
     public IEnumerator EnemyReduceBlockPerformer(EnemyReduceBlockGA reduceBlockGA)
     {
-        EnemyCharacter targetEnemy = reduceBlockGA.TargetEnemy;
+        Character caster = reduceBlockGA.Caster;
         int reduceAmount = reduceBlockGA.ReduceBlockAmount;
 
-        if (targetEnemy == null)
+        if (caster == null)
         {
-            Debug.LogError("No target found");
+            Debug.LogError("No caster found");
             yield break;
         }
 
-        Character target = targetEnemy as Character;
-        ReduceBlock(target, reduceAmount);
+        ReduceBlock(caster, reduceAmount);
     }
 
     public void PlayerGainBlock(PEEnum.PlayerCharacter playerCharacter, int blockAmount)

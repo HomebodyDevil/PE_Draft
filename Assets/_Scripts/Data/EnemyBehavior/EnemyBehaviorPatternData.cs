@@ -39,7 +39,7 @@ public class EnemyBehaviorPatternData : ScriptableObject
         return turns[turnIndex];
     }
 
-    public GameAbility GetAbilityForTurn(int turnIndex)
+    public CharacterSkillData GetSkillDataForTurn(int turnIndex)
     {
         var turnPattern = GetTurnPattern(turnIndex);
         if (turnPattern == null)

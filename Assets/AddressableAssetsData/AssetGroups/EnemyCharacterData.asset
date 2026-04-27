@@ -15,12 +15,13 @@ MonoBehaviour:
   m_GroupName: EnemyCharacterData
   m_GUID: 3fe36aff7630c6146a9a4abcc60e6ede
   m_SerializeEntries:
-  - m_GUID: b679a03e4d040534989e97d391bf06d5
-    m_Address: Assets/Datas/CharactersDatas/TestEnemyCharacter.asset
+  - m_GUID: 53d9d0d8d41bb9f4ca60bf368b69a670
+    m_Address: Assets/Datas/CharacterDatas/Enemy/TestCharacterData.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - CharacterData
     - Enemy
+    - Hina
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 530a06f2fcea6d54aa419b98c20febe5, type: 2}
